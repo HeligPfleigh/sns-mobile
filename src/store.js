@@ -10,7 +10,7 @@ import { ACCESS_TOKEN } from "./constants";
 
 // init apollo client
 export const client = new ApolloClient({
-  uri: "http://192.168.100.11:6868/graphql",
+  uri: "http://api-sns.mttjsc.com/graphql",
   fetchOptions: {
     credentials: "include"
   },

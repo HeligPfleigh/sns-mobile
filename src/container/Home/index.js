@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Container, Header, Title, Content, View, Icon, Left, Body, Right } from "native-base";
+import { Container, Header, Title, Content, View, Left, Body, Right, Footer, Button, FooterTab } from "native-base";
 
 import FeedCard from "../../components/FeedCard/FeedCard";
 import styles from "./styles";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 @connect(({ common }) => ({
   orientation: common.orientation
@@ -34,6 +35,22 @@ class HomeScreen extends Component {
             <FeedCard />
           </View>
         </Content>
+        <Footer>
+          <FooterTab>
+            <Button transparent>
+              <Icon name="home" style={{ fontSize: 20, color: "#008ffe" }} />
+            </Button>
+            <Button transparent>
+              <Icon name="comments" style={{ fontSize: 20, color: "#008ffe" }} />
+            </Button>
+            <Button transparent>
+              <Icon name="group" style={{ fontSize: 20, color: "#008ffe" }} />
+            </Button>
+            <Button transparent>
+              <Icon name="bell" style={{ fontSize: 20, color: "#008ffe" }} />
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     );
   }
