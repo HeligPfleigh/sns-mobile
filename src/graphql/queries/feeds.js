@@ -14,6 +14,9 @@ export default gql`
         message
         author {
           username
+          profile {
+            picture
+          }
           email {
             address
           }

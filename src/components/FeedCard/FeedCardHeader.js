@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const FeedCardHeader = ({ username, createdAt, avatar }) => (
+const FeedCardHeader = ({ username, createdAt, profile }) => (
   <CardItem style={styles.container}>
     <Left>
-      <Thumbnail small source={{ uri: avatar || fakeAvatar }} />
+      <Thumbnail small source={{ uri: profile.picture || fakeAvatar }} />
       <Body>
         <Text>{ username }</Text>
         <Text note>about { distanceInWordToNow(createdAt) } ago</Text>

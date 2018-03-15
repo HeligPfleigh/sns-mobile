@@ -47,11 +47,12 @@ const styles = StyleSheet.create({
 });
 
 const FeedsHeader = ({ info }) => {
+  const avatar = info.profile.picture;
   const text = `What's new with you, ${info.username}? `;
   return (
     <Card style={styles.container}>
       <View style={styles.avatarContainer}>
-        <Image style={styles.avatar} source={{ uri: fakeAvatar }}/>
+        <Image style={styles.avatar} source={{ uri: avatar || fakeAvatar }}/>
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.text}>{text}</Text>
