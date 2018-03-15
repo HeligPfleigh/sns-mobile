@@ -1,6 +1,9 @@
 import { StackNavigator, DrawerNavigator } from "react-navigation";
 import React from "react";
 
+// Welcome screen
+import Welcome from "../container/Welcome";
+
 // First screen
 import BlankScreen from "../container/BlankScreen";
 import SignUp from "../container/SignUp";
@@ -24,6 +27,9 @@ const Drawer = DrawerNavigator(
 const routeConfig = {
   BlankScreen: { screen: BlankScreen },
 
+  // Welcome screen
+  Welcome: { screen: Welcome },
+
   // SignUp Screen
   SignUp: { screen: SignUp },
 
@@ -36,6 +42,6 @@ const routeConfig = {
 };
 
 export const AppNavigator = StackNavigator(routeConfig, {
-  initialRouteName: "Drawer",
+  initialRouteName: "Welcome",
   headerMode: "none"
 });
