@@ -117,14 +117,6 @@ class LoginForm extends Component {
     }
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      // do stuff while splash screen is shown
-      // After having done stuff (such as async tasks) hide the splash screen
-      SplashScreen.hide();
-    }, 3000);
-  }
-
   render() {
     const { orientation, handleSubmit, valid, submitting, pristine } = this.props;
     let headerStyle = styles.header;
