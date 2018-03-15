@@ -27,18 +27,19 @@ const styles = StyleSheet.create({
   }
 });
 
-const text = "Some feed content should appear here asljkakjs alksdjlfka alksjdf";
-
-const FeedCard = () => (
-  <Card style={styles.container}>
-    <FeedCardHeader />
-    <CardItem cardBody style={styles.contentContainer}>
-      <Text style={styles.textContent}>
-        {text}
-      </Text>
-    </CardItem>
-    <FeedCardBottom />
-  </Card>
-);
+const FeedCard = ({message, author, isLiked, totalComments, totalLikes, createdAt}) => {
+  const text = JSON.parse(message).blocks[0].text;
+  return (
+    <Card style={styles.container}>
+      <FeedCardHeader {...author} createdAt={createdAt}/>
+      <CardItem cardBody style={styles.contentContainer}>
+        <Text style={styles.textContent}>
+          {text}
+        </Text>
+      </CardItem>
+      <FeedCardBottom isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes}/>
+    </Card>
+  );
+};
 
 export default FeedCard;

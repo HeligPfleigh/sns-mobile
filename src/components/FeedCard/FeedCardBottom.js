@@ -24,24 +24,22 @@ const styles = StyleSheet.create({
   }
 });
 
-const favoriteCount = 3;
 const ICON_SIZE = 20;
 
-const FeedCardBottom = () => (
+const FeedCardBottom = ({ isLiked, totalComments, totalLikes }) => (
   <CardItem style={styles.container}>
     <TouchableOpacity style={styles.button}>
-      <MaterialCommunityIcons name="thumb-up-outline" size={ICON_SIZE} color={colors.LIGHT_GRAY}/>
-      <Text style={styles.buttonText}> {favoriteCount} </Text>
+      <MaterialCommunityIcons name="thumb-up-outline" size={ICON_SIZE} color={isLiked ? colors.PRIMARY : colors.LIGHT_GRAY}/>
+      <Text style={styles.buttonText}> {totalLikes} </Text>
     </TouchableOpacity>
 
     <TouchableOpacity style={styles.button}>
       <MaterialCommunityIcons name="comment-processing-outline" size={ICON_SIZE} color={colors.LIGHT_GRAY}/>
-      <Text style={styles.buttonText}> {favoriteCount} </Text>
+      <Text style={styles.buttonText}> {totalComments} </Text>
     </TouchableOpacity>
 
     <TouchableOpacity style={styles.button}>
       <MaterialCommunityIcons name="share" size={ICON_SIZE} color={colors.LIGHT_GRAY}/>
-      <Text style={styles.buttonText}> {favoriteCount} </Text>
     </TouchableOpacity>
   </CardItem>
 );
