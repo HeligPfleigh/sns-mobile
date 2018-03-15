@@ -20,7 +20,8 @@ const Drawer = DrawerNavigator(
   },
   {
     initialRouteName: "Home",
-    contentComponent: props => <Sidebar {...props} />
+    contentComponent: props => <Sidebar {...props} />,
+    drawerPosition: "right"
   }
 );
 

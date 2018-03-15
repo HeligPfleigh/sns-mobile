@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Platform } from "react-native";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { Container, Header, View, Footer, FooterTab } from "native-base";
+import { Container, Header, Content, View, Footer, FooterTab } from "native-base";
+import Layout from "../../components/Layout";
 
 import { FTButton } from "../../components/FooterTab";
 import { graphql, compose, withApollo } from "react-apollo";
@@ -55,7 +56,7 @@ class HomeScreen extends Component {
 
     this.state = {
       page: 0,
-      loading: false,
+      loading: false
     };
   }
 
@@ -72,7 +73,7 @@ class HomeScreen extends Component {
         page: this.state.page + 1
       },
       () => {
-        if (this.props.getFeeds.feeds.pageInfo.hasNextPage){
+        if (this.props.getFeeds.feeds.pageInfo.hasNextPage) {
           this.props.loadMoreRows();
         }
       }
@@ -92,9 +93,7 @@ class HomeScreen extends Component {
           data={getFeeds.feeds.edges}
           onEndReached={() => this._handleEnd()}
           onEndReachedThreshold={0}
-          ListFooterComponent={() =>
-            this.state.loading ?
-            null : <ActivityIndicator size="large"/>}
+          ListFooterComponent={() => (this.state.loading ? null : <ActivityIndicator size="large" />)}
           ListHeaderComponent={this._renderFeedHeader}
           keyExtractor={item => item._id}
           renderItem={this._renderItem}
@@ -103,18 +102,9 @@ class HomeScreen extends Component {
     }
 
     return (
-      <Container>
-        {Platform.OS === "ios" && <Header style={{ height: 22 }} />}
+      <Layout navigation={this.props.navigation}>
         <View style={styles.root}>{content}</View>
-        <Footer>
-          <FooterTab>
-            <FTButton active text="Trang chủ" name="home" iconStyle={{ fontSize: 23 }} />
-            <FTButton text="Tin nhắn" name="chatbubbles" iconStyle={{ fontSize: 23 }} />
-            <FTButton text="Kết bạn" name="contacts" iconStyle={{ fontSize: 23 }} />
-            <FTButton text="Thông báo" name="notifications" iconStyle={{ fontSize: 23 }} />
-          </FooterTab>
-        </Footer>
-      </Container>
+      </Layout>
     );
   }
 }
