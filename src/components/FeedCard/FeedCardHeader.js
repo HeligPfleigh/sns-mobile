@@ -1,17 +1,24 @@
 import React from "react";
 import { CardItem, Body, Left, Thumbnail, Text } from "native-base";
+import { StyleSheet } from "react-native";
+
+import { fakeAvatar } from "../../constants";
+const styles = StyleSheet.create({
+  container: {
+    height: 50,
+  },
+});
 
 const lastName = "Le Duc";
 const firstName = "Linh";
 const createdAt = "1 day ago";
-const avatar = "https://randomuser.me/api/portraits/women/25.jpg";
 
 const FeedCardHeader = () => (
-  <CardItem>
+  <CardItem style={styles.container}>
     <Left>
-      <Thumbnail source={{ uri: avatar }} />
+      <Thumbnail small source={{ uri: fakeAvatar }} />
       <Body>
-        <Text>{`${firstName} ${lastName}`}</Text>
+        <Text>{firstName} {lastName}</Text>
         <Text note>{createdAt}</Text>
       </Body>
     </Left>

@@ -23,13 +23,6 @@ class HomeScreen extends Component {
           <View style={styles.root}>
             <FeedCard />
             <FeedCard />
-            <FeedCard />
-            <FeedCard />
-            <FeedCard />
-            <FeedCard />
-            <FeedCard />
-            <FeedCard />
-            <FeedCard />
           </View>
         </Content>
         <Footer>
