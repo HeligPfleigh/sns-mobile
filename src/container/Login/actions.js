@@ -1,8 +1,5 @@
-import isEmpty from "lodash/isEmpty";
-import { AsyncStorage } from "react-native";
-
 import * as utils from "../../utils/common";
-import { SPINNER_CHANGE, ACCESS_TOKEN, USER_ID, CREATE_TIME, TTL } from "../../constants";
+import { SPINNER_CHANGE } from "../../constants";
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILED = "LOGIN_FAILED";

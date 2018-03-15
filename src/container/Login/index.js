@@ -18,6 +18,7 @@ import { required, alphaNumeric, minLength4, maxLength15 } from "../../utils/for
 import * as utils from "../../utils/common";
 import { SPINNER_CHANGE, ACCESS_TOKEN } from "../../constants";
 import { LOGIN_SUCCESS, LOGIN_FAILED, LOGIN_CLEAR_STATUS } from "./actions";
+import { isAuthenticate } from "../../utils/auth";
 import styles from "./styles";
 
 export const loginQuery = gql`
@@ -41,6 +42,10 @@ export const loginQuery = gql`
 class LoginForm extends Component {
   constructor(props) {
     super(props);
+
+    if (isAuthenticate()) {
+      props.navigation.navigate("Drawer");
+    }
 
     if (props.dispatch) {
       props.dispatch(utils.createAction(SPINNER_CHANGE, false));

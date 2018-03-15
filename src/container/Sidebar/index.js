@@ -64,6 +64,7 @@ export default class SidebarContainer extends Component {
               return (
                 <ListItem
                   onPress={() => {
+                    navigation.navigate("DrawerClose");
                     data.route === "Logout" ? this.props.logOut(navigation) : navigation.navigate(data.route);
                   }}
                 >

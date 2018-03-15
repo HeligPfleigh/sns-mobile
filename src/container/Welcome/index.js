@@ -4,6 +4,8 @@ import AppIntroSlider from "react-native-app-intro-slider";
 import SplashScreen from "react-native-splash-screen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+import { isAuthenticate } from "../../utils/auth";
+
 const styles = StyleSheet.create({
   image: {
     width: 320,
@@ -47,7 +49,16 @@ const slides = [
 ];
 
 export default class Welcome extends React.Component {
-  _onDone = () => this.props.navigation.navigate("Login");
+  constructor(props) {
+    super(props);
+
+    if (isAuthenticate()) {
+      props.navigation.navigate("Drawer");
+    }
+  }
+
+  _onDone = () => this.props.navigation.navigate("Login")
+
   _renderNextButton = () => {
     return (
       <View style={styles.buttonCircle}>
@@ -60,6 +71,7 @@ export default class Welcome extends React.Component {
       </View>
     );
   }
+
   _renderDoneButton = () => {
     return (
       <View style={styles.buttonCircle}>
@@ -72,6 +84,7 @@ export default class Welcome extends React.Component {
       </View>
     );
   }
+
   componentDidMount() {
     setTimeout(() => {
       // do stuff while splash screen is shown
@@ -79,6 +92,7 @@ export default class Welcome extends React.Component {
       SplashScreen.hide();
     }, 3000);
   }
+
   render() {
     return (
       <AppIntroSlider
