@@ -10,6 +10,7 @@ import { ActivityIndicator, FlatList } from "react-native";
 import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import ME_QUERY from "../../graphql/queries/me";
 import FeedCard from "../../components/FeedCard/FeedCard";
+import FeedsHeader from "../../components/FeedsHeader";
 import styles from "./styles";
 
 @compose(
@@ -32,8 +33,14 @@ class HomeScreen extends Component {
   }
   _renderItem = ({ item }) => <FeedCard {...item} />
 
+  _renderFeedHeader = () => {
+    const { getMe } = this.props;
+    return <FeedsHeader info={getMe.me}/>;
+  }
+
   render() {
     const { getMe, getFeeds } = this.props;
+
     let content;
     if ( getFeeds.loading || getMe.loading ){
       content = <ActivityIndicator size="large" />;
@@ -42,10 +49,12 @@ class HomeScreen extends Component {
         <FlatList
           contentContainerStyle={{ alignSelf: "stretch" }}
           data={getFeeds.feeds.edges}
+          ListHeaderComponent={this._renderFeedHeader}
           keyExtractor={(item) => item._id}
           renderItem={this._renderItem}
         />;
     }
+
     return (
       <Container>
         {Platform.OS === "ios" && <Header style={{ height: 22 }} />}
