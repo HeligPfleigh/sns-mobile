@@ -9,7 +9,7 @@ import BlankScreen from "../container/BlankScreen";
 import SignUp from "../container/SignUp";
 import Login from "../container/Login";
 import ForgotPassword from "../container/ForgotPassword";
-
+import FriendBox from "../container/FriendsBox";
 // Main app screen
 import Home from "../container/Home";
 import Sidebar from "../container/Sidebar";
@@ -38,7 +38,9 @@ const routeConfig = {
   ForgotPassword: { screen: ForgotPassword },
 
   // Dashboard Screen
-  Drawer: { screen: Drawer }
+  Drawer: { screen: Drawer },
+  FriendBox: { screen: FriendBox }
+  
 };
 
 export const AppNavigator = StackNavigator(routeConfig, {
