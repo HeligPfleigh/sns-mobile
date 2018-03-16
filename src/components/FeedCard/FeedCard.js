@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const FeedCard = ({message, author, isLiked, totalComments, totalLikes, createdAt, comments}) => {
+const FeedCard = ({_id, message, author, isLiked, totalComments, totalLikes, createdAt, comments}) => {
   const text = JSON.parse(message).blocks[0].text;
   const displayText = text.length > 300 ? `${text.substring(0,300)}...` : text;
 
@@ -45,7 +45,7 @@ const FeedCard = ({message, author, isLiked, totalComments, totalLikes, createdA
           {displayText}
         </Text>
       </CardItem>
-      <FeedCardBottom isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes}/>
+      <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes}/>
       {totalComments > 0 ? <FeedComments comment={firstComment} name={userCommentName} avatar={userCommentAvatar} createdAt={userCommentCreated}/> : null}
     </Card>
   );
