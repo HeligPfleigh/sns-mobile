@@ -1,18 +1,23 @@
 import React from "react";
 import { CardItem, Body, Left, Thumbnail, Text } from "native-base";
+import { StyleSheet } from "react-native";
+import distanceInWordToNow from "date-fns/distance_in_words_to_now";
 
-const lastName = "Le Duc";
-const firstName = "Linh";
-const createdAt = "1 day ago";
-const avatar = "https://randomuser.me/api/portraits/women/25.jpg";
+import { fakeAvatar } from "../../constants";
 
-const FeedCardHeader = () => (
-  <CardItem>
+const styles = StyleSheet.create({
+  container: {
+    height: 50,
+  },
+});
+
+const FeedCardHeader = ({ username, createdAt, profile }) => (
+  <CardItem style={styles.container}>
     <Left>
-      <Thumbnail source={{ uri: avatar }} />
+      <Thumbnail small source={{ uri: profile.picture || fakeAvatar }} />
       <Body>
-        <Text>{`${firstName} ${lastName}`}</Text>
-        <Text note>{createdAt}</Text>
+        <Text>{ username }</Text>
+        <Text note>about { distanceInWordToNow(createdAt) } ago</Text>
       </Body>
     </Left>
   </CardItem>
