@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import { Platform } from "react-native";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { Container, Header, Content, View, Footer, FooterTab } from "native-base";
-import Layout from "../../components/Layout";
-
-import { FTButton } from "../../components/FooterTab";
+import { View } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
 import { ActivityIndicator, FlatList } from "react-native";
 
-import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
-import ME_QUERY from "../../graphql/queries/me";
+import * as utils from "../../utils/common";
+import { SPINNER_CHANGE } from "../../constants";
+import Layout from "../../components/Layout";
 import FeedCard from "../../components/FeedCard/FeedCard";
 import FeedsHeader from "../../components/FeedsHeader";
+
+import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
+import ME_QUERY from "../../graphql/queries/me";
 import styles from "./styles";
 
 @compose(
@@ -52,12 +52,14 @@ import styles from "./styles";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    props.navigation.navigate("DrawerClose");
-
     this.state = {
       page: 0,
       loading: false
     };
+    props.navigation.navigate("DrawerClose");
+    if (props.dispatch) {
+      props.dispatch(utils.createAction(SPINNER_CHANGE, false));
+    }
   }
 
   _renderItem = ({ item }) => <FeedCard {...item} />

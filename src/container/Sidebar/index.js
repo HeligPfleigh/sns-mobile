@@ -57,7 +57,7 @@ export default class SidebarContainer extends Component {
             <Text style={{ paddingTop: 70, fontSize: 35, color: "#A53865" }}> SNS </Text>
             <Text style={{ color: "#A53865" }}> Mạng xã hội chung cư </Text>
           </View>
-          {/* <List
+          <List
             style={{ marginTop: 40 }}
             dataArray={routes}
             renderRow={data => {
@@ -75,7 +75,7 @@ export default class SidebarContainer extends Component {
                 </ListItem>
               );
             }}
-          /> */}
+          />
         </Content>
       </Container>
     );

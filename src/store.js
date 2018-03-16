@@ -7,6 +7,7 @@ import isEmpty from "lodash/isEmpty";
 
 import reducers from "./reducers";
 import { ACCESS_TOKEN } from "./constants";
+import { navMiddleware } from "./navigator";
 
 // init apollo client
 export const client = new ApolloClient({
@@ -40,7 +41,7 @@ export const client = new ApolloClient({
 
 // init redux store
 function configureStore() {
-  const enhancer = compose(applyMiddleware(thunk));
+  const enhancer = compose(applyMiddleware(navMiddleware, thunk));
   const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
   return createStore(reducers, devTools, enhancer);
 }
