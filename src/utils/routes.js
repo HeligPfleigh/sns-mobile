@@ -42,6 +42,6 @@ const routeConfig = {
 };
 
 export const AppNavigator = StackNavigator(routeConfig, {
-  initialRouteName: "Welcome",
+  initialRouteName: "Login",
   headerMode: "none"
 });

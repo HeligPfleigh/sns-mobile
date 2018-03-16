@@ -12,6 +12,16 @@ export default gql`
       edges {
         _id
         message
+        comments {
+          message
+          createdAt
+          user{
+            username
+            profile{
+              picture
+            }
+          }
+        }
         author {
           username
           profile {

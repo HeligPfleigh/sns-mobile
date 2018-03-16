@@ -22,13 +22,13 @@ import styles from "./styles";
   graphql(GET_FEEDS_QUERY, {
     name: "getFeeds",
     options: () => ({
-      variables: { limit: 10 },
+      variables: { limit: 5 },
       fetchPolicy: "network-only"
     }),
     props: ({ getFeeds }) => {
       const { fetchMore, feeds } = getFeeds;
       const cursor = (feeds && feeds.pageInfo && feeds.pageInfo.endCursor) || 1;
-      const limit = (feeds && feeds.pageInfo && feeds.pageInfo.limit) || 10;
+      const limit = (feeds && feeds.pageInfo && feeds.pageInfo.limit) || 5;
       const loadMoreRows = () =>
         fetchMore({
           variables: { cursor, limit },
