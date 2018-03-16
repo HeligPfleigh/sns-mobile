@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Platform } from "react-native";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { Container, Header, Content, View, Footer, FooterTab } from "native-base";
+import { Container, Header, View, Footer, FooterTab } from "native-base";
 
 import { FTButton } from "../../components/FooterTab";
 import { graphql, compose, withApollo } from "react-apollo";
@@ -53,7 +53,10 @@ class HomeScreen extends Component {
     super(props);
     props.navigation.navigate("DrawerClose");
 
-    this.state = { page: 0 };
+    this.state = {
+      page: 0,
+      loading: false,
+    };
   }
 
   _renderItem = ({ item }) => <FeedCard {...item} />
@@ -89,6 +92,9 @@ class HomeScreen extends Component {
           data={getFeeds.feeds.edges}
           onEndReached={() => this._handleEnd()}
           onEndReachedThreshold={0}
+          ListFooterComponent={() =>
+            this.state.loading ?
+            null : <ActivityIndicator size="large"/>}
           ListHeaderComponent={this._renderFeedHeader}
           keyExtractor={item => item._id}
           renderItem={this._renderItem}
