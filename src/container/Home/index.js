@@ -36,6 +36,7 @@ import styles from "./styles";
           updateQuery: (previousResult, { fetchMoreResult }) => {
             const newEdges = fetchMoreResult.feeds.edges;
             const pageInfo = fetchMoreResult.feeds.pageInfo;
+            console.log(`Length: ${newEdges.length}`);
             return update(previousResult, {
               feeds: {
                 edges: { $push: newEdges },
@@ -93,7 +94,7 @@ class HomeScreen extends Component {
         <FlatList
           contentContainerStyle={{ alignSelf: "stretch" }}
           data={getFeeds.feeds.edges}
-          onEndReached={() => this._handleEnd()}
+          onEndReached={this._handleEnd}
           onEndReachedThreshold={0}
           ListFooterComponent={() => (this.state.loading ? null : <ActivityIndicator size="large" />)}
           ListHeaderComponent={this._renderFeedHeader}
