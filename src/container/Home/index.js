@@ -36,7 +36,6 @@ import styles from "./styles";
           updateQuery: (previousResult, { fetchMoreResult }) => {
             const newEdges = fetchMoreResult.feeds.edges;
             const pageInfo = fetchMoreResult.feeds.pageInfo;
-            console.log(`Length: ${newEdges.length}`);
             return update(previousResult, {
               feeds: {
                 edges: { $push: newEdges },

@@ -1,5 +1,10 @@
-import { StackNavigator, DrawerNavigator, SwitchNavigator } from "react-navigation";
 import React from "react";
+import { Icon } from "native-base";
+import { StackNavigator, DrawerNavigator, SwitchNavigator, TabNavigator } from "react-navigation";
+
+// common components
+import icons from "./icons";
+import { TabBar } from "../components/TabNavigator";
 
 // Welcome screen
 import Welcome from "../container/Welcome";
@@ -16,18 +21,41 @@ import Home from "../container/Home";
 import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
 
-const AppRouteConfig = {
+/************* START CONFIG APP ROUTES *******************/
+/*********** Tabs Batch Screens *********************/
+const TabsRouteConfig = {
   Home: { screen: Home },
   FriendBox: { screen: FriendBox },
   BlankScreen: { screen: BlankScreen }
 };
 
-const AppRouters = DrawerNavigator(AppRouteConfig, {
+const AppRouteConfig = TabNavigator(TabsRouteConfig, {
   initialRouteName: "Home",
-  contentComponent: props => <Sidebar {...props} />,
-  drawerPosition: "right"
+  tabBarComponent: TabBar,
+  tabBarPosition: "bottom",
+  swipeEnabled: true,
+  animationEnabled: true,
+  navigationOptions: ({ navigation }) => ({
+    tabBarIcon: () => {
+      const { routeName } = navigation.state;
+      return <Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />;
+    }
+  })
 });
 
+/*********** Drawer Batch Screens ****************************/
+const AppRouters = DrawerNavigator(
+  {
+    Main: AppRouteConfig
+  },
+  {
+    initialRouteName: "Main",
+    contentComponent: props => <Sidebar {...props} />,
+    drawerPosition: "right"
+  }
+);
+
+/*********** Authentication Batch Screens *******************/
 const AuthRouteConfig = {
   // Welcome screen
   Welcome: { screen: Welcome },
@@ -45,6 +73,7 @@ const AuthRouters = StackNavigator(AuthRouteConfig, {
   initialRouteName: "Welcome"
 });
 
+/************** Expose all scren (routes) *******************/
 export default SwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
