@@ -7,7 +7,6 @@ import LinearGradient from "react-native-linear-gradient";
 import { Header, Button, Title, Text, View, Icon, Toast, Form } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { LoginManager, AccessToken } from "react-native-fbsdk";
-import SplashScreen from "react-native-splash-screen";
 import { gql } from "apollo-boost";
 import { graphql, compose } from "react-apollo";
 import { AsyncStorage } from "react-native";
@@ -18,7 +17,6 @@ import { required, alphaNumeric, minLength4, maxLength15 } from "../../utils/for
 import * as utils from "../../utils/common";
 import { SPINNER_CHANGE, ACCESS_TOKEN } from "../../constants";
 import { LOGIN_SUCCESS, LOGIN_FAILED, LOGIN_CLEAR_STATUS } from "./actions";
-import { isAuthenticate } from "../../utils/auth";
 import styles from "./styles";
 
 export const loginQuery = gql`
@@ -42,11 +40,6 @@ export const loginQuery = gql`
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-
-    if (isAuthenticate()) {
-      props.navigation.navigate("Drawer");
-    }
-
     if (props.dispatch) {
       props.dispatch(utils.createAction(SPINNER_CHANGE, false));
     }
@@ -63,7 +56,7 @@ class LoginForm extends Component {
       // save token locally
       await AsyncStorage.setItem(ACCESS_TOKEN, login.id_token);
       this.props.dispatch(utils.createAction(LOGIN_SUCCESS));
-      this.props.navigation.navigate("Drawer");
+      this.props.navigation.navigate("App");
     } catch (error) {
       this.props.dispatch(utils.createAction(LOGIN_FAILED));
     }

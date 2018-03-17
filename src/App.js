@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Orientation from "react-native-orientation";
 import Spinner from "react-native-loading-spinner-overlay";
 
-import { AppWithNavigationState } from "./utils/navigator";
+import AppWithNavigationState from "./navigator";
 import { orientationDidChange } from "./reducers/common";
 
 @connect(

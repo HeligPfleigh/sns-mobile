@@ -4,9 +4,9 @@ import { reducer as formReducer } from "redux-form";
 import { LOGOUT_SUCCSESS } from "../constants";
 
 import commonReducer from "./common";
+import navReducer from "./navigation";
 import loginReducer from "../container/Login/reducer";
 import signupReducer from "../container/SignUp/reducer";
-import { createNavReducer } from "../utils/navigator";
 
 const appReducer = combineReducers({
   form: formReducer.plugin({
@@ -35,9 +35,9 @@ const appReducer = combineReducers({
       }
     }
   }),
-  ...createNavReducer(),
-  auth: loginReducer,
   common: commonReducer,
+  nav: navReducer,
+  auth: loginReducer,
   signup: signupReducer
 });
 

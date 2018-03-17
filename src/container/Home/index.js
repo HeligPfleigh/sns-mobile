@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import { Platform } from "react-native";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { Container, Header, View, Footer, FooterTab } from "native-base";
-
-import { FTButton } from "../../components/FooterTab";
+import { View } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
 import { ActivityIndicator, FlatList } from "react-native";
 
-import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
-import ME_QUERY from "../../graphql/queries/me";
+import * as utils from "../../utils/common";
+import { SPINNER_CHANGE } from "../../constants";
+import Layout from "../../components/Layout";
 import FeedCard from "../../components/FeedCard/FeedCard";
 import FeedsHeader from "../../components/FeedsHeader";
+
+import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
+import ME_QUERY from "../../graphql/queries/me";
 import styles from "./styles";
 
 @compose(
@@ -51,12 +52,14 @@ import styles from "./styles";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    props.navigation.navigate("DrawerClose");
-
     this.state = {
       page: 0,
-      loading: false,
+      loading: false
     };
+    props.navigation.navigate("DrawerClose");
+    if (props.dispatch) {
+      props.dispatch(utils.createAction(SPINNER_CHANGE, false));
+    }
   }
 
   _renderItem = ({ item }) => <FeedCard {...item} />
@@ -72,7 +75,7 @@ class HomeScreen extends Component {
         page: this.state.page + 1
       },
       () => {
-        if (this.props.getFeeds.feeds.pageInfo.hasNextPage){
+        if (this.props.getFeeds.feeds.pageInfo.hasNextPage) {
           this.props.loadMoreRows();
         }
       }
@@ -90,11 +93,9 @@ class HomeScreen extends Component {
         <FlatList
           contentContainerStyle={{ alignSelf: "stretch" }}
           data={getFeeds.feeds.edges}
-          onEndReached={() => this._handleEnd()}
+          onEndReached={this._handleEnd}
           onEndReachedThreshold={0}
-          ListFooterComponent={() =>
-            this.state.loading ?
-            null : <ActivityIndicator size="large"/>}
+          ListFooterComponent={() => (this.state.loading ? null : <ActivityIndicator size="large" />)}
           ListHeaderComponent={this._renderFeedHeader}
           keyExtractor={item => item._id}
           renderItem={this._renderItem}
@@ -103,18 +104,9 @@ class HomeScreen extends Component {
     }
 
     return (
-      <Container>
-        {Platform.OS === "ios" && <Header style={{ height: 22 }} />}
+      <Layout navigation={this.props.navigation}>
         <View style={styles.root}>{content}</View>
-        <Footer>
-          <FooterTab>
-            <FTButton active text="Trang chủ" name="home" iconStyle={{ fontSize: 23 }} />
-            <FTButton text="Tin nhắn" name="chatbubbles" iconStyle={{ fontSize: 23 }} />
-            <FTButton text="Kết bạn" name="contacts" iconStyle={{ fontSize: 23 }} />
-            <FTButton text="Thông báo" name="notifications" iconStyle={{ fontSize: 23 }} />
-          </FooterTab>
-        </Footer>
-      </Container>
+      </Layout>
     );
   }
 }

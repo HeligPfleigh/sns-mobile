@@ -1,30 +1,7 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
+import { View, Text, Body, List, ListItem, Thumbnail } from "native-base";
 
-import {
-  Container,
-  Header,
-  Title,
-  View,
-  Content,
-  Text,
-  Button,
-  FooterTab,
-  Left,
-  Right,
-  Body,
-  Item,
-  List,
-  ListItem,
-  Tab,
-  Tabs,
-  TabHeading,
-  Thumbnail,
-  Input
-} from "native-base"
-
-import Icon from "react-native-vector-icons/FontAwesome"
-
-export default class Tab3 extends Component {
+class FriendRequest extends Component {
   render() {
     return (
       <View>
@@ -55,6 +32,8 @@ export default class Tab3 extends Component {
           </ListItem>
         </List>
       </View>
-    )
+    );
   }
 }
+
+export default FriendRequest;

@@ -1,14 +1,13 @@
 import { NavigationActions } from "react-navigation";
 import { AsyncStorage } from "react-native";
 import * as utils from "../../utils/common";
-import { ACCESS_TOKEN, USER_ID, CREATE_TIME, TTL } from "../../constants";
 
 import { LOGOUT_SUCCSESS } from "../../constants";
 
 export const logOut = navigation => {
-  return dispatch => {
+  return async dispatch => {
     // remove local storage
-    AsyncStorage.multiRemove([ACCESS_TOKEN, USER_ID, CREATE_TIME, TTL]);
+    await AsyncStorage.clear();
     // clear redux store
     dispatch(utils.createAction(LOGOUT_SUCCSESS));
 
