@@ -18,13 +18,21 @@ import AuthLoadingScreen from "../container/AuthLoadingScreen";
 
 // Main app screen
 import Home from "../container/Home";
+import NewFeedScreen from "../container/NewFeedScreen";
 import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
 
 /************* START CONFIG APP ROUTES *******************/
 /*********** Tabs Batch Screens *********************/
+const feedStackNav = StackNavigator({
+  ListFeeds: { screen : Home },
+  NewFeed: { screen: NewFeedScreen },
+}, {
+  headerMode: "none",
+});
+
 const TabsRouteConfig = {
-  Home: { screen: Home },
+  Home: { screen: feedStackNav },
   FriendBox: { screen: FriendBox },
   BlankScreen: { screen: BlankScreen }
 };
