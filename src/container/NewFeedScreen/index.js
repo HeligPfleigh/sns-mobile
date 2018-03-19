@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, TextInput, Platform, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, TextInput, Platform, TouchableOpacity, Text, Keyboard } from "react-native";
 import { Thumbnail, View } from "native-base";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { connect } from "react-redux";
@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
   avatar: {
     flex: 1,
     alignSelf: "stretch",
+    alignItems: "center",
+    justifyContent: "center",
   },
   backButton: {
     flex: 1,
@@ -97,16 +99,18 @@ class NewFeedContainer extends Component {
   }
 
   _handleClose = () => {
+    Keyboard.dismiss();
     this.props.dispatch(NavigationActions.back());
   }
 
   render() {
+    const { profile } = this.props.navigation.state.params.user;
     return (
       <Layout navigation={this.props.navigation}>
         <View style={styles.container}>
           <View style={styles.headerContainer}>
             <View style={styles.avatar} >
-              <Thumbnail small source={{ fakeAvatar }} />
+              <Thumbnail small source={{ uri: profile.picture || fakeAvatar }} />
             </View>
             <View style={{flex: 4}} />
             <TouchableOpacity style={styles.backButton} onPress={this._handleClose}>

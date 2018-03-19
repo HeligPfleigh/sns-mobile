@@ -57,7 +57,13 @@ const styles = StyleSheet.create({
 )
 class FeedsHeader extends Component{
   _handlePressNewFeed = () => {
-    this.props.dispatch(NavigationActions.navigate({routeName: "NewFeed"}));
+    const { info } = this.props;
+    this.props.dispatch(NavigationActions.navigate({
+      routeName: "NewFeed",
+      params: {
+        user: info,
+      }
+    }));
   }
 
   render(){
