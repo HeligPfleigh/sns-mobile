@@ -1,10 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, View } from "react-native";
-import { Container, List, ListItem, Content } from "native-base";
-import OtherIcon from "react-native-vector-icons/Entypo";
+import { Text, View, Image, StyleSheet } from "react-native";
+import { Container, List, ListItem, Content, Header } from "native-base";
+import { graphql, compose, withApollo } from "react-apollo";
+import ME_QUERY from "../../graphql/queries/me";
 
+import OtherIcon from "react-native-vector-icons/Entypo";
+import Images from "../../assets/images";
 import { logOut } from "./actions";
+import { fakeAvatar } from "../../constants";
+
+const styles = StyleSheet.create({
+  avatar:{
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+    marginTop:-50,
+    marginLeft:20
+  }
+});
 
 const routes = [
   {
@@ -43,22 +57,31 @@ const routes = [
     drawerIcon: <OtherIcon name="login" size={20} color="lightgrey" />
   }
 ];
-
-@connect(null, dispatch => ({
-  logOut: navigation => dispatch(logOut(navigation))
-}))
+@compose(
+  connect(null, dispatch => ({
+    logOut: navigation => dispatch(logOut(navigation))
+  })),
+  withApollo,
+  graphql(ME_QUERY, { name: "getMe" })
+)
 export default class SidebarContainer extends Component {
   render() {
-    const { navigation } = this.props;
+    const { navigation, getMe } = this.props;
+    const avatarUri = getMe && getMe.me && getMe.me.profile && getMe.me.profile.picture;
     return (
       <Container>
+        <Image source={Images.backgroundHeader} style={{ height: 200, width: "100%"}} />
+        <Image
+          source={{uri:avatarUri || fakeAvatar}}
+          style={styles.avatar}
+        />
         <Content>
-          <View style={{ paddingLeft: 15 }}>
+          {/* <View style={{ paddingLeft: 15 }}>
             <Text style={{ paddingTop: 70, fontSize: 35, color: "#A53865" }}> SNS </Text>
             <Text style={{ color: "#A53865" }}> Mạng xã hội chung cư </Text>
-          </View>
+          </View> */}
           <List
-            style={{ marginTop: 40 }}
+            // style={{ marginTop: 20 }}
             dataArray={routes}
             renderRow={data => {
               return (
