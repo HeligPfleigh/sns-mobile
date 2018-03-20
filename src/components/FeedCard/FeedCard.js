@@ -30,6 +30,8 @@ const styles = StyleSheet.create({
 });
 
 const FeedCard = ({_id, message, author, isLiked, totalComments, totalLikes, createdAt, comments}) => {
+  // tuan.tran: temporary parse draft.js structure message
+
   const text = JSON.parse(message).blocks[0].text;
   const displayText = text.length > 300 ? `${text.substring(0,300)}...` : text;
 
