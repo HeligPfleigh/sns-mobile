@@ -7,6 +7,7 @@ import { graphql, compose } from "react-apollo";
 import { NavigationActions } from "react-navigation";
 
 import CREATE_NEW_POST from "../../graphql/mutations/createNewPost";
+import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import Layout from "../../components/Layout";
 import { colors, fakeAvatar } from "../../constants";
 import styles from "./styles";
@@ -61,6 +62,18 @@ class NewFeedContainer extends Component {
     fakeMessage.blocks[0].text = text;
     this.props.createNewPost({
       variables: { message: JSON.stringify(fakeMessage) },
+      update: (store, { data: { createNewPost } }) => {
+        const data = store.readQuery({
+          query: GET_FEEDS_QUERY,
+          variables: { limit: 5 },
+        });
+        data.feeds.edges.unshift(createNewPost);
+        store.writeQuery({
+          query: GET_FEEDS_QUERY,
+          variables: { limit: 5 },
+          data
+        });
+      }
     });
     this._handleClose();
   }

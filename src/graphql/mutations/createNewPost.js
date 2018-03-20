@@ -4,16 +4,30 @@ export default gql`
   mutation createNewPost($message: String!){
     createNewPost(message: $message){
       _id
+      message
+      comments {
+        message
+        createdAt
+        user{
+          username
+          profile{
+            picture
+          }
+        }
+      }
       author {
         username
-        chatId
-        createdAt
-        updatedAt
+        profile {
+          picture
+        }
+        email {
+          address
+        }
       }
+      createdAt
       totalLikes
       totalComments
       isLiked
-      message
     }
   }
 `;
