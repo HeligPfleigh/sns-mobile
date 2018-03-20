@@ -1,80 +1,25 @@
 import React, { Component } from "react";
-import { StyleSheet, TextInput, Platform, TouchableOpacity, Text, Keyboard } from "react-native";
+import { TextInput, Platform, TouchableOpacity, Text, Keyboard } from "react-native";
 import { Thumbnail, View } from "native-base";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { connect } from "react-redux";
+import { graphql, compose } from "react-apollo";
 import { NavigationActions } from "react-navigation";
 
+import CREATE_NEW_POST from "../../graphql/mutations/createNewPost";
 import Layout from "../../components/Layout";
 import { colors, fakeAvatar } from "../../constants";
+import styles from "./styles";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: colors.WHITE,
-  },
-  headerContainer: {
-    flex: 1,
-    flexDirection: "row",
-    alignSelf: "stretch",
-  },
-  avatar: {
-    flex: 1,
-    alignSelf: "stretch",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  backButton: {
-    flex: 1,
-    alignSelf: "stretch",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  wrapper: {
-    flex: 9,
-    paddingTop: 5,
-    alignItems: "center",
-    position: "relative",
-    alignSelf: "stretch",
-    backgroundColor: colors.WHITE,
-  },
-  input: {
-    height: "40%",
-    width: "90%",
-    fontSize: 18,
-    color: colors.SECONDARY,
-  },
-  postButton: {
-    backgroundColor: colors.PRIMARY,
-    justifyContent: "center",
-    alignItems: "center",
-    width: 80,
-    height: 40,
-    borderRadius: 20,
-    position: "absolute",
-    top: "60%",
-    right: "5%",
-  },
-  postButtonText: {
-    color: colors.WHITE,
-    fontSize: 16,
-  },
-  textLength: {
-    fontSize: 18,
-    color: colors.PRIMARY,
-    position: "absolute",
-    top: "45%",
-    right: "10%",
-  }
-});
-
-@connect(
-  ({ common, nav }) => ({
-    nav: nav,
-    orientation: common.orientation
-  }),
-  dispatch => ({ dispatch })
+@compose(
+  connect(
+    ({ common, nav }) => ({
+      nav: nav,
+      orientation: common.orientation
+    }),
+    dispatch => ({ dispatch })
+  ),
+  graphql(CREATE_NEW_POST, {name: "createNewPost"}),
 )
 class NewFeedContainer extends Component {
   constructor(props){
@@ -95,7 +40,10 @@ class NewFeedContainer extends Component {
   }
 
   _handlePressPost = () => {
-
+    // const { text } = this.state;
+    // this.props.createNewPost({
+    //   variables: { message: text },
+    // });
   }
 
   _handleClose = () => {
