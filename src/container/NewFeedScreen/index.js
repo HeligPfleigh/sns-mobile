@@ -11,6 +11,23 @@ import Layout from "../../components/Layout";
 import { colors, fakeAvatar } from "../../constants";
 import styles from "./styles";
 
+// tuan.tran: fake for data structure of draft.js message
+let fakeMessage = {
+  blocks: [
+    {
+      data: {},
+      depth: 0,
+      entityRanges: [],
+      inlineStyleRanges: [],
+      key: "",
+      text: "",
+      type: "unstyled",
+    }
+  ],
+  entityMap: {
+
+  },
+};
 @compose(
   connect(
     ({ common, nav }) => ({
@@ -40,10 +57,12 @@ class NewFeedContainer extends Component {
   }
 
   _handlePressPost = () => {
-    // const { text } = this.state;
-    // this.props.createNewPost({
-    //   variables: { message: text },
-    // });
+    const { text } = this.state;
+    fakeMessage.blocks[0].text = text;
+    this.props.createNewPost({
+      variables: { message: JSON.stringify(fakeMessage) },
+    });
+    this._handleClose();
   }
 
   _handleClose = () => {
