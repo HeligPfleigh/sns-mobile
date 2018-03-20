@@ -12,6 +12,7 @@ export default gql`
       edges {
         _id
         message
+        messagePlainText
         comments {
           message
           createdAt

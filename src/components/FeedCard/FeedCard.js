@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const FeedCard = ({_id, message, author, isLiked, totalComments, totalLikes, createdAt, comments}) => {
+const FeedCard = ({_id, message, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt, comments}) => {
   // tuan.tran: temporary parse draft.js structure message
 
   const text = JSON.parse(message).blocks[0].text;
@@ -44,7 +44,7 @@ const FeedCard = ({_id, message, author, isLiked, totalComments, totalLikes, cre
       <FeedCardHeader {...author} createdAt={createdAt}/>
       <CardItem cardBody style={styles.contentContainer}>
         <Text style={styles.textContent}>
-          {displayText}
+          {messagePlainText}
         </Text>
       </CardItem>
       <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes}/>
