@@ -61,7 +61,10 @@ class NewFeedContainer extends Component {
     const { text } = this.state;
     fakeMessage.blocks[0].text = text;
     this.props.createNewPost({
-      variables: { message: JSON.stringify(fakeMessage) },
+      variables: {
+        message: text,
+        isMobile: true,
+      },
       update: (store, { data: { createNewPost } }) => {
         const data = store.readQuery({
           query: GET_FEEDS_QUERY,
