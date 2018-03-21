@@ -15,6 +15,7 @@ export default gql`
         messagePlainText
         comments {
           message
+          messagePlainText
           createdAt
           user{
             username

@@ -12,23 +12,8 @@ import Layout from "../../components/Layout";
 import { colors, fakeAvatar } from "../../constants";
 import styles from "./styles";
 
-// tuan.tran: fake for data structure of draft.js message
-let fakeMessage = {
-  blocks: [
-    {
-      data: {},
-      depth: 0,
-      entityRanges: [],
-      inlineStyleRanges: [],
-      key: "",
-      text: "",
-      type: "unstyled",
-    }
-  ],
-  entityMap: {
+const MAX_MESSAGE_CHARACTER = 300;
 
-  },
-};
 @compose(
   connect(
     ({ common, nav }) => ({
@@ -50,7 +35,7 @@ class NewFeedContainer extends Component {
   _onChangeText = text => this.setState({ text });
 
   get _textLength() {
-    return 140 - this.state.text.length;
+    return MAX_MESSAGE_CHARACTER - this.state.text.length;
   }
 
   get _buttonDisabled() {
@@ -59,7 +44,7 @@ class NewFeedContainer extends Component {
 
   _handlePressPost = () => {
     const { text } = this.state;
-    fakeMessage.blocks[0].text = text;
+
     this.props.createNewPost({
       variables: {
         message: text,

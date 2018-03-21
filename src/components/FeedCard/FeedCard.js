@@ -54,12 +54,11 @@ class FeedCard extends Component {
   }
 
   render(){
-    // tuan.tran: temporary parse draft.js structure message
-    const { _id, message, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt, comments } = this.props;
-    const text = JSON.parse(message).blocks[0].text;
-    const displayText = text.length > 300 ? `${text.substring(0,300)}...` : text;
+    const { _id, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt, comments } = this.props;
 
-    const firstComment = totalComments > 0 ? JSON.parse(comments[0].message).blocks[0].text : "";
+    const displayText = messagePlainText.length > 300 ? `${messagePlainText.substring(0,300)}...` : messagePlainText;
+
+    const firstComment = totalComments > 0 ? comments[0].messagePlainText : "";
     const userCommentName = totalComments > 0 ? comments[0].user.username : "";
     const userCommentAvatar = totalComments > 0 ? comments[0].user.profile.picture : "";
     const userCommentCreated = totalComments > 0 ? comments[0].createdAt : "";
@@ -69,7 +68,7 @@ class FeedCard extends Component {
         <CardItem cardBody style={styles.contentContainer}>
           <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
             <Text style={styles.textContent}>
-              {messagePlainText}
+              {displayText}
             </Text>
           </TouchableOpacity>
         </CardItem>
