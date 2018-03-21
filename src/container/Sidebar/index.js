@@ -43,7 +43,7 @@ const routes = [
     drawerIcon: <OtherIcon name="dribbble" size={20} color="lightgrey" />
   },
   {
-    route: "BlankScreen",
+    route: "ProfileScreen",
     caption: "Tài khoản",
     drawerIcon: <OtherIcon name="check" size={20} color="lightgrey" />
   },
@@ -65,6 +65,10 @@ const routes = [
   )
 
 export default class SidebarContainer extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const { navigation, fullName, avatarUri } = this.props;
     return (
