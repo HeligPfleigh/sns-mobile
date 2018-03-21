@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import {
   Container,
   Header,
@@ -22,10 +23,12 @@ import {
 } from "native-base";
 import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
 
-class Data extends Component {
+import Icon from "react-native-vector-icons/FontAwesome";
+
+class DataSuggest extends Component {
   accept(id) {
     console.log(this.props);
     this.props
@@ -34,6 +37,7 @@ class Data extends Component {
       })
       .then(({ data }) => {
         console.log("got data", data);
+        this.props.data.refetch();
       })
       .catch(error => {
         console.log("there was an error sending the query", error);
@@ -41,12 +45,11 @@ class Data extends Component {
   }
 
   render() {
-    const { data } = this.props;
-    if (data.loading) {
-      return <ActivityIndicator size="small" color="black" style={{ marginTop: 10 }} />;
+    if (this.props.data.loading) {
+      return <ActivityIndicator size="small" color="black" />;
     }
 
-    if (data.error) {
+    if (this.props.data.error) {
       console.log(this.props.data.error);
       return <Text>An unexpected error occurred</Text>;
     }
@@ -54,25 +57,28 @@ class Data extends Component {
     return (
       <FlatList
         keyExtractor={index => index._id}
-        data={data.search}
+        data={this.props.data.me.friendSuggestions}
         renderItem={(item, index) => {
           return (
             <ListItem key={index}>
-              <TouchableOpacity style={styles.button}>
-                <Thumbnail
-                  square
-                  source={{ uri: "http://salad5f6.github.io/Gmail/vu.jpg" }}
-                  style={{ height: Dimensions.get("window").height / 7, width: Dimensions.get("window").width / 6 }}
-                />
-              </TouchableOpacity>
+              <Left>
+                <TouchableOpacity style={styles.button}>
+                  <Thumbnail
+                    square
+                    source={{ uri: "http://salad5f6.github.io/Gmail/vu.jpg" }}
+                    style={{ height: Dimensions.get("window").height / 7, width: Dimensions.get("window").width / 6 }}
+                  />
+                </TouchableOpacity>
 
-              <Body>
-                <Text style={styles.text}> {item.item.username} </Text>
-                <Text style={styles.textSmall} note>
-                  {" "}
-                  {item.item.building.name}{" "}
-                </Text>
-              </Body>
+                <Body>
+                  <Text style={styles.text}> {item.item.username} </Text>
+                  <Text style={styles.textSmall} note>
+                    {" "}
+                    {item.item.building.name}{" "}
+                  </Text>
+                </Body>
+              </Left>
+
               <Button info style={{ marginLeft: 10, marginTop: 30 }} onPress={this.accept.bind(this, item.item._id)}>
                 <Text> Kết bạn </Text>
               </Button>
@@ -83,10 +89,6 @@ class Data extends Component {
     );
   }
 }
-
-Data.propTypes = {
-  text: propTypes.string.isRequired
-};
 
 const styles = StyleSheet.create({
   button: {
@@ -105,21 +107,21 @@ const styles = StyleSheet.create({
   }
 });
 
-const SearchQuery = gql`
-  query SearchQuery($keyword: String!) {
-    search(keyword: $keyword) {
-      username
-      profile {
-        picture
-      }
-      building {
-        name
+const FriendQuery = gql`
+  query {
+    me {
+      friendSuggestions {
+        username
+        _id
+        building {
+          name
+        }
       }
     }
   }
 `;
 
-const AddFriendNew = gql`
+const AddFriend = gql`
   mutation sendFriendRequest($_id: String!) {
     sendFriendRequest(_id: $_id) {
       username
@@ -127,17 +129,6 @@ const AddFriendNew = gql`
   }
 `;
 
-export default compose(
-  graphql(SearchQuery, {
-    options(ownProps) {
-      return {
-        variables: {
-          keyword: ownProps.text
-        }
-      };
-    }
-  }),
-  graphql(AddFriendNew, {
-    name: "addfriendnew"
-  })
-)(Data);
+const DataSuggestWithData = compose(graphql(FriendQuery), graphql(AddFriend, { name: "addfriend" }))(DataSuggest);
+
+export default DataSuggestWithData;
