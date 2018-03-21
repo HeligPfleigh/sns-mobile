@@ -7,6 +7,7 @@ import commonReducer from "./common";
 import navReducer from "./navigation";
 import loginReducer from "../container/Login/reducer";
 import signupReducer from "../container/SignUp/reducer";
+import saveUserInfoReducer from "../container/Home/reducer";
 
 const appReducer = combineReducers({
   form: formReducer.plugin({
@@ -38,7 +39,8 @@ const appReducer = combineReducers({
   common: commonReducer,
   nav: navReducer,
   auth: loginReducer,
-  signup: signupReducer
+  signup: signupReducer,
+  userInfo: saveUserInfoReducer
 });
 
 const initialState = appReducer({}, {});

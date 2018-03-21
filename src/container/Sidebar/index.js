@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Text, View, Image, StyleSheet } from "react-native";
-import { Container, List, ListItem, Content, Header } from "native-base";
-import { graphql, compose, withApollo } from "react-apollo";
-import ME_QUERY from "../../graphql/queries/me";
+import { Container, List, ListItem, Content } from "native-base";
 
 import OtherIcon from "react-native-vector-icons/Entypo";
 import Images from "../../assets/images";
@@ -11,12 +9,10 @@ import { logOut } from "./actions";
 import { fakeAvatar } from "../../constants";
 
 const styles = StyleSheet.create({
-  avatar:{
+  avatar: {
     height: 100,
     width: 100,
-    borderRadius: 50,
-    marginTop:-50,
-    marginLeft:20
+    borderRadius: 50
   }
 });
 
@@ -57,24 +53,29 @@ const routes = [
     drawerIcon: <OtherIcon name="login" size={20} color="lightgrey" />
   }
 ];
-@compose(
-  connect(null, dispatch => ({
-    logOut: navigation => dispatch(logOut(navigation))
-  })),
-  withApollo,
-  graphql(ME_QUERY, { name: "getMe" })
-)
+
+  @connect(
+    ({ userInfo }) => ({
+      fullName: userInfo.fullName,
+      avatarUri: userInfo && userInfo.profile && userInfo.profile.picture
+    }),
+    dispatch => ({
+      logOut: navigation => dispatch(logOut(navigation))
+    })
+  )
+
 export default class SidebarContainer extends Component {
   render() {
-    const { navigation, getMe } = this.props;
-    const avatarUri = getMe && getMe.me && getMe.me.profile && getMe.me.profile.picture;
+    const { navigation, fullName, avatarUri } = this.props;
     return (
       <Container>
-        <Image source={Images.backgroundHeader} style={{ height: 200, width: "100%"}} />
-        <Image
-          source={{uri:avatarUri || fakeAvatar}}
-          style={styles.avatar}
-        />
+        <Image source={Images.backgroundHeader} style={{ height: 200, width: "100%" }} />
+        <View style={{ flexDirection: "row", marginLeft: 20, marginTop: -40, height: 100 }}>
+          <Image source={{ uri: avatarUri || fakeAvatar }} style={styles.avatar} />
+          <Text style={{ fontSize: 20, backgroundColor: "transparent", marginTop: 50, marginLeft: 10 }}>
+            {fullName || "Full Name"}
+          </Text>
+        </View>
         <Content>
           {/* <View style={{ paddingLeft: 15 }}>
             <Text style={{ paddingTop: 70, fontSize: 35, color: "#A53865" }}> SNS </Text>
