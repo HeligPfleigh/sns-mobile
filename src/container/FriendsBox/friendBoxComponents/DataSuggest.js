@@ -1,46 +1,21 @@
 import React, { Component } from "react";
 
-import {
-  Container,
-  Header,
-  Title,
-  View,
-  Content,
-  Text,
-  Button,
-  FooterTab,
-  Left,
-  Right,
-  Body,
-  Item,
-  List,
-  ListItem,
-  Tab,
-  Tabs,
-  TabHeading,
-  Thumbnail,
-  Input
-} from "native-base";
+import { Text, Button, Left, Body, ListItem, Thumbnail } from "native-base";
 import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
-import PropTypes from "prop-types";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
-
-import Icon from "react-native-vector-icons/FontAwesome";
 
 class DataSuggest extends Component {
   accept(id) {
-    console.log(this.props);
     this.props
       .addfriend({
         variables: { _id: id }
       })
       .then(({ data }) => {
-        console.log("got data", data);
         this.props.data.refetch();
       })
       .catch(error => {
-        console.log("there was an error sending the query", error);
+        throw error;
       });
   }
 
@@ -50,7 +25,6 @@ class DataSuggest extends Component {
     }
 
     if (this.props.data.error) {
-      console.log(this.props.data.error);
       return <Text>An unexpected error occurred</Text>;
     }
 
@@ -63,11 +37,7 @@ class DataSuggest extends Component {
             <ListItem key={index}>
               <Left>
                 <TouchableOpacity style={styles.button}>
-                  <Thumbnail
-                    square
-                    source={{ uri: "http://salad5f6.github.io/Gmail/vu.jpg" }}
-                    style={{ height: Dimensions.get("window").height / 7, width: Dimensions.get("window").width / 6 }}
-                  />
+                  <Thumbnail large source={{ uri: item.item.profile.picture }} />
                 </TouchableOpacity>
 
                 <Body>
@@ -113,6 +83,9 @@ const FriendQuery = gql`
       friendSuggestions {
         username
         _id
+        profile {
+          picture
+        }
         building {
           name
         }

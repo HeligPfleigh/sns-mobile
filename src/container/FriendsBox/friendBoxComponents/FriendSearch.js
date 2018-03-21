@@ -1,29 +1,8 @@
 import React, { Component } from "react";
 import Data from "./Data";
 import DataSuggest from "./DataSuggest";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { ScrollView } from "react-native";
-import {
-  Container,
-  Header,
-  Title,
-  View,
-  Content,
-  Text,
-  Button,
-  Footer,
-  Left,
-  Right,
-  Body,
-  Item,
-  List,
-  ListItem,
-  Tab,
-  FooterTab,
-  TabHeading,
-  Thumbnail,
-  Input
-} from "native-base";
+import { Container, View, Content, Text, Item, Input } from "native-base";
 
 class FriendSearch extends Component {
   constructor(props) {
@@ -54,7 +33,7 @@ class FriendSearch extends Component {
             <ScrollView>
               <Data text={this.state.text} />
 
-              <Text style={{ paddingTop: 20, paddingBottom: 20, fontWeight: "bold" }}>Những người bạn có thể biết</Text>
+              <Text style={{ padding: 20, fontWeight: "bold" }}>Những người bạn có thể biết</Text>
               <DataSuggest />
             </ScrollView>
           </View>

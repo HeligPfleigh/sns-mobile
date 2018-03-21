@@ -1,42 +1,28 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Header,
-  Title,
-  View,
-  Content,
-  Text,
-  Button,
-  FooterTab,
-  Left,
-  Right,
-  Body,
-  Item,
-  List,
-  ListItem,
-  Tab,
-  Tabs,
-  TabHeading,
-  Thumbnail,
-  Input
-} from "native-base";
+import { Text, Button, Body, ListItem, Thumbnail } from "native-base";
 import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
 import propTypes from "prop-types";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
 
 class Data extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: "..."
+    };
+  }
+
   accept(id) {
-    console.log(this.props);
     this.props
-      .addfriend({
+      .addfriendnew({
         variables: { _id: id }
       })
-      .then(({ data }) => {
-        console.log("got data", data);
+      .then(data => {
+        this.props.data.refetch();
       })
       .catch(error => {
-        console.log("there was an error sending the query", error);
+        throw error;
       });
   }
 
@@ -47,7 +33,6 @@ class Data extends Component {
     }
 
     if (data.error) {
-      console.log(this.props.data.error);
       return <Text>An unexpected error occurred</Text>;
     }
 
@@ -59,18 +44,13 @@ class Data extends Component {
           return (
             <ListItem key={index}>
               <TouchableOpacity style={styles.button}>
-                <Thumbnail
-                  square
-                  source={{ uri: "http://salad5f6.github.io/Gmail/vu.jpg" }}
-                  style={{ height: Dimensions.get("window").height / 7, width: Dimensions.get("window").width / 6 }}
-                />
+                <Thumbnail large source={{ uri: item.item.profile.picture }} />
               </TouchableOpacity>
 
               <Body>
                 <Text style={styles.text}> {item.item.username} </Text>
                 <Text style={styles.textSmall} note>
-                  {" "}
-                  {item.item.building.name}{" "}
+                  {item.item.building.name}
                 </Text>
               </Body>
               <Button info style={{ marginLeft: 10, marginTop: 30 }} onPress={this.accept.bind(this, item.item._id)}>
@@ -109,6 +89,7 @@ const SearchQuery = gql`
   query SearchQuery($keyword: String!) {
     search(keyword: $keyword) {
       username
+      _id
       profile {
         picture
       }
@@ -127,7 +108,10 @@ const AddFriendNew = gql`
   }
 `;
 
-export default compose(
+const DataWithData = compose(
+  graphql(AddFriendNew, {
+    name: "addfriendnew"
+  }),
   graphql(SearchQuery, {
     options(ownProps) {
       return {
@@ -136,8 +120,7 @@ export default compose(
         }
       };
     }
-  }),
-  graphql(AddFriendNew, {
-    name: "addfriendnew"
   })
 )(Data);
+
+export default DataWithData;

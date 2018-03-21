@@ -1,45 +1,46 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Header,
-  Title,
-  View,
-  Content,
-  Text,
-  Button,
-  FooterTab,
-  Left,
-  Right,
-  Body,
-  Item,
-  List,
-  ListItem,
-  Tab,
-  Tabs,
-  TabHeading,
-  Thumbnail,
-  Input
-} from "native-base";
-import { graphql } from "react-apollo";
+import { Text, Button, Left, Body, ListItem, Thumbnail } from "native-base";
+import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
-import PropTypes from "prop-types";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 class FriendRequest extends Component {
+  accept(id) {
+    this.props
+      .acceptfriend({
+        variables: { _id: id }
+      })
+      .then(({ data }) => {
+        this.props.data.refetch();
+      })
+      .catch(error => {
+        throw error;
+      });
+  }
+
+  deny(id) {
+    this.props
+      .rejectfriend({
+        variables: { _id: id }
+      })
+      .then(({ data }) => {
+        this.props.data.refetch();
+      })
+      .catch(error => {
+        throw error;
+      });
+  }
+
   render() {
     if (this.props.data.loading) {
       return <ActivityIndicator size="small" color="#00ff00" />;
     }
 
     if (this.props.data.error) {
-      console.log(this.props.data.error);
       return <Text>An unexpected error occurred</Text>;
     }
 
-    console.log(this.props.data.me.friendRequests);
-
-    if (this.props.data.me.friendRequests.length == 0) {
+    if (this.props.data.me.friendRequests.length === 0) {
       return <Text style={{ paddingTop: 20, paddingBottom: 20, fontWeight: "bold" }}> Chưa có lời mời kết bạn </Text>;
     }
 
@@ -52,28 +53,35 @@ class FriendRequest extends Component {
             <ListItem key={index}>
               <Left>
                 <TouchableOpacity style={styles.button}>
-                  <Thumbnail
-                    square
-                    source={{ uri: "http://salad5f6.github.io/Gmail/vu.jpg" }}
-                    style={{ height: Dimensions.get("window").height / 7, width: Dimensions.get("window").width / 6 }}
-                  />
+                  <Thumbnail large source={{ uri: item.item.profile.picture }} />
                 </TouchableOpacity>
 
                 <Body>
                   <Text style={styles.text}> {item.item.username} </Text>
                   <Text style={styles.textSmall} note>
                     {" "}
-                    {item.item.building.name}{" "}
                   </Text>
                 </Body>
               </Left>
 
-              <Button info style={{ marginLeft: 10, marginTop: 30 }}>
-                <Text> Chấp nhận </Text>
-              </Button>
-              <Button info style={{ marginLeft: 10, marginTop: 30 }}>
-                <Text> Từ chối </Text>
-              </Button>
+              <Body style={{ flexDirection: "column" }}>
+                <Button
+                  small
+                  info
+                  style={{ marginLeft: 20, marginTop: 10, width: Dimensions.get("window").width / 3.5 }}
+                  onPress={this.accept.bind(this, item.item._id)}
+                >
+                  <Text style={{ textAlign: "center" }}> Chấp nhận </Text>
+                </Button>
+                <Button
+                  small
+                  danger
+                  style={{ marginLeft: 20, marginTop: 10, width: Dimensions.get("window").width / 3.5 }}
+                  onPress={this.deny.bind(this, item.item._id)}
+                >
+                  <Text style={{ textAlign: "center" }}> Từ chối </Text>
+                </Button>
+              </Body>
             </ListItem>
           );
         }}
@@ -104,10 +112,40 @@ const FriendQuery = gql`
     me {
       friendRequests {
         username
+        _id
+        profile {
+          picture
+        }
+        building {
+          name
+        }
       }
     }
   }
 `;
-const FriendRequestWithData = graphql(FriendQuery)(FriendRequest);
+
+const Accept = gql`
+  mutation acceptFriend($_id: String!) {
+    acceptFriend(_id: $_id) {
+      username
+      _id
+    }
+  }
+`;
+
+const Deny = gql`
+  mutation rejectFriend($_id: String!) {
+    rejectFriend(_id: $_id) {
+      username
+      _id
+    }
+  }
+`;
+
+const FriendRequestWithData = compose(
+  graphql(FriendQuery),
+  graphql(Deny, { name: "rejectfriend" }),
+  graphql(Accept, { name: "acceptfriend" })
+)(FriendRequest);
 
 export default FriendRequestWithData;
