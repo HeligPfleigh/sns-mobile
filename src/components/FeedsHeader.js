@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Card } from "native-base";
 import { connect } from "react-redux";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { NavigationActions } from "react-navigation";
 
-import { colors, fakeAvatar } from "../constants";
-
-const AVATAR_SIZE = 30;
-const AVATAR_RADIUS = AVATAR_SIZE / 2;
+import { colors } from "../constants";
+import HeaderAvatar from "./HeaderAvatar";
 
 const styles = StyleSheet.create({
   container: {
@@ -23,11 +21,6 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     justifyContent: "center",
     paddingLeft: 15,
-  },
-  avatar:{
-    height: AVATAR_SIZE,
-    width: AVATAR_SIZE,
-    borderRadius: AVATAR_RADIUS,
   },
   textContainer: {
     flex: 4,
@@ -73,7 +66,7 @@ class FeedsHeader extends Component{
     return (
       <Card style={styles.container}>
         <View style={styles.avatarContainer}>
-          <Image style={styles.avatar} source={{ uri: avatar || fakeAvatar }}/>
+          <HeaderAvatar avatar={avatar}/>
         </View>
         <TouchableOpacity style={styles.textContainer} onPress={this._handlePressNewFeed}>
           <Text style={styles.text}>{text}</Text>

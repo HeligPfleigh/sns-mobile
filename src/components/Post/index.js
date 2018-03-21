@@ -16,15 +16,6 @@ const styles = StyleSheet.create({
     height: 100,
     alignSelf: "stretch",
   },
-  postButton: {
-    backgroundColor: "blue",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: 50,
-    position: "absolute",
-    bottom: 15,
-  },
   textContent: {
     fontSize: 14,
     textAlign: "left",
@@ -72,8 +63,6 @@ class Post extends Component {
               renderItem={this._renderComment}
               />
           : null}
-        <View style={styles.commentContainer} />
-        <View style={styles.postButton}/>
       </View>
     );
   }

@@ -1,10 +1,9 @@
 import React from "react";
-import { StyleSheet, View, Image, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import distanceInWordToNow from "date-fns/distance_in_words_to_now";
-import { fakeAvatar, colors } from "../../constants";
 
-const AVATAR_SIZE = 30;
-const AVATAR_RADIUS = AVATAR_SIZE / 2;
+import HeaderAvatar from "../HeaderAvatar";
+import { colors } from "../../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -41,11 +40,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 20,
   },
-  image: {
-    height: AVATAR_SIZE,
-    width: AVATAR_SIZE,
-    borderRadius: AVATAR_RADIUS,
-  },
   nameText: {
     fontSize: 16,
     textAlign: "left",
@@ -66,7 +60,7 @@ const FeedComments = ({avatar, name, comment, createdAt}) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
-        <Image style={styles.image} source={{uri: avatar || fakeAvatar}} />
+        <HeaderAvatar avatar={avatar}/>
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.metaContainer}>

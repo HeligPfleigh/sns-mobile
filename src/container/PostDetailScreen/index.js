@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ActivityIndicator } from "react-native";
-import { Header, Left, Button, Body, Title, Right } from "native-base";
+import { Header, Left, Button, Body, Title, Right, Footer } from "native-base";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -67,6 +67,7 @@ class PostDetailContainer extends Component {
         <View style={styles.container}>
           { content }
         </View>
+        <Footer style={{backgroundColor: "green"}}/>
       </Layout>
     );
   }

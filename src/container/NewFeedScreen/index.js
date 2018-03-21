@@ -90,7 +90,7 @@ class NewFeedContainer extends Component {
               onChangeText={this._onChangeText}
               multiline={true}
               placeholder="What's happening?"
-              maxLength={140}
+              maxLength={MAX_MESSAGE_CHARACTER}
               selectionColor={Platform.OS === "ios" && colors.PRIMARY}
               autoFocus={true}
             />
