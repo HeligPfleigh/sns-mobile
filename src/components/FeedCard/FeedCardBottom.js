@@ -83,8 +83,12 @@ class FeedCardBottom extends Component{
   }
 
   _handlePressComment = () => {
+    const { postID } = this.props;
     this.props.dispatch(NavigationActions.navigate({
       routeName: "PostDetail",
+      params: {
+        postID: postID,
+      }
     }));
   }
 
