@@ -41,7 +41,6 @@ const TabsRouteConfig = {
   Home: { screen: feedStackNav },
   FriendBox: { screen: FriendBox },
   BlankScreen: { screen: BlankScreen },
-  ProfileScreen: { screen: ProfileScreen }
 };
 
 const AppRouteConfig = TabNavigator(TabsRouteConfig, {
@@ -49,6 +48,26 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
   tabBarComponent: TabBar,
   tabBarPosition: "bottom",
   swipeEnabled: true,
+  animationEnabled: true,
+  navigationOptions: ({ navigation }) => ({
+    tabBarIcon: () => {
+      const { routeName } = navigation.state;
+
+      return <Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />;
+    }
+  })
+});
+
+const MenuRouteConfig = {
+  ...TabsRouteConfig,
+  ProfileScreen: { screen: ProfileScreen }
+};
+
+const MenuWithTabRouteConfig = TabNavigator(MenuRouteConfig, {
+  initialRouteName: "ProfileScreen",
+  tabBarComponent: TabBar,
+  tabBarPosition: "bottom",
+  swipeEnabled: false,
   animationEnabled: true,
   navigationOptions: ({ navigation }) => ({
     tabBarIcon: () => {
@@ -95,7 +114,8 @@ export default SwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
     Auth: AuthRouters,
-    App: AppRouters
+    App: AppRouters,
+    Menu: MenuWithTabRouteConfig
   },
   {
     initialRouteName: "AuthLoading"
