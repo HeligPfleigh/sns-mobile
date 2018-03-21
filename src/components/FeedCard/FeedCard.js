@@ -1,6 +1,8 @@
-import React from "react";
-import { Text, StyleSheet } from "react-native";
+import React, { Component } from "react";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Card, CardItem } from "native-base";
+import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
 
 import { colors } from "../../constants";
 import FeedCardHeader from "./FeedCardHeader";
@@ -21,6 +23,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     width: "100%",
   },
+  touchableContent: {
+    flex: 1,
+    alignSelf: "stretch",
+  },
   textContent: {
     fontSize: 14,
     textAlign: "left",
@@ -29,28 +35,45 @@ const styles = StyleSheet.create({
   }
 });
 
-const FeedCard = ({_id, message, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt, comments}) => {
-  // tuan.tran: temporary parse draft.js structure message
+@connect(
+  ({ common, nav }) => ({
+    nav: nav,
+    orientation: common.orientation
+  }),
+  dispatch => ({ dispatch })
+)
+class FeedCard extends Component {
+  _handlePressContent = () => {
+    this.props.dispatch(NavigationActions.navigate({
+      routeName: "PostDetail",
+    }));
+  }
 
-  const text = JSON.parse(message).blocks[0].text;
-  const displayText = text.length > 300 ? `${text.substring(0,300)}...` : text;
+  render(){
+    // tuan.tran: temporary parse draft.js structure message
+    const { _id, message, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt, comments } = this.props;
+    const text = JSON.parse(message).blocks[0].text;
+    const displayText = text.length > 300 ? `${text.substring(0,300)}...` : text;
 
-  const firstComment = totalComments > 0 ? JSON.parse(comments[0].message).blocks[0].text : "";
-  const userCommentName = totalComments > 0 ? comments[0].user.username : "";
-  const userCommentAvatar = totalComments > 0 ? comments[0].user.profile.picture : "";
-  const userCommentCreated = totalComments > 0 ? comments[0].createdAt : "";
-  return (
-    <Card style={styles.container}>
-      <FeedCardHeader {...author} createdAt={createdAt}/>
-      <CardItem cardBody style={styles.contentContainer}>
-        <Text style={styles.textContent}>
-          {messagePlainText}
-        </Text>
-      </CardItem>
-      <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes}/>
-      {totalComments > 0 ? <FeedComments comment={firstComment} name={userCommentName} avatar={userCommentAvatar} createdAt={userCommentCreated}/> : null}
-    </Card>
-  );
-};
+    const firstComment = totalComments > 0 ? JSON.parse(comments[0].message).blocks[0].text : "";
+    const userCommentName = totalComments > 0 ? comments[0].user.username : "";
+    const userCommentAvatar = totalComments > 0 ? comments[0].user.profile.picture : "";
+    const userCommentCreated = totalComments > 0 ? comments[0].createdAt : "";
+    return (
+      <Card style={styles.container}>
+        <FeedCardHeader {...author} createdAt={createdAt}/>
+        <CardItem cardBody style={styles.contentContainer}>
+          <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
+            <Text style={styles.textContent}>
+              {messagePlainText}
+            </Text>
+          </TouchableOpacity>
+        </CardItem>
+        <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes}/>
+        {totalComments > 0 ? <FeedComments comment={firstComment} name={userCommentName} avatar={userCommentAvatar} createdAt={userCommentCreated}/> : null}
+      </Card>
+    );
+  }
+}
 
 export default FeedCard;

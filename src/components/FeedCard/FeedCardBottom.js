@@ -3,6 +3,8 @@ import { CardItem, Text } from "native-base";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { graphql, compose } from "react-apollo";
+import { NavigationActions } from "react-navigation";
+import { connect } from "react-redux";
 
 import { colors } from "../../constants";
 import LIKE_POST_MUTATION from "../../graphql/mutations/likePost";
@@ -30,6 +32,13 @@ const styles = StyleSheet.create({
 const ICON_SIZE = 20;
 
 @compose(
+  connect(
+    ({ common, nav }) => ({
+      nav: nav,
+      orientation: common.orientation
+    }),
+    dispatch => ({ dispatch })
+  ),
   graphql(LIKE_POST_MUTATION, { name: "unlikePostMutation"}),
   graphql(UNLIKE_POST_MUTATION, { name: "likePostMutation" }),
 )
@@ -73,6 +82,12 @@ class FeedCardBottom extends Component{
     }
   }
 
+  _handlePressComment = () => {
+    this.props.dispatch(NavigationActions.navigate({
+      routeName: "PostDetail",
+    }));
+  }
+
   render(){
     const { totalComments } = this.props;
     const { isLiked, totalLikes } = this.state;
@@ -83,7 +98,7 @@ class FeedCardBottom extends Component{
           <Text style={styles.buttonText}> {totalLikes} </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={this._handlePressComment}>
           <MaterialCommunityIcons name="comment-processing-outline" size={ICON_SIZE} color={colors.LIGHT_GRAY}/>
           <Text style={styles.buttonText}> {totalComments} </Text>
         </TouchableOpacity>
