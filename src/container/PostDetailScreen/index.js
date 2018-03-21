@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 import { Header, Left, Button, Body, Title, Right } from "native-base";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
@@ -9,10 +9,12 @@ import { compose, graphql } from "react-apollo";
 import Layout from "../../components/Layout";
 import { colors } from "../../constants";
 import GET_POST_QUERY from "../../graphql/queries/post";
+import Post from "../../components/Post";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignSelf: "stretch",
     backgroundColor: colors.WHITE,
   },
 });
@@ -41,20 +43,30 @@ class PostDetailContainer extends Component {
   }
 
   render() {
+    let content;
+    if ( this.props.data.loading ){
+      content = <ActivityIndicator size="large"/>;
+    }
+    else {
+      const { post } = this.props.data;
+      content = <Post post={post} />;
+    }
     return (
       <Layout>
         <Header>
           <Left>
             <Button transparent onPress={this._handlePressBack}>
-              <MaterialIcons name="arrow-back" size={20} color="blue"/>
+              <MaterialIcons name="arrow-back" size={20} color={colors.PRIMARY}/>
             </Button>
           </Left>
           <Body>
-            <Title>Bài viết</Title>
+            <Title>Post</Title>
           </Body>
           <Right />
         </Header>
-        <ScrollView style={styles.container} />
+        <View style={styles.container}>
+          { content }
+        </View>
       </Layout>
     );
   }

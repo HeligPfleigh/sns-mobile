@@ -3,13 +3,17 @@ import { gql } from "apollo-boost";
 export default gql`
   query post( $_id : String!){
     post( _id: $_id){
+      _id
       message
       messagePlainText
       author {
         username
-        chatId
-        createdAt
-        updatedAt
+        profile {
+          picture
+        }
+        email {
+          address
+        }
       }
       user {
         username
