@@ -23,19 +23,22 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignSelf: "stretch",
+    margin: 5,
+    borderRadius: 25,
+    backgroundColor: "#e4e4e4",
   },
   contentContainer: {
     flex: 1,
     alignSelf: "stretch",
     justifyContent: "flex-start",
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
   },
   metaContainer: {
     flex: 1,
     flexDirection: "row",
     alignSelf: "stretch",
     justifyContent: "space-between",
-    paddingLeft: 5,
+    paddingLeft: 10,
     paddingRight: 20,
   },
   image: {
@@ -51,6 +54,9 @@ const styles = StyleSheet.create({
   timeText: {
     fontSize: 14,
     fontWeight: "400",
+    color: colors.SECONDARY,
+  },
+  commentText: {
     color: colors.SECONDARY,
   }
 });
@@ -68,7 +74,7 @@ const FeedComments = ({avatar, name, comment, createdAt}) => {
           <Text style={styles.timeText}>{ distanceInWordToNow(createdAt) } ago</Text>
         </View>
         <View style={styles.contentContainer}>
-          <Text>{shortComment}</Text>
+          <Text style={styles.commentText}>{shortComment}</Text>
         </View>
       </View>
     </View>

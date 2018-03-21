@@ -36,7 +36,14 @@ export default gql`
       totalLikes
       totalComments
       comments {
+        _id
         message
+        user {
+          username
+          profile {
+            picture
+          }
+        }
         messagePlainText
         totalReply
         parent

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, FlatList } from "react-native";
 
 import { colors } from "../../constants";
 import FeedCardHeader from "../FeedCard/FeedCardHeader";
 import PostFeedBack from "./PostFeedBack";
+import FeedComment from "../FeedCard/FeedComments";
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -33,8 +34,20 @@ const styles = StyleSheet.create({
 });
 
 class Post extends Component {
+  _renderComment = (item) => {
+    const { messagePlainText, user, createdAt } = item.item;
+    // console.log(user, createdAt);
+    // return null;
+    return <FeedComment
+      comment={messagePlainText}
+      name={user.username}
+      avatar={user.profile.picture}
+      createdAt={createdAt}
+      />;
+  }
+
   render(){
-    const { author, createdAt, messagePlainText, _id, isLiked, totalComments, totalLikes } = this.props.post;
+    const { author, createdAt, messagePlainText, _id, isLiked, totalComments, totalLikes, comments } = this.props.post;
     return (
       <View style={{ flex: 1 }}>
         <FeedCardHeader
@@ -52,6 +65,13 @@ class Post extends Component {
           totalComments={totalComments}
           totalLikes={totalLikes}
           />
+        {totalComments > 0
+          ? <FlatList
+              data={comments}
+              keyExtractor={item => item._id}
+              renderItem={this._renderComment}
+              />
+          : null}
         <View style={styles.commentContainer} />
         <View style={styles.postButton}/>
       </View>
