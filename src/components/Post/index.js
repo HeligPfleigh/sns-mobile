@@ -93,7 +93,7 @@ class Post extends Component {
               />
           : null}
         <View style={[styles.addCommentContainer, { top: this.state.top }]}>
-          <AddCommentSection avatar={author.profile.picture} postId={_id} commentID={null}/>
+          <AddCommentSection postId={_id} commentID={null}/>
         </View>
       </View>
     );

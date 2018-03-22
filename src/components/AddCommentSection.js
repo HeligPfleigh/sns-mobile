@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, StyleSheet, TextInput, TouchableOpacity, Platform, Keyboard } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { graphql, compose } from "react-apollo";
+import { connect } from "react-redux";
 
 import { colors } from "../constants";
 import HeaderAvatar from "./HeaderAvatar";
@@ -35,6 +36,11 @@ const styles = StyleSheet.create({
 });
 
 @compose(
+  connect(
+    ({ userInfo }) => ({
+      avatar: userInfo.profile.picture,
+    })
+  ),
   graphql(CREATE_NEW_COMMENT, {name: "createNewComment"}),
 )
 class AddCommentSection extends Component{
