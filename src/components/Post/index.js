@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   commentContainer: {
-    height: 100,
+    height: "50%",
     alignSelf: "stretch",
   },
   textContent: {
@@ -85,13 +85,15 @@ class Post extends Component {
           totalComments={totalComments}
           totalLikes={totalLikes}
           />
-        {totalComments > 0
-          ? <FlatList
-              data={comments}
-              keyExtractor={item => item._id}
-              renderItem={this._renderComment}
-              />
-          : null}
+        <View style={styles.commentContainer}>
+          {totalComments > 0
+            ? <FlatList
+                data={comments}
+                keyExtractor={item => item._id}
+                renderItem={this._renderComment}
+                />
+            : null}
+        </View>
         <View style={[styles.addCommentContainer, { top: this.state.top }]}>
           <AddCommentSection postId={_id} commentID={null}/>
         </View>
