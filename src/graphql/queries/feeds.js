@@ -14,7 +14,15 @@ export default gql`
         message
         messagePlainText
         comments {
+          _id
           message
+          user {
+            username
+            profile {
+              picture
+            }
+          }
+          messagePlainText
           createdAt
           user{
             username

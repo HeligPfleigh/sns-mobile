@@ -1,9 +1,9 @@
 import React from "react";
-import { CardItem, Body, Left, Thumbnail, Text } from "native-base";
+import { CardItem, Body, Left, Text } from "native-base";
 import { StyleSheet } from "react-native";
 import distanceInWordToNow from "date-fns/distance_in_words_to_now";
 
-import { fakeAvatar } from "../../constants";
+import HeaderAvatar from "../HeaderAvatar";
 
 const styles = StyleSheet.create({
   container: {
@@ -14,10 +14,10 @@ const styles = StyleSheet.create({
 const FeedCardHeader = ({ username, createdAt, profile }) => (
   <CardItem style={styles.container}>
     <Left>
-      <Thumbnail small source={{ uri: profile.picture || fakeAvatar }} />
+      <HeaderAvatar avatar={profile.picture} />
       <Body>
         <Text>{ username }</Text>
-        <Text note>about { distanceInWordToNow(createdAt) } ago</Text>
+        <Text note>{ distanceInWordToNow(createdAt) } ago</Text>
       </Body>
     </Left>
   </CardItem>

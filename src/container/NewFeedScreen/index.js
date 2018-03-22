@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { TextInput, Platform, TouchableOpacity, Text, Keyboard } from "react-native";
-import { Thumbnail, View } from "native-base";
+import { View, TextInput, Platform, TouchableOpacity, Text, Keyboard } from "react-native";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { connect } from "react-redux";
 import { graphql, compose } from "react-apollo";
@@ -9,26 +8,12 @@ import { NavigationActions } from "react-navigation";
 import CREATE_NEW_POST from "../../graphql/mutations/createNewPost";
 import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import Layout from "../../components/Layout";
-import { colors, fakeAvatar } from "../../constants";
+import { colors } from "../../constants";
 import styles from "./styles";
+import HeaderAvatar from "../../components/HeaderAvatar";
 
-// tuan.tran: fake for data structure of draft.js message
-let fakeMessage = {
-  blocks: [
-    {
-      data: {},
-      depth: 0,
-      entityRanges: [],
-      inlineStyleRanges: [],
-      key: "",
-      text: "",
-      type: "unstyled",
-    }
-  ],
-  entityMap: {
+const MAX_MESSAGE_CHARACTER = 300;
 
-  },
-};
 @compose(
   connect(
     ({ common, nav }) => ({
@@ -50,7 +35,7 @@ class NewFeedContainer extends Component {
   _onChangeText = text => this.setState({ text });
 
   get _textLength() {
-    return 140 - this.state.text.length;
+    return MAX_MESSAGE_CHARACTER - this.state.text.length;
   }
 
   get _buttonDisabled() {
@@ -59,9 +44,12 @@ class NewFeedContainer extends Component {
 
   _handlePressPost = () => {
     const { text } = this.state;
-    fakeMessage.blocks[0].text = text;
+
     this.props.createNewPost({
-      variables: { message: JSON.stringify(fakeMessage) },
+      variables: {
+        message: text,
+        isMobile: true,
+      },
       update: (store, { data: { createNewPost } }) => {
         const data = store.readQuery({
           query: GET_FEEDS_QUERY,
@@ -90,7 +78,7 @@ class NewFeedContainer extends Component {
         <View style={styles.container}>
           <View style={styles.headerContainer}>
             <View style={styles.avatar} >
-              <Thumbnail small source={{ uri: profile.picture || fakeAvatar }} />
+              <HeaderAvatar avatar={profile.picture} />
             </View>
             <View style={{flex: 4}} />
             <TouchableOpacity style={styles.backButton} onPress={this._handleClose}>
@@ -102,7 +90,7 @@ class NewFeedContainer extends Component {
               onChangeText={this._onChangeText}
               multiline={true}
               placeholder="What's happening?"
-              maxLength={140}
+              maxLength={MAX_MESSAGE_CHARACTER}
               selectionColor={Platform.OS === "ios" && colors.PRIMARY}
               autoFocus={true}
             />

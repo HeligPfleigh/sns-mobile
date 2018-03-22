@@ -3,8 +3,6 @@ import { CardItem, Text } from "native-base";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { graphql, compose } from "react-apollo";
-import { NavigationActions } from "react-navigation";
-import { connect } from "react-redux";
 
 import { colors } from "../../constants";
 import LIKE_POST_MUTATION from "../../graphql/mutations/likePost";
@@ -32,17 +30,10 @@ const styles = StyleSheet.create({
 const ICON_SIZE = 20;
 
 @compose(
-  connect(
-    ({ common, nav }) => ({
-      nav: nav,
-      orientation: common.orientation
-    }),
-    dispatch => ({ dispatch })
-  ),
   graphql(LIKE_POST_MUTATION, { name: "unlikePostMutation"}),
   graphql(UNLIKE_POST_MUTATION, { name: "likePostMutation" }),
 )
-class FeedCardBottom extends Component{
+class PostFeedBack extends Component{
   constructor(props){
     super(props);
     const { isLiked, totalLikes } = this.props;
@@ -83,14 +74,7 @@ class FeedCardBottom extends Component{
   }
 
   _handlePressComment = () => {
-    const { postID, totalComments } = this.props;
-    this.props.dispatch(NavigationActions.navigate({
-      routeName: "PostDetail",
-      params: {
-        postID: postID,
-        limit: totalComments,
-      }
-    }));
+
   }
 
   render(){
@@ -116,4 +100,4 @@ class FeedCardBottom extends Component{
   }
 }
 
-export default FeedCardBottom;
+export default PostFeedBack;

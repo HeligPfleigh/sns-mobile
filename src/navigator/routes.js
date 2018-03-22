@@ -19,6 +19,7 @@ import AuthLoadingScreen from "../container/AuthLoadingScreen";
 // Main app screen
 import Home from "../container/Home";
 import NewFeedScreen from "../container/NewFeedScreen";
+import PostDetail from "../container/PostDetailScreen";
 import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
 
@@ -27,18 +28,9 @@ import ProfileScreen from "../container/ProfileScreen";
 
 /************* START CONFIG APP ROUTES *******************/
 /*********** Tabs Batch Screens *********************/
-const feedStackNav = StackNavigator(
-  {
-    ListFeeds: { screen: Home },
-    NewFeed: { screen: NewFeedScreen }
-  },
-  {
-    headerMode: "none"
-  }
-);
 
 const TabsRouteConfig = {
-  Home: { screen: feedStackNav },
+  Home: { screen: Home },
   FriendBox: { screen: FriendBox },
   BlankScreen: { screen: BlankScreen },
 };
@@ -78,11 +70,18 @@ const MenuWithTabRouteConfig = TabNavigator(MenuRouteConfig, {
   })
 });
 
+const StackAppRouteConfig = StackNavigator({
+  TabScreen: { screen: AppRouteConfig },
+  PostDetail: { screen: PostDetail },
+  NewFeed: { screen: NewFeedScreen },
+}, {
+  headerMode: "none",
+});
+
 /*********** Drawer Batch Screens ****************************/
 const AppRouters = DrawerNavigator(
   {
-    Main: AppRouteConfig
-    // Menu: MenuRouteConfig
+    Main: StackAppRouteConfig
   },
   {
     initialRouteName: "Main",
