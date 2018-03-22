@@ -73,6 +73,7 @@ class Post extends Component {
         <FeedCardHeader
           {...author}
           createdAt={createdAt}
+          postId={_id}
         />
         <View style={styles.contentContainer}>
           <Text style={styles.textContent}>
