@@ -17,7 +17,7 @@ const FeedCardHeader = ({ username, createdAt, profile }) => (
       <HeaderAvatar avatar={profile.picture} />
       <Body>
         <Text>{ username }</Text>
-        <Text note>about { distanceInWordToNow(createdAt) } ago</Text>
+        <Text note>{ distanceInWordToNow(createdAt) } ago</Text>
       </Body>
     </Left>
   </CardItem>

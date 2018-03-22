@@ -7,6 +7,7 @@ import { NavigationActions } from "react-navigation";
 import { compose, graphql } from "react-apollo";
 
 import Layout from "../../components/Layout";
+import AddCommentSection from "../../components/AddCommentSection";
 import { colors } from "../../constants";
 import GET_POST_QUERY from "../../graphql/queries/post";
 import Post from "../../components/Post";
@@ -67,7 +68,9 @@ class PostDetailContainer extends Component {
         <View style={styles.container}>
           { content }
         </View>
-        <Footer style={{backgroundColor: "green"}}/>
+        <Footer>
+          <AddCommentSection />
+        </Footer>
       </Layout>
     );
   }

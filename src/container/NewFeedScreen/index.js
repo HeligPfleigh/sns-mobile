@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { TextInput, Platform, TouchableOpacity, Text, Keyboard } from "react-native";
-import { Thumbnail, View } from "native-base";
+import { View, TextInput, Platform, TouchableOpacity, Text, Keyboard } from "react-native";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { connect } from "react-redux";
 import { graphql, compose } from "react-apollo";
@@ -9,8 +8,9 @@ import { NavigationActions } from "react-navigation";
 import CREATE_NEW_POST from "../../graphql/mutations/createNewPost";
 import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import Layout from "../../components/Layout";
-import { colors, fakeAvatar } from "../../constants";
+import { colors } from "../../constants";
 import styles from "./styles";
+import HeaderAvatar from "../../components/HeaderAvatar";
 
 const MAX_MESSAGE_CHARACTER = 300;
 
@@ -78,7 +78,7 @@ class NewFeedContainer extends Component {
         <View style={styles.container}>
           <View style={styles.headerContainer}>
             <View style={styles.avatar} >
-              <Thumbnail small source={{ uri: profile.picture || fakeAvatar }} />
+              <HeaderAvatar avatar={profile.picture} />
             </View>
             <View style={{flex: 4}} />
             <TouchableOpacity style={styles.backButton} onPress={this._handleClose}>
