@@ -1,10 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, View } from "react-native";
+import { Text, View, Image, StyleSheet } from "react-native";
 import { Container, List, ListItem, Content } from "native-base";
-import OtherIcon from "react-native-vector-icons/Entypo";
 
+import OtherIcon from "react-native-vector-icons/Entypo";
+import Images from "../../assets/images";
 import { logOut } from "./actions";
+import { fakeAvatar } from "../../constants";
+
+const styles = StyleSheet.create({
+  avatar: {
+    height: 100,
+    width: 100,
+    borderRadius: 50
+  }
+});
 
 const routes = [
   {
@@ -33,7 +43,7 @@ const routes = [
     drawerIcon: <OtherIcon name="dribbble" size={20} color="lightgrey" />
   },
   {
-    route: "BlankScreen",
+    route: "ProfileScreen",
     caption: "Tài khoản",
     drawerIcon: <OtherIcon name="check" size={20} color="lightgrey" />
   },
@@ -44,21 +54,39 @@ const routes = [
   }
 ];
 
-@connect(null, dispatch => ({
-  logOut: navigation => dispatch(logOut(navigation))
-}))
+  @connect(
+    ({ userInfo }) => ({
+      fullName: userInfo.fullName,
+      avatarUri: userInfo && userInfo.profile && userInfo.profile.picture
+    }),
+    dispatch => ({
+      logOut: navigation => dispatch(logOut(navigation))
+    })
+  )
+
 export default class SidebarContainer extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
-    const { navigation } = this.props;
+    const { navigation, fullName, avatarUri } = this.props;
     return (
       <Container>
+        <Image source={Images.backgroundHeader} style={{ height: 200, width: "100%" }} />
+        <View style={{ flexDirection: "row", marginLeft: 20, marginTop: -40, height: 100 }}>
+          <Image source={{ uri: avatarUri || fakeAvatar }} style={styles.avatar} />
+          <Text style={{ fontSize: 20, backgroundColor: "transparent", marginTop: 50, marginLeft: 10 }}>
+            {fullName || "Full Name"}
+          </Text>
+        </View>
         <Content>
-          <View style={{ paddingLeft: 15 }}>
+          {/* <View style={{ paddingLeft: 15 }}>
             <Text style={{ paddingTop: 70, fontSize: 35, color: "#A53865" }}> SNS </Text>
             <Text style={{ color: "#A53865" }}> Mạng xã hội chung cư </Text>
-          </View>
+          </View> */}
           <List
-            style={{ marginTop: 40 }}
+            // style={{ marginTop: 20 }}
             dataArray={routes}
             renderRow={data => {
               return (

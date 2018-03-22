@@ -10,15 +10,16 @@ import { SPINNER_CHANGE } from "../../constants";
 import Layout from "../../components/Layout";
 import FeedCard from "../../components/FeedCard/FeedCard";
 import FeedsHeader from "../../components/FeedsHeader";
-
 import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import ME_QUERY from "../../graphql/queries/me";
 import styles from "./styles";
-
+export const SAVE_USER_INFO = "SAVE_USER_INFO";
 @compose(
-  connect(({ common }) => ({
-    orientation: common.orientation
-  })),
+  connect(
+    ({ common }) => ({
+      orientation: common.orientation
+    })
+  ),
   withApollo,
   graphql(GET_FEEDS_QUERY, {
     name: "getFeeds",
@@ -80,6 +81,11 @@ class HomeScreen extends Component {
         }
       }
     );
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.getMe.me && nextProps.getMe.me !== this.props.getMe.me) {
+      this.props.dispatch(utils.createAction(SAVE_USER_INFO, nextProps.getMe.me));
+    }
   }
 
   render() {

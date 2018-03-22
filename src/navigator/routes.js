@@ -22,19 +22,25 @@ import NewFeedScreen from "../container/NewFeedScreen";
 import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
 
+// Screens from drawer menu
+import ProfileScreen from "../container/ProfileScreen";
+
 /************* START CONFIG APP ROUTES *******************/
 /*********** Tabs Batch Screens *********************/
-const feedStackNav = StackNavigator({
-  ListFeeds: { screen : Home },
-  NewFeed: { screen: NewFeedScreen },
-}, {
-  headerMode: "none",
-});
+const feedStackNav = StackNavigator(
+  {
+    ListFeeds: { screen: Home },
+    NewFeed: { screen: NewFeedScreen }
+  },
+  {
+    headerMode: "none"
+  }
+);
 
 const TabsRouteConfig = {
   Home: { screen: feedStackNav },
   FriendBox: { screen: FriendBox },
-  BlankScreen: { screen: BlankScreen }
+  BlankScreen: { screen: BlankScreen },
 };
 
 const AppRouteConfig = TabNavigator(TabsRouteConfig, {
@@ -46,6 +52,27 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
   navigationOptions: ({ navigation }) => ({
     tabBarIcon: () => {
       const { routeName } = navigation.state;
+
+      return <Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />;
+    }
+  })
+});
+
+const MenuRouteConfig = {
+  ...TabsRouteConfig,
+  ProfileScreen: { screen: ProfileScreen }
+};
+
+const MenuWithTabRouteConfig = TabNavigator(MenuRouteConfig, {
+  initialRouteName: "ProfileScreen",
+  tabBarComponent: TabBar,
+  tabBarPosition: "bottom",
+  swipeEnabled: false,
+  animationEnabled: true,
+  navigationOptions: ({ navigation }) => ({
+    tabBarIcon: () => {
+      const { routeName } = navigation.state;
+
       return <Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />;
     }
   })
@@ -55,6 +82,7 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
 const AppRouters = DrawerNavigator(
   {
     Main: AppRouteConfig
+    // Menu: MenuRouteConfig
   },
   {
     initialRouteName: "Main",
@@ -86,7 +114,8 @@ export default SwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
     Auth: AuthRouters,
-    App: AppRouters
+    App: AppRouters,
+    Menu: MenuWithTabRouteConfig
   },
   {
     initialRouteName: "AuthLoading"
