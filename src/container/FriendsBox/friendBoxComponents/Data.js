@@ -1,47 +1,78 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { Text, Button, Body, ListItem, Thumbnail } from "native-base";
+import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
-import { graphql } from "react-apollo";
-import { Text, Body, ListItem, Thumbnail } from "native-base";
-import { FlatList, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import propTypes from "prop-types";
+import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
 
-const Data = ({ data }) => (
-  <FlatList
-    keyExtractor={() => Math.random()}
-    data={data.search}
-    renderItem={(item, index) => {
-      return (
-        <ListItem>
-          <TouchableOpacity style={styles.button}>
-            <Thumbnail
-              square
-              source={item.item.profile.picture}
-              style={{ height: Dimensions.get("window").height / 8, width: Dimensions.get("window").width / 6 }}
-            />
+class Data extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: "..."
+    };
+  }
 
-            <Body>
-              <Text style={styles.text}> {item.item.username} </Text>
-              <Text style={styles.textSmall} note>
-                {" "}
-                {item.item.building.name}{" "}
-              </Text>
-            </Body>
-          </TouchableOpacity>
-        </ListItem>
-      );
-    }}
-  />
-);
+  accept(id) {
+    this.props
+      .addfriendnew({
+        variables: { _id: id }
+      })
+      .then(data => {
+        this.props.data.refetch();
+      })
+      .catch(error => {
+        throw error;
+      });
+  }
+
+  render() {
+    const { data } = this.props;
+    if (data.loading) {
+      return <ActivityIndicator size="small" color="black" style={{ marginTop: 10 }} />;
+    }
+
+    if (data.error) {
+      return <Text>An unexpected error occurred</Text>;
+    }
+
+    return (
+      <FlatList
+        keyExtractor={index => index._id}
+        data={data.search}
+        renderItem={(item, index) => {
+          return (
+            <ListItem key={index}>
+              <TouchableOpacity style={styles.button}>
+                <Thumbnail large source={{ uri: item.item.profile.picture }} />
+              </TouchableOpacity>
+
+              <Body>
+                <Text style={styles.text}> {item.item.username} </Text>
+                <Text style={styles.textSmall} note>
+                  {item.item.building.name}
+                </Text>
+              </Body>
+              <Button info style={{ marginLeft: 10, marginTop: 30 }} onPress={this.accept.bind(this, item.item._id)}>
+                <Text> Kết bạn </Text>
+              </Button>
+            </ListItem>
+          );
+        }}
+      />
+    );
+  }
+}
 
 Data.propTypes = {
-  text: PropTypes.string.isRequired
+  text: propTypes.string.isRequired
 };
 
 const styles = StyleSheet.create({
   button: {
     margin: 5,
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / 8,
+    width: Dimensions.get("window").width / 6,
+    height: Dimensions.get("window").height / 7,
     flexDirection: "row"
   },
   text: {
@@ -58,6 +89,7 @@ const SearchQuery = gql`
   query SearchQuery($keyword: String!) {
     search(keyword: $keyword) {
       username
+      _id
       profile {
         picture
       }
@@ -68,12 +100,27 @@ const SearchQuery = gql`
   }
 `;
 
-export default graphql(SearchQuery, {
-  options(ownProps) {
-    return {
-      variables: {
-        keyword: ownProps.text
-      }
-    };
+const AddFriendNew = gql`
+  mutation sendFriendRequest($_id: String!) {
+    sendFriendRequest(_id: $_id) {
+      username
+    }
   }
-})(Data);
+`;
+
+const DataWithData = compose(
+  graphql(AddFriendNew, {
+    name: "addfriendnew"
+  }),
+  graphql(SearchQuery, {
+    options(ownProps) {
+      return {
+        variables: {
+          keyword: ownProps.text
+        }
+      };
+    }
+  })
+)(Data);
+
+export default DataWithData;

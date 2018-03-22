@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import Data from "./Data";
-
-import { Container, View, Content, Item, Input } from "native-base";
+import DataSuggest from "./DataSuggest";
+import { ScrollView } from "react-native";
+import { Container, View, Content, Text, Item, Input } from "native-base";
 
 class FriendSearch extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: "" };
-  }
-
-  search() {
-    // console.log(this.state.text);
+    this.state = {
+      text: "",
+      bool: false
+    };
   }
 
   render() {
@@ -30,9 +30,12 @@ class FriendSearch extends Component {
               </Item>
             </View>
 
-            <Container>
+            <ScrollView>
               <Data text={this.state.text} />
-            </Container>
+
+              <Text style={{ padding: 20, fontWeight: "bold" }}>Những người bạn có thể biết</Text>
+              <DataSuggest />
+            </ScrollView>
           </View>
         </Content>
       </Container>
