@@ -28,18 +28,6 @@ import ProfileScreen from "../container/ProfileScreen";
 
 /************* START CONFIG APP ROUTES *******************/
 /*********** Tabs Batch Screens *********************/
-<<<<<<< HEAD
-const feedStackNav = StackNavigator(
-  {
-    ListFeeds: { screen: Home },
-    NewFeed: { screen: NewFeedScreen }
-  },
-  {
-    headerMode: "none"
-  }
-);
-=======
->>>>>>> Re-routing: cover tab by a stack navigator
 
 const TabsRouteConfig = {
   Home: { screen: Home },
@@ -93,12 +81,7 @@ const StackAppRouteConfig = StackNavigator({
 /*********** Drawer Batch Screens ****************************/
 const AppRouters = DrawerNavigator(
   {
-<<<<<<< HEAD
-    Main: AppRouteConfig
-    // Menu: MenuRouteConfig
-=======
     Main: StackAppRouteConfig
->>>>>>> Re-routing: cover tab by a stack navigator
   },
   {
     initialRouteName: "Main",

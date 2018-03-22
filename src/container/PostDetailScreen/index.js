@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     options: (ownProps) => {
       return {
         variables: {
-          _id: ownProps.navigation.state.params.postID
+          _id: ownProps.navigation.state.params.postID,
+          limit: ownProps.navigation.state.params.limit,
         }
       };
     }

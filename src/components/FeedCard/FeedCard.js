@@ -44,11 +44,12 @@ const styles = StyleSheet.create({
 )
 class FeedCard extends Component {
   _handlePressContent = () => {
-    const { _id } = this.props;
+    const { _id, totalComments } = this.props;
     this.props.dispatch(NavigationActions.navigate({
       routeName: "PostDetail",
       params: {
         postID: _id,
+        limit: totalComments,
       }
     }));
   }

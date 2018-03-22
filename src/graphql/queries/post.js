@@ -1,7 +1,7 @@
 import { gql } from "apollo-boost";
 
 export default gql`
-  query post( $_id : String!){
+  query post( $_id : String!, $limit: Int){
     post( _id: $_id){
       _id
       message
@@ -35,7 +35,7 @@ export default gql`
       }
       totalLikes
       totalComments
-      comments {
+      comments(limit: $limit) {
         _id
         message
         user {
