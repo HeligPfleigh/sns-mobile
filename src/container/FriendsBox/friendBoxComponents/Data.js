@@ -3,7 +3,7 @@ import { Text, Button, Body, ListItem, Thumbnail } from "native-base";
 import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
 import propTypes from "prop-types";
-import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
+import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, View } from "react-native";
 
 class Data extends Component {
   constructor(props) {
@@ -53,9 +53,12 @@ class Data extends Component {
                   {item.item.building.name}
                 </Text>
               </Body>
-              <Button info style={{ marginLeft: 10, marginTop: 30 }} onPress={this.accept.bind(this, item.item._id)}>
-                <Text> Kết bạn </Text>
-              </Button>
+              <View>
+                 { item.item.friendStatus === "FRIEND" ? <Button disabled style={{ marginLeft: 10, marginTop: 30, backgroundColor:"green" }}><Text> Đã kết bạn </Text></Button>
+                 : (item.item.friendStatus === "STRANGER" ? <Button info style={{ marginLeft: 10, marginTop: 30 }} onPress={this.accept.bind(this, item.item._id)}><Text> Kết bạn </Text></Button>
+                 : <Button disabled style={{ marginLeft: 10, marginTop: 30 }}><Text> Đã gửi yêu cầu </Text></Button>  ) }
+
+              </View>
             </ListItem>
           );
         }}
@@ -90,6 +93,7 @@ const SearchQuery = gql`
     search(keyword: $keyword) {
       username
       _id
+      friendStatus
       profile {
         picture
       }
