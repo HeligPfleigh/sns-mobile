@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
-import { Header, Left, Button, Body, Title, Right, Footer } from "native-base";
+import { StyleSheet, View, ActivityIndicator, Keyboard } from "react-native";
+import { Header, Left, Button, Body, Title, Right } from "native-base";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -17,6 +17,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: "stretch",
     backgroundColor: colors.WHITE,
+  },
+  addCommentContainer: {
+    position: "absolute",
+    width: "100%",
+    height: 50,
+    zIndex: 2,
   },
 });
 
@@ -39,7 +45,30 @@ const styles = StyleSheet.create({
   })
 )
 class PostDetailContainer extends Component {
+  state = {
+    top: "90%",
+  }
+
+  componentWillMount () {
+    this.keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", this._keyboardDidHide);
+  }
+
+  componentWillUnmount () {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({ top: "50%" });
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({ top: "90%" });
+  }
+
   _handlePressBack = () => {
+    Keyboard.dismiss();
     this.props.dispatch(NavigationActions.back());
   }
 
@@ -68,9 +97,9 @@ class PostDetailContainer extends Component {
         <View style={styles.container}>
           { content }
         </View>
-        <Footer>
+        <View style={[styles.addCommentContainer, { top: this.state.top }]}>
           <AddCommentSection />
-        </Footer>
+        </View>
       </Layout>
     );
   }
