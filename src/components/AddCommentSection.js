@@ -33,20 +33,28 @@ const styles = StyleSheet.create({
 });
 
 class AddCommentSection extends Component{
+  state = {
+    text: ""
+  }
+
+  _onChangeText = text => this.setState({ text });
+
   render(){
+    const { avatar } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
-          <HeaderAvatar />
+          <HeaderAvatar avatar={avatar}/>
         </View>
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Add your comment here!"
             multiline={true}
             selectionColor={Platform.OS === "ios" && colors.PRIMARY}
+            onChangeText={this._onChangeText}
             />
         </View>
-        <TouchableOpacity style={styles.postButtonContainer}>
+        <TouchableOpacity style={[styles.postButtonContainer, { display: this.state.text.length > 0 ? "flex" : "none" }]}>
           <MaterialIcons name="send" size={20} color={colors.PRIMARY}/>
         </TouchableOpacity>
       </View>

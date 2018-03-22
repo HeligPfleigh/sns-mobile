@@ -7,7 +7,6 @@ import { NavigationActions } from "react-navigation";
 import { compose, graphql } from "react-apollo";
 
 import Layout from "../../components/Layout";
-import AddCommentSection from "../../components/AddCommentSection";
 import { colors } from "../../constants";
 import GET_POST_QUERY from "../../graphql/queries/post";
 import Post from "../../components/Post";
@@ -17,12 +16,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: "stretch",
     backgroundColor: colors.WHITE,
-  },
-  addCommentContainer: {
-    position: "absolute",
-    width: "100%",
-    height: 50,
-    zIndex: 2,
   },
 });
 
@@ -45,27 +38,6 @@ const styles = StyleSheet.create({
   })
 )
 class PostDetailContainer extends Component {
-  state = {
-    top: "90%",
-  }
-
-  componentWillMount () {
-    this.keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", this._keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", this._keyboardDidHide);
-  }
-
-  componentWillUnmount () {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
-  _keyboardDidShow = () => {
-    this.setState({ top: "50%" });
-  }
-
-  _keyboardDidHide = () => {
-    this.setState({ top: "90%" });
-  }
 
   _handlePressBack = () => {
     Keyboard.dismiss();
@@ -96,9 +68,6 @@ class PostDetailContainer extends Component {
         </Header>
         <View style={styles.container}>
           { content }
-        </View>
-        <View style={[styles.addCommentContainer, { top: this.state.top }]}>
-          <AddCommentSection />
         </View>
       </Layout>
     );
