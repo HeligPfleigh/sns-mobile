@@ -56,7 +56,7 @@ class Post extends Component {
 
   _renderComment = (item) => {
     const { _id } = this.props.post;
-    return <FeedComment commentInfo={item.item} postID={_id}/>;
+    return <FeedComment commentInfo={item.item} postID={_id} canReply={true}/>;
   }
 
   render(){

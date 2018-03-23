@@ -56,7 +56,7 @@ class CommentReplyScreen extends Component {
 
   _renderItem = (item) => {
     const { postID } = this.props.navigation.state.params;
-    return <FeedComments commentInfo={item.item} postID={postID}/>;
+    return <FeedComments commentInfo={item.item} postID={postID} canReply={false}/>;
   }
 
   render() {

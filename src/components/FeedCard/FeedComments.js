@@ -106,7 +106,7 @@ class FeedComments extends Component{
   }
 
   render(){
-    const { commentInfo } = this.props;
+    const { commentInfo, canReply } = this.props;
     const avatar = commentInfo.user.profile.picture;
     const name = commentInfo.user.username;
     const comment = commentInfo.messagePlainText;
@@ -127,7 +127,7 @@ class FeedComments extends Component{
               <Text style={styles.commentText}>{comment}</Text>
             </View>
           </TouchableOpacity>
-          {this.state.displayReplyButton ? <View style={styles.actionContainer}>
+          {(this.state.displayReplyButton && canReply) ? <View style={styles.actionContainer}>
             <TouchableOpacity style={styles.repButton} onPress={this._handlePressReply}>
               <Text style={styles.totalReplyText}>{totalReply}</Text>
               <MaterialCommunityIcons name="message-reply-text" size={20} color={colors.LIGHT_GRAY}/>
