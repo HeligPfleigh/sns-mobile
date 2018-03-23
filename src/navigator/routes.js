@@ -24,6 +24,7 @@ import EditPostScreen from "../container/EditPostScreen";
 import CommentReplyScreen from "../container/CommentReplyScreen";
 import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
+import Notification from "../container/Notification";
 
 // Screens from drawer menu
 import ProfileScreen from "../container/ProfileScreen";
@@ -35,6 +36,8 @@ const TabsRouteConfig = {
   Home: { screen: Home },
   FriendBox: { screen: FriendBox },
   BlankScreen: { screen: BlankScreen },
+  Notification: { screen: Notification },
+
 };
 
 const AppRouteConfig = TabNavigator(TabsRouteConfig, {

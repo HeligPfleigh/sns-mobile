@@ -3,6 +3,6 @@ export default {
   Home: "home",
   Chat: "chatbubbles",
   FriendBox: "contacts",
-  Notifications: "notifications",
-  BlankScreen: "search"
+  Notification: "notifications",
+  BlankScreen: "search",
 };
