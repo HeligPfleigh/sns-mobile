@@ -21,6 +21,7 @@ import Home from "../container/Home";
 import NewFeedScreen from "../container/NewFeedScreen";
 import PostDetail from "../container/PostDetailScreen";
 import EditPostScreen from "../container/EditPostScreen";
+import CommentReplyScreen from "../container/CommentReplyScreen";
 import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
 
@@ -76,6 +77,7 @@ const StackAppRouteConfig = StackNavigator({
   PostDetail: { screen: PostDetail },
   NewFeed: { screen: NewFeedScreen },
   EditPostScreen: { screen: EditPostScreen },
+  CommentReplyScreen: { screen: CommentReplyScreen },
 }, {
   headerMode: "none",
 });

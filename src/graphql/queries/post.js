@@ -45,6 +45,11 @@ export default gql`
           }
         }
         messagePlainText
+        reply {
+          message
+          messagePlainText
+          createdAt
+        }
         totalReply
         parent
         createdAt

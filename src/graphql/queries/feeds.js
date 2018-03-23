@@ -23,13 +23,15 @@ export default gql`
             }
           }
           messagePlainText
-          createdAt
-          user{
-            username
-            profile{
-              picture
-            }
+          reply {
+            message
+            messagePlainText
+            createdAt
           }
+          totalReply
+          parent
+          createdAt
+          updatedAt
         }
         author {
           username
