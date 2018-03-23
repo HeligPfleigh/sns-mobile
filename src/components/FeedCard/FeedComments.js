@@ -73,9 +73,14 @@ const styles = StyleSheet.create({
   },
   repButtonText: {
     fontSize: 12,
+    marginHorizontal: 20,
+    color: colors.LIGHT_GRAY,
+  },
+  totalReplyText: {
+    fontSize: 12,
     marginHorizontal: 3,
     color: colors.LIGHT_GRAY,
-  }
+  },
 });
 
 @connect(
@@ -105,7 +110,7 @@ class FeedComments extends Component{
     const avatar = commentInfo.user.profile.picture;
     const name = commentInfo.user.username;
     const comment = commentInfo.messagePlainText;
-    const { createdAt } = commentInfo;
+    const { createdAt, totalReply } = commentInfo;
 
     return (
       <View style={styles.container}>
@@ -124,6 +129,7 @@ class FeedComments extends Component{
           </TouchableOpacity>
           {this.state.displayReplyButton ? <View style={styles.actionContainer}>
             <TouchableOpacity style={styles.repButton} onPress={this._handlePressReply}>
+              <Text style={styles.totalReplyText}>{totalReply}</Text>
               <MaterialCommunityIcons name="message-reply-text" size={20} color={colors.LIGHT_GRAY}/>
               <Text style={styles.repButtonText}>Reply</Text>
             </TouchableOpacity>

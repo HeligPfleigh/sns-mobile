@@ -60,7 +60,7 @@ class AddCommentSection extends Component{
         commentId: commentID,
         isMobile: true,
       },
-      refetchQueries: ["post", "feeds"]
+      refetchQueries: ["post", "feeds", "comment"]
     });
     Keyboard.dismiss();
     this.textInput.clear();
