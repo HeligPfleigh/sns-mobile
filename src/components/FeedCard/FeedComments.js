@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 });
 
 const FeedComments = ({avatar, name, comment, createdAt}) => {
-  const shortComment = comment.length > 50 ? `${comment.substring(0,50)}...` : comment;
+  const shortComment = comment.length > 40 ? `${comment.substring(0,40)}...` : comment;
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
