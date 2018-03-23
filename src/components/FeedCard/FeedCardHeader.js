@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 )
 class FeedCardHeader extends Component {
   render(){
-    const { username, createdAt, profile, userInfo, postId } = this.props;
+    const { username, createdAt, profile, userInfo, postId, message } = this.props;
     return (
       <CardItem style={styles.container}>
         <Left>
@@ -31,7 +31,7 @@ class FeedCardHeader extends Component {
           </Body>
         </Left>
         <Right>
-          { userInfo.username === username ? <FeedCardEditMenu postId={postId}/> : null }
+          { userInfo.username === username ? <FeedCardEditMenu postId={postId} message={message}/> : null }
         </Right>
       </CardItem>
     );

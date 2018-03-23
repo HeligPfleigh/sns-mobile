@@ -20,6 +20,7 @@ import AuthLoadingScreen from "../container/AuthLoadingScreen";
 import Home from "../container/Home";
 import NewFeedScreen from "../container/NewFeedScreen";
 import PostDetail from "../container/PostDetailScreen";
+import EditPostScreen from "../container/EditPostScreen";
 import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
 
@@ -74,6 +75,7 @@ const StackAppRouteConfig = StackNavigator({
   TabScreen: { screen: AppRouteConfig },
   PostDetail: { screen: PostDetail },
   NewFeed: { screen: NewFeedScreen },
+  EditPostScreen: { screen: EditPostScreen },
 }, {
   headerMode: "none",
 });

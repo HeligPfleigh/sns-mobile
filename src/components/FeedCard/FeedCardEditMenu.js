@@ -26,7 +26,17 @@ class FeedCardEditMenu extends Component {
       refetch: ["feeds"]
     });
     this.props.dispatch(NavigationActions.navigate({
-      routeName: "Home"
+      routeName: "Home",
+    }));
+  }
+
+  _handleEditPost = () => {
+    const { message } = this.props;
+    this.props.dispatch(NavigationActions.navigate({
+      routeName: "EditPostScreen",
+      params: {
+        message: message
+      }
     }));
   }
 

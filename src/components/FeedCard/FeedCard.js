@@ -65,7 +65,7 @@ class FeedCard extends Component {
     const userCommentCreated = totalComments > 0 ? comments[0].createdAt : "";
     return (
       <Card style={styles.container}>
-        <FeedCardHeader {...author} createdAt={createdAt} postId={_id}/>
+        <FeedCardHeader {...author} createdAt={createdAt} postId={_id} message={messagePlainText} />
         <CardItem cardBody style={styles.contentContainer}>
           <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
             <Text style={styles.textContent}>
