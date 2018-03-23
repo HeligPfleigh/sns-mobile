@@ -54,7 +54,10 @@ class Post extends Component {
     this.setState({ top: "90%" });
   }
 
-  _renderComment = (item) => <FeedComment commentInfo={item.item} />
+  _renderComment = (item) => {
+    const { _id } = this.props.post;
+    return <FeedComment commentInfo={item.item} postID={_id}/>;
+  }
 
   render(){
     const { author, createdAt, messagePlainText, _id, isLiked, totalComments, totalLikes, comments } = this.props.post;

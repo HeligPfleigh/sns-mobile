@@ -90,8 +90,13 @@ class FeedComments extends Component{
   _displayReplyButton = () => this.setState({ displayReplyButton: !this.state.displayReplyButton})
 
   _handlePressReply = () => {
+    const { postID, commentInfo } = this.props;
     this.props.dispatch(NavigationActions.navigate({
-      routeName: "CommentReplyScreen"
+      routeName: "CommentReplyScreen",
+      params: {
+        postID: postID,
+        commentID: commentInfo._id,
+      }
     }));
   }
 

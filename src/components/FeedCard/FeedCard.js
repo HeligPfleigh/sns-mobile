@@ -70,7 +70,7 @@ class FeedCard extends Component {
           </TouchableOpacity>
         </CardItem>
         <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes}/>
-        {totalComments > 0 ? <FeedComments commentInfo={comments[0]}/> : null}
+        {totalComments > 0 ? <FeedComments commentInfo={comments[0]} postID={_id}/> : null}
       </Card>
     );
   }
