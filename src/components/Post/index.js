@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   commentContainer: {
-    height: 100,
+    height: "50%",
     alignSelf: "stretch",
   },
   textContent: {
@@ -55,15 +55,8 @@ class Post extends Component {
   }
 
   _renderComment = (item) => {
-    const { messagePlainText, user, createdAt } = item.item;
-    // console.log(user, createdAt);
-    // return null;
-    return <FeedComment
-      comment={messagePlainText}
-      name={user.username}
-      avatar={user.profile.picture}
-      createdAt={createdAt}
-      />;
+    const { _id } = this.props.post;
+    return <FeedComment commentInfo={item.item} postID={_id} canReply={true}/>;
   }
 
   render(){
@@ -73,6 +66,7 @@ class Post extends Component {
         <FeedCardHeader
           {...author}
           createdAt={createdAt}
+          postId={_id}
         />
         <View style={styles.contentContainer}>
           <Text style={styles.textContent}>
@@ -85,13 +79,15 @@ class Post extends Component {
           totalComments={totalComments}
           totalLikes={totalLikes}
           />
-        {totalComments > 0
-          ? <FlatList
-              data={comments}
-              keyExtractor={item => item._id}
-              renderItem={this._renderComment}
-              />
-          : null}
+        <View style={styles.commentContainer}>
+          {totalComments > 0
+            ? <FlatList
+                data={comments}
+                keyExtractor={item => item._id}
+                renderItem={this._renderComment}
+                />
+            : null}
+        </View>
         <View style={[styles.addCommentContainer, { top: this.state.top }]}>
           <AddCommentSection postId={_id} commentID={null}/>
         </View>

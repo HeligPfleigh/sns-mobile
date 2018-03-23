@@ -59,13 +59,9 @@ class FeedCard extends Component {
 
     const displayText = messagePlainText.length > 300 ? `${messagePlainText.substring(0,300)}...` : messagePlainText;
 
-    const firstComment = totalComments > 0 ? comments[0].messagePlainText : "";
-    const userCommentName = totalComments > 0 ? comments[0].user.username : "";
-    const userCommentAvatar = totalComments > 0 ? comments[0].user.profile.picture : "";
-    const userCommentCreated = totalComments > 0 ? comments[0].createdAt : "";
     return (
       <Card style={styles.container}>
-        <FeedCardHeader {...author} createdAt={createdAt}/>
+        <FeedCardHeader {...author} createdAt={createdAt} postId={_id} message={messagePlainText} />
         <CardItem cardBody style={styles.contentContainer}>
           <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
             <Text style={styles.textContent}>
@@ -74,7 +70,7 @@ class FeedCard extends Component {
           </TouchableOpacity>
         </CardItem>
         <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes}/>
-        {totalComments > 0 ? <FeedComments comment={firstComment} name={userCommentName} avatar={userCommentAvatar} createdAt={userCommentCreated}/> : null}
+        {totalComments > 0 ? <FeedComments commentInfo={comments[0]} postID={_id} canReply={true}/> : null}
       </Card>
     );
   }

@@ -45,6 +45,26 @@ export default gql`
           }
         }
         messagePlainText
+        reply {
+          _id
+          message
+          user {
+            username
+            profile {
+              picture
+            }
+          }
+          messagePlainText
+          reply {
+            message
+            messagePlainText
+            createdAt
+          }
+          totalReply
+          parent
+          createdAt
+          updatedAt
+        }
         totalReply
         parent
         createdAt

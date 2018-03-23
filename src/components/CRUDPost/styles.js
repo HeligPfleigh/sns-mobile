@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     position: "absolute",
-    top: "60%",
+    top: "52%",
     right: "5%",
   },
   postButtonText: {
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.PRIMARY,
     position: "absolute",
-    top: "45%",
+    top: "42%",
     right: "10%",
   }
 });

@@ -52,15 +52,15 @@ class AddCommentSection extends Component{
 
   _handlePressAddComment = () => {
     const { text } = this.state;
-    const { postId } = this.props;
+    const { postId, commentID } = this.props;
     this.props.createNewComment({
       variables: {
         _id: postId,
         message: text,
-        commentId: null,
+        commentId: commentID,
         isMobile: true,
       },
-      refetchQueries: ["post", "feeds"]
+      refetchQueries: ["post", "feeds", "comment"]
     });
     Keyboard.dismiss();
     this.textInput.clear();
