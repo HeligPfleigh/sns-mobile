@@ -100,7 +100,7 @@ class HomeScreen extends Component {
           contentContainerStyle={{ alignSelf: "stretch" }}
           data={getFeeds.feeds.edges}
           onEndReached={this._handleEnd}
-          onEndReachedThreshold={0}
+          onEndReachedThreshold={1} // if this value equal to 0, it can't work in android
           ListFooterComponent={() => (this.state.loading ? null : <ActivityIndicator size="large" />)}
           ListHeaderComponent={this._renderFeedHeader}
           keyExtractor={item => item._id}

@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import { compose, graphql } from "react-apollo";
 
-import Layout from "../../components/Layout";
 import { colors } from "../../constants";
 import GET_POST_QUERY from "../../graphql/queries/post";
 import Post from "../../components/Post";
@@ -55,7 +54,7 @@ class PostDetailContainer extends Component {
       content = <Post post={post} />;
     }
     return (
-      <Layout>
+      <View style={{ flex: 1 }}>
         <Header>
           <Left>
             <Button transparent onPress={this._handlePressBack}>
@@ -70,7 +69,7 @@ class PostDetailContainer extends Component {
         <View style={styles.container}>
           { content }
         </View>
-      </Layout>
+      </View>
     );
   }
 }

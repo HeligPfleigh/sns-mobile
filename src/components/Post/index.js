@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, FlatList, Keyboard } from "react-native";
+import { View, StyleSheet, Text, FlatList, Keyboard, Platform } from "react-native";
 
 import { colors } from "../../constants";
 import FeedCardHeader from "../FeedCard/FeedCardHeader";
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 
 class Post extends Component {
   state = {
-    top: "90%",
+    bottom: 0,
   }
 
   componentWillMount () {
@@ -46,12 +46,12 @@ class Post extends Component {
     this.keyboardDidHideListener.remove();
   }
 
-  _keyboardDidShow = () => {
-    this.setState({ top: "48%" });
+  _keyboardDidShow = (e) => {
+    this.setState({ bottom: Platform.OS === "ios" ? e.endCoordinates.height : 0});
   }
 
   _keyboardDidHide = () => {
-    this.setState({ top: "90%" });
+    this.setState({ bottom: 0 });
   }
 
   _renderComment = (item) => {
@@ -88,7 +88,7 @@ class Post extends Component {
                 />
             : null}
         </View>
-        <View style={[styles.addCommentContainer, { top: this.state.top }]}>
+        <View style={[styles.addCommentContainer, { bottom: this.state.bottom }]}>
           <AddCommentSection postId={_id} commentID={null}/>
         </View>
       </View>

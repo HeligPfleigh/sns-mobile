@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, TextInput, TouchableOpacity, Platform, Keyboard } from "react-native";
+import { View, StyleSheet, TextInput, TouchableOpacity, Keyboard, Platform } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
@@ -32,7 +32,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "stretch",
-  }
+  },
+  textInputAndroid: {
+    width: "90%",
+    height: 50,
+  },
+  textInputIOS: {
+    width: "90%",
+  },
 });
 
 @compose(
@@ -76,11 +83,12 @@ class AddCommentSection extends Component{
         </View>
         <View style={styles.inputContainer}>
           <TextInput
+            style={Platform.OS === "ios" ? styles.textInputIOS : styles.textInputAndroid}
             ref={input => { this.textInput = input; }}
             placeholder="Add your comment here!"
             multiline={true}
-            selectionColor={Platform.OS === "ios" && colors.PRIMARY}
             onChangeText={this._onChangeText}
+            underlineColorAndroid="rgba(0,0,0,0)"
             />
         </View>
         <TouchableOpacity onPress={this._handlePressAddComment}

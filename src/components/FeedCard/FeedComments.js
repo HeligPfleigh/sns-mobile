@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   repButtonText: {
     fontSize: 12,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     color: colors.LIGHT_GRAY,
   },
   totalReplyText: {

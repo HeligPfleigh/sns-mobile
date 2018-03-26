@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, Platform, TouchableOpacity, Text, Keyboard } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Keyboard } from "react-native";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -61,7 +61,7 @@ class CRUDPost extends Component{
               value={this.state.text}
               placeholder={this.props.message === "" ? "What's happening?" : ""}
               maxLength={MAX_MESSAGE_CHARACTER}
-              selectionColor={Platform.OS === "ios" && colors.PRIMARY}
+              underlineColorAndroid="rgba(0,0,0,0)"
               autoFocus={true}
             />
             <Text style={styles.textLength}>{this._textLength}</Text>

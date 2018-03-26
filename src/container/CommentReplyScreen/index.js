@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { Header, Left, Button, Body, Title, Right } from "native-base";
-import { View, StyleSheet, ActivityIndicator, FlatList } from "react-native";
+import { View, StyleSheet, ActivityIndicator, FlatList, Keyboard, Platform } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import { compose, graphql } from "react-apollo";
 
-import Layout from "../../components/Layout";
 import { colors } from "../../constants";
 import AddCommentSection from "../../components/AddCommentSection";
 import GET_COMMENT_QUERY from "../../graphql/queries/comment";
@@ -47,7 +46,25 @@ const styles = StyleSheet.create({
 )
 class CommentReplyScreen extends Component {
   state = {
-    top: "90%",
+    bottom: 0,
+  }
+
+  componentWillMount () {
+    this.keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", this._keyboardDidHide);
+  }
+
+  componentWillUnmount () {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow = (e) => {
+    this.setState({ bottom: Platform.OS === "ios" ? e.endCoordinates.height : 0 });
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({ bottom: 0 });
   }
 
   _handlePressBack = () => {
@@ -78,7 +95,7 @@ class CommentReplyScreen extends Component {
     }
 
     return (
-      <Layout navigation={this.props.navigation}>
+      <View style={{ flex: 1 }}>
         <Header>
           <Left>
             <Button transparent onPress={this._handlePressBack}>
@@ -94,11 +111,11 @@ class CommentReplyScreen extends Component {
           <View style={styles.commentContainer}>
             {content}
           </View>
-          <View style={[styles.addCommentContainer, { top: this.state.top }]}>
+          <View style={[styles.addCommentContainer, { bottom: this.state.bottom }]}>
             <AddCommentSection postId={postID} commentID={commentID}/>
           </View>
         </View>
-      </Layout>
+      </View>
     );
   }
 }
