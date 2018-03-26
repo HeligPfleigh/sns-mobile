@@ -15,11 +15,9 @@ import ME_QUERY from "../../graphql/queries/me";
 import styles from "./styles";
 export const SAVE_USER_INFO = "SAVE_USER_INFO";
 @compose(
-  connect(
-    ({ common }) => ({
-      orientation: common.orientation
-    })
-  ),
+  connect(({ common }) => ({
+    orientation: common.orientation
+  })),
   withApollo,
   graphql(GET_FEEDS_QUERY, {
     name: "getFeeds",
@@ -90,19 +88,18 @@ class HomeScreen extends Component {
 
   render() {
     const { getMe, getFeeds } = this.props;
-
     let content;
     if (getFeeds.loading || getMe.loading) {
       content = <ActivityIndicator size="large" />;
     } else {
       content = (
         <FlatList
+          horizontal
           contentContainerStyle={{ alignSelf: "stretch" }}
           data={getFeeds.feeds.edges}
           onEndReached={this._handleEnd}
           onEndReachedThreshold={1} // if this value equal to 0, it can't work in android
           ListFooterComponent={() => (this.state.loading ? null : <ActivityIndicator size="large" />)}
-          ListHeaderComponent={this._renderFeedHeader}
           keyExtractor={item => item._id}
           renderItem={this._renderItem}
         />
@@ -111,6 +108,11 @@ class HomeScreen extends Component {
 
     return (
       <Layout navigation={this.props.navigation}>
+        {getMe.me ? (
+          <View style={{ height: 100 }}>
+            <FeedsHeader info={getMe.me} />
+          </View>
+        ) : null}
         <View style={styles.root}>{content}</View>
       </Layout>
     );
