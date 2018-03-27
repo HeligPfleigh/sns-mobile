@@ -28,6 +28,7 @@ import Notification from "../container/Notification";
 
 // Screens from drawer menu
 import ProfileScreen from "../container/ProfileScreen";
+import ChangePasswordScreen from "../container/ChangePasswordScreen";
 
 /************* START CONFIG APP ROUTES *******************/
 /*********** Tabs Batch Screens *********************/
@@ -57,7 +58,8 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
 
 const MenuRouteConfig = {
   ...TabsRouteConfig,
-  ProfileScreen: { screen: ProfileScreen }
+  ProfileScreen: { screen: ProfileScreen },
+  ChangePasswordScreen: {screen: ChangePasswordScreen}
 };
 
 const MenuWithTabRouteConfig = TabNavigator(MenuRouteConfig, {
