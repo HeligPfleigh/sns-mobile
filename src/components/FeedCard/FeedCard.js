@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Card, CardItem } from "native-base";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
+const deviceWidth = Dimensions.get("window").width;
+
 
 import { colors } from "../../constants";
 import FeedCardHeader from "./FeedCardHeader";
@@ -15,7 +17,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "stretch",
     minHeight: 300,
-    width: "100%",
+    width: deviceWidth - 20,
   },
   contentContainer: {
     flex: 1,
