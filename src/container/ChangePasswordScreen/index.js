@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Content, Text, Form, Button, View } from "native-base";
+import { Content, Text, Form, Button, View, Toast } from "native-base";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { compose, graphql } from "react-apollo";
 import { connect } from "react-redux";
@@ -59,16 +59,31 @@ class ChangePassword extends Component {
   onSubmit = async variables => {
     this.props.dispatch(utils.createAction(SPINNER_CHANGE, true));
     const { username } = this.props;
-    const new_var = { username, ...variables };
+    const { oldPassword, password } = variables;
+    const new_var = { username: username, password: password, oldPassword: oldPassword };
     try {
-      await this.props.changePassword( new_var );
-       this.props.dispatch(utils.createAction(CHANGE_PASSWORD_SUCCESS));
-       this.props.logOut(this.props.navigation);
+      await this.props.changePassword(new_var);
+      Toast.show({
+        text: "Đổi password thành công",
+        duration: 2500,
+        position: "top",
+        textStyle: { textAlign: "center" },
+        type: "success"
+      });
+      this.props.dispatch(utils.createAction(CHANGE_PASSWORD_SUCCESS));
+      setTimeout( () => this.props.logOut(this.props.navigation), 300);
     } catch (error) {
-     this.props.dispatch(utils.createAction(CHANGE_PASSWORD_FAIL));
+      const errorMessage = error && error.graphQLErrors && error.graphQLErrors[0].message || "Đổi password không thành công";
+      Toast.show({
+        text: errorMessage,
+        duration: 2500,
+        position: "top",
+        textStyle: { textAlign: "center" },
+        type: "danger"
+      });
+      this.props.dispatch(utils.createAction(CHANGE_PASSWORD_FAIL));
     }
     this.props.dispatch(utils.createAction(SPINNER_CHANGE, false));
-
   }
 
   render() {
@@ -100,13 +115,16 @@ const ChangePasswordForm = reduxForm({
 })(ChangePassword);
 
 const ChangePasswordContainer = compose(
-  connect(state => ({
-    username: state.userInfo && state.userInfo.username,
-    password: selector(state, "password"),
-  }), dispatch => ({
-    logOut: navigation => dispatch(logOut(navigation))
-  })
-),
+  connect(
+    state => ({
+      username: state.userInfo && state.userInfo.username,
+      password: selector(state, "password"),
+      oldPassword: selector(state, "oldPassword")
+    }),
+    dispatch => ({
+      logOut: navigation => dispatch(logOut(navigation))
+    })
+  ),
   graphql(changeUserPassword, { name: "changePassword" })
 )(ChangePasswordForm);
 
