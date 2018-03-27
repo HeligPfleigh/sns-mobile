@@ -55,6 +55,9 @@ class HomeScreen extends Component {
       page: 0,
       loading: false
     };
+    if (this.props.getMe.me) {
+      this.props.dispatch(utils.createAction(SAVE_USER_INFO, this.props.getMe.me));
+    }
     props.navigation.navigate("DrawerClose");
     if (props.dispatch) {
       props.dispatch(utils.createAction(SPINNER_CHANGE, false));
