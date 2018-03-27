@@ -54,10 +54,23 @@ class Data extends Component {
                 </Text>
               </Body>
               <View>
-                 { item.item.friendStatus === "FRIEND" ? <Button disabled style={{ marginLeft: 10, marginTop: 30, backgroundColor:"green" }}><Text> Đã kết bạn </Text></Button>
-                 : (item.item.friendStatus === "STRANGER" ? <Button info style={{ marginLeft: 10, marginTop: 30 }} onPress={this.accept.bind(this, item.item._id)}><Text> Kết bạn </Text></Button>
-                 : <Button disabled style={{ marginLeft: 10, marginTop: 30 }}><Text> Đã gửi yêu cầu </Text></Button>  ) }
-
+                {item.item.friendStatus === "FRIEND" ? (
+                  <Button disabled style={{ marginLeft: 10, marginTop: 30, backgroundColor: "green" }}>
+                    <Text> Đã kết bạn </Text>
+                  </Button>
+                ) : item.item.friendStatus === "STRANGER" ? (
+                  <Button
+                    info
+                    style={{ marginLeft: 10, marginTop: 30 }}
+                    onPress={this.accept.bind(this, item.item._id)}
+                  >
+                    <Text> Kết bạn </Text>
+                  </Button>
+                ) : (
+                  <Button disabled style={{ marginLeft: 10, marginTop: 30 }}>
+                    <Text> Đã gửi yêu cầu </Text>
+                  </Button>
+                )}
               </View>
             </ListItem>
           );

@@ -1,6 +1,8 @@
 import React from "react";
 import { Icon } from "native-base";
 import { StackNavigator, DrawerNavigator, SwitchNavigator, TabNavigator } from "react-navigation";
+import IconBadge from "react-native-icon-badge";
+import NotificationNumberWithData from "./badges";
 
 // common components
 import icons from "./icons";
@@ -28,6 +30,7 @@ import Notification from "../container/Notification";
 
 // Screens from drawer menu
 import ProfileScreen from "../container/ProfileScreen";
+import ChangePasswordScreen from "../container/ChangePasswordScreen";
 
 /************* START CONFIG APP ROUTES *******************/
 /*********** Tabs Batch Screens *********************/
@@ -36,8 +39,7 @@ const TabsRouteConfig = {
   Home: { screen: Home },
   FriendBox: { screen: FriendBox },
   BlankScreen: { screen: BlankScreen },
-  Notification: { screen: Notification },
-
+  Notification: { screen: Notification }
 };
 
 const AppRouteConfig = TabNavigator(TabsRouteConfig, {
@@ -50,14 +52,33 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
     tabBarIcon: () => {
       const { routeName } = navigation.state;
 
-      return <Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />;
+      if (icons[routeName] === "notifications") {
+        return (
+          <IconBadge
+            MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
+            BadgeElement={<NotificationNumberWithData/>
+            }
+          />
+        );
+      }
+      else if (icons[routeName] === "contacts") {
+        return (
+          <IconBadge
+            MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
+            BadgeElement={<NotificationNumberWithData/>
+            }
+          />
+        );
+      }
+      return <Icon name={icons[routeName]} style={{ fontSize: 29 }} />;
     }
   })
 });
 
 const MenuRouteConfig = {
   ...TabsRouteConfig,
-  ProfileScreen: { screen: ProfileScreen }
+  ProfileScreen: { screen: ProfileScreen },
+  ChangePasswordScreen: {screen: ChangePasswordScreen}
 };
 
 const MenuWithTabRouteConfig = TabNavigator(MenuRouteConfig, {
@@ -69,21 +90,31 @@ const MenuWithTabRouteConfig = TabNavigator(MenuRouteConfig, {
   navigationOptions: ({ navigation }) => ({
     tabBarIcon: () => {
       const { routeName } = navigation.state;
-
-      return <Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />;
-    }
+      if (icons[routeName] === "notifications") {
+        return (
+          <IconBadge
+            MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
+            BadgeElement={<NotificationNumberWithData/>
+            }
+          />
+        );
+      }
+      return <Icon name={icons[routeName]} style={{ fontSize: 29 }} />;    }
   })
 });
 
-const StackAppRouteConfig = StackNavigator({
-  TabScreen: { screen: AppRouteConfig },
-  PostDetail: { screen: PostDetail },
-  NewFeed: { screen: NewFeedScreen },
-  EditPostScreen: { screen: EditPostScreen },
-  CommentReplyScreen: { screen: CommentReplyScreen },
-}, {
-  headerMode: "none",
-});
+const StackAppRouteConfig = StackNavigator(
+  {
+    TabScreen: { screen: AppRouteConfig },
+    PostDetail: { screen: PostDetail },
+    NewFeed: { screen: NewFeedScreen },
+    EditPostScreen: { screen: EditPostScreen },
+    CommentReplyScreen: { screen: CommentReplyScreen }
+  },
+  {
+    headerMode: "none"
+  }
+);
 
 /*********** Drawer Batch Screens ****************************/
 const AppRouters = DrawerNavigator(

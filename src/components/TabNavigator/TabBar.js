@@ -21,6 +21,8 @@ class TabBar extends Component {
             switch (route.key) {
               case "ProfileScreen":
                 return null;
+                case "ChangePasswordScreen":
+                return null;
               default:
                 return (
                   <Button

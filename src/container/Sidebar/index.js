@@ -43,6 +43,11 @@ const routes = [
     drawerIcon: <OtherIcon name="dribbble" size={20} color="lightgrey" />
   },
   {
+    route: "ChangePasswordScreen",
+    caption: "Đổi mật khẩu",
+    drawerIcon: <OtherIcon name="key" size={20} color="lightgrey" />
+  },
+  {
     route: "ProfileScreen",
     caption: "Tài khoản",
     drawerIcon: <OtherIcon name="check" size={20} color="lightgrey" />
