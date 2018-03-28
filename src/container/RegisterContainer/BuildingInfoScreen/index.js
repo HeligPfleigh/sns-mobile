@@ -25,6 +25,14 @@ const tipContent = "Hint: Chọn toà nhà và căn hộ dựa theo gợi ý";
   }),
 )
 class BuildingInfoScreen extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      buildings: undefined,
+      apartment: [],
+    };
+  }
+
   _handlePressBack = () => {
     this.props.dispatch(NavigationActions.back());
   }
@@ -35,7 +43,29 @@ class BuildingInfoScreen extends Component {
     }));
   }
 
+  onBuildingChange = (value) => this.setState({buildings: value})
+
   render() {
+    const { getBuildings } = this.props;
+
+    let buildingsInfo, apartmentInfo;
+    if ( !getBuildings.loading ){
+      buildingsInfo = <Picker
+        iosHeader="Chọn toà nhà"
+        mode="dropdown"
+        placeholder="Chạm để chọn toà nhà bạn đang ở"
+        selectedValue={this.state.buildings}
+        onValueChange={this.onBuildingChange}
+      >
+        {getBuildings.buildings.map(item => <Item key={item._id} label={item.name} value={item._id}/>)}
+      </Picker>;
+    }
+    else {
+      buildingsInfo = <Text style={styles.errorText}>Đang tải thông tin từ server</Text>;
+    }
+
+    apartmentInfo = <Text style={styles.errorText}>Chọn thông tin toà nhà trước</Text>;
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -46,18 +76,9 @@ class BuildingInfoScreen extends Component {
             <Text style={styles.tipText}>{tipContent}</Text>
           </View>
           <Text style={styles.label}>Toà nhà(*):</Text>
-          <Picker
-              iosHeader="Select one"
-              mode="dropdown"
-              placeholder="Select One"
-            >
-              <Item label="Wallet" value="key0" />
-              <Item label="ATM Card" value="key1" />
-              <Item label="Debit Card" value="key2" />
-              <Item label="Credit Card" value="key3" />
-              <Item label="Net Banking" value="key4" />
-          </Picker>
+          { buildingsInfo }
           <Text style={styles.label}>Căn hộ(*):</Text>
+          { apartmentInfo }
         </View>
         <View style={styles.footer}>
           <TouchableOpacity style={styles.backContainer} onPress={this._handlePressBack}>

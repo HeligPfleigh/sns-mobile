@@ -62,4 +62,9 @@ export default StyleSheet.create({
     padding: 20,
     backgroundColor: colors.PRIMARY,
   },
+  errorText: {
+    color: colors.PRIMARY,
+    fontSize: 18,
+    padding: 15,
+  },
 });
