@@ -16,6 +16,10 @@ import Login from "../container/Login";
 import ForgotPassword from "../container/ForgotPassword";
 import AuthLoadingScreen from "../container/AuthLoadingScreen";
 
+import BasicInfoScreen from "../container/RegisterContainer/BasicInfoScreen";
+import BuildingInfoScreen from "../container/RegisterContainer/BuildingInfoScreen";
+import RegisterProfileInfo from "../container/RegisterContainer/ProfileInfoScreen";
+
 // Main app screen
 import Home from "../container/Home";
 import NewFeedScreen from "../container/NewFeedScreen";
@@ -106,6 +110,11 @@ const AuthRouteConfig = {
 
   // SignUp Screen
   SignUp: { screen: SignUp },
+
+  // Register Screen
+  RegisterBasicInfo: { screen: BasicInfoScreen },
+  RegisterBuildingInfo: { screen: BuildingInfoScreen },
+  RegisterProfileInfo: { screen: RegisterProfileInfo },
 
   // Login Screen
   Login: { screen: Login },

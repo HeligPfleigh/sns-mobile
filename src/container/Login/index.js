@@ -229,7 +229,7 @@ class LoginForm extends Component {
                   name="arrow-dropright-circle"
                   style={{ fontSize: orientation === "LANDSCAPE" ? 18 : 15, color: "#fff" }}
                   onPress={() => {
-                    this.props.navigation.navigate("SignUp");
+                    this.props.navigation.navigate("RegisterBasicInfo");
                   }}
                 />
               </Text>
