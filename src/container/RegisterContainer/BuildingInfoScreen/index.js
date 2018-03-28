@@ -8,6 +8,7 @@ import { Picker, Item } from "native-base";
 import { colors } from "../../../constants";
 import styles from "../styles";
 import GET_BUILDINGS from "../../../graphql/queries/buildings";
+import ApartmentInfo from "./ApartmentInfo";
 
 const tipContent = "Hint: Chọn toà nhà và căn hộ dựa theo gợi ý";
 
@@ -29,7 +30,7 @@ class BuildingInfoScreen extends Component {
     super(props);
     this.state = {
       buildings: undefined,
-      apartment: [],
+      apartment: undefined,
     };
   }
 
@@ -45,10 +46,12 @@ class BuildingInfoScreen extends Component {
 
   onBuildingChange = (value) => this.setState({buildings: value})
 
+  onApartmentsChange = (value) => this.setState({apartment: value})
+
   render() {
     const { getBuildings } = this.props;
 
-    let buildingsInfo, apartmentInfo;
+    let buildingsInfo;
     if ( !getBuildings.loading ){
       buildingsInfo = <Picker
         iosHeader="Chọn toà nhà"
@@ -64,8 +67,6 @@ class BuildingInfoScreen extends Component {
       buildingsInfo = <Text style={styles.errorText}>Đang tải thông tin từ server</Text>;
     }
 
-    apartmentInfo = <Text style={styles.errorText}>Chọn thông tin toà nhà trước</Text>;
-
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -78,7 +79,7 @@ class BuildingInfoScreen extends Component {
           <Text style={styles.label}>Toà nhà(*):</Text>
           { buildingsInfo }
           <Text style={styles.label}>Căn hộ(*):</Text>
-          { apartmentInfo }
+          {this.state.buildings ? <ApartmentInfo _id={this.state.buildings} onApartmentsChange={this.onApartmentsChange}/> : <Text style={styles.errorText}>Chọn thông tin toà nhà trước</Text>}
         </View>
         <View style={styles.footer}>
           <TouchableOpacity style={styles.backContainer} onPress={this._handlePressBack}>

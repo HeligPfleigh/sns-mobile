@@ -64,7 +64,7 @@ export default StyleSheet.create({
   },
   errorText: {
     color: colors.PRIMARY,
-    fontSize: 18,
+    fontSize: 14,
     padding: 15,
   },
 });
