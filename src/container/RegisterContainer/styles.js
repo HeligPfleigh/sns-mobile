@@ -67,4 +67,22 @@ export default StyleSheet.create({
     fontSize: 14,
     padding: 15,
   },
+  verifyButton: {
+    backgroundColor: colors.PRIMARY,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 80,
+    height: 40,
+    borderRadius: 20,
+  },
+  verifyButtonText: {
+    color: colors.WHITE,
+    fontSize: 14,
+  },
+  verifyInputContainer: {
+    flex: 3,
+    borderWidth: 1,
+    margin: 10,
+    borderColor: colors.PRIMARY,
+  },
 });

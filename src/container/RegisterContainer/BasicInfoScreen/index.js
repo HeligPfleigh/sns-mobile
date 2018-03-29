@@ -10,13 +10,15 @@ import styles from "../styles";
 const tipContent = "Hint: Đăng ký với tên thật giúp bạn bè dễ tìm kiếm hơn, cũng như nhận được thông tin chính xác từ ban quản trị";
 
 @connect(
-  null,
+  ({ registerInfo }) => ({
+    profile: registerInfo.user.profile,
+  }),
   dispatch => ({ dispatch })
 )
 class BasicInfoScreen extends Component {
   state = {
-    firstName: undefined,
-    lastName: undefined,
+    firstName: this.props.profile.firstName,
+    lastName: this.props.profile.lastName,
   }
 
   _handlePressBack = () => {
@@ -47,6 +49,7 @@ class BasicInfoScreen extends Component {
           <Text style={styles.label}>Tên (*):</Text>
           <TextInput
             style={styles.input}
+            value={this.state.firstName}
             placeholder="First Name"
             onChangeText={(value) => this.setState({ firstName: value })}
             underlineColorAndroid="rgba(0,0,0,0)"
@@ -54,6 +57,7 @@ class BasicInfoScreen extends Component {
           <Text style={styles.label}>Họ (*):</Text>
           <TextInput
             style={styles.input}
+            value={this.state.lastName}
             placeholder="Last Name"
             onChangeText={(value) => this.setState({ lastName: value })}
             underlineColorAndroid="rgba(0,0,0,0)"
