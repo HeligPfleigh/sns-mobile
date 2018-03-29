@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ActivityIndicator } from "react-native";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import { graphql, compose } from "react-apollo";
@@ -29,6 +29,7 @@ class ProfileInfoScreen extends Component {
       password: password.value,
       phone: phone.number,
       email: email.address,
+      loading: false,
       error: null,
     };
   }
@@ -48,11 +49,13 @@ class ProfileInfoScreen extends Component {
     await this.props.dispatch(changeRegisterProfile({ username, password, phone, email }));
 
     try {
+      this.setState({loading: true});
       const result = await this.props.createUser({
         variables: {
           user: this.props.user
         }
       });
+      this.setState({loading: false});
       if (result.data) {
         this.props.dispatch(NavigationActions.navigate({
           routeName: "RegisterVerification",
@@ -114,14 +117,14 @@ class ProfileInfoScreen extends Component {
           />
           <Text style={styles.label}>{this.state.error}</Text>
         </KeyboardAvoidingView>
-        <View style={styles.footer}>
+        {!this.state.loading ? <View style={styles.footer}>
           <TouchableOpacity style={styles.backContainer} onPress={this._handlePressBack}>
             <Text>Quay lại</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.nextContainer} onPress={this._handlePressNext}>
             <Text style={{ color: colors.WHITE }}>Tiếp theo</Text>
           </TouchableOpacity>
-        </View>
+        </View> : <ActivityIndicator size="large"/>}
       </View>
     );
   }
