@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 
 import { colors } from "../../../constants";
+import { changeRegisterName } from "../actions";
 import styles from "../styles";
 
 const tipContent = "Hint: Đăng ký với tên thật giúp bạn bè dễ tìm kiếm hơn, cũng như nhận được thông tin chính xác từ ban quản trị";
@@ -13,14 +14,24 @@ const tipContent = "Hint: Đăng ký với tên thật giúp bạn bè dễ tìm
   dispatch => ({ dispatch })
 )
 class BasicInfoScreen extends Component {
+  state = {
+    firstName: undefined,
+    lastName: undefined,
+  }
+
   _handlePressBack = () => {
     this.props.dispatch(NavigationActions.back());
   }
 
-  _handlePressNext = () => {
-    this.props.dispatch(NavigationActions.navigate({
-      routeName: "RegisterBuildingInfo"
-    }));
+  _handlePressNext = async () => {
+    const { firstName, lastName } = this.state;
+    if ( firstName && lastName){
+      await this.props.dispatch(changeRegisterName({firstName, lastName}));
+
+      this.props.dispatch(NavigationActions.navigate({
+        routeName: "RegisterBuildingInfo"
+      }));
+    }
   }
 
   render() {
@@ -36,13 +47,15 @@ class BasicInfoScreen extends Component {
           <Text style={styles.label}>Tên (*):</Text>
           <TextInput
             style={styles.input}
-            placeholder="First name"
+            placeholder="First Name"
+            onChangeText={(value) => this.setState({ firstName: value })}
             underlineColorAndroid="rgba(0,0,0,0)"
           />
           <Text style={styles.label}>Họ (*):</Text>
           <TextInput
             style={styles.input}
-            placeholder="Last name"
+            placeholder="Last Name"
+            onChangeText={(value) => this.setState({ lastName: value })}
             underlineColorAndroid="rgba(0,0,0,0)"
           />
         </View>
