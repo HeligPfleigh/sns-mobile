@@ -6,6 +6,9 @@ export const ORIENTATION_MODE_CHANGE = "ORIENTATION_MODE_CHANGE";
 export const EMAIL_EXISTED = "Email already exists";
 export const USER_EXISTED = "User already exists";
 
+// api server
+export const API_SERVER = "http://api-sns.mttjsc.com";
+
 // log in action
 export const ACCESS_TOKEN = "@SNS:accessToken";
 export const USER_ID = "@SNS:userId";

@@ -6,12 +6,12 @@ import { createStore, applyMiddleware, compose } from "redux";
 import isEmpty from "lodash/isEmpty";
 
 import reducers from "./reducers";
-import { ACCESS_TOKEN } from "./constants";
+import { ACCESS_TOKEN, API_SERVER } from "./constants";
 import { navMiddleware } from "./navigator";
 
 // init apollo client
 export const client = new ApolloClient({
-  uri: "http://api-sns.mttjsc.com/graphql",
+  uri: `${API_SERVER}/graphql`,
   fetchOptions: {
     credentials: "include"
   },

@@ -6,7 +6,7 @@ import { Field, reduxForm } from "redux-form";
 import LinearGradient from "react-native-linear-gradient";
 import { Header, Button, Title, Text, View, Icon, Toast, Form } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { LoginManager, AccessToken } from "react-native-fbsdk";
+import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from "react-native-fbsdk";
 import { gql } from "apollo-boost";
 import { graphql, compose } from "react-apollo";
 import { AsyncStorage } from "react-native";
@@ -105,13 +105,35 @@ class LoginForm extends Component {
   }
 
   _onLoginFbPress = async () => {
-    const res = await LoginManager.logInWithReadPermissions(["public_profile"]);
+    const res = await LoginManager.logInWithReadPermissions(["public_profile", "email"]);
     if (res.grantedPermissions && !res.isCancelled) {
       const data = await AccessToken.getCurrentAccessToken();
       if (data) {
-        //todo: handle login here
-        //console.log(data.accessToken);
+        // todo: handle login here
+        // console.log(data.accessToken);
+        const infoRequest = new GraphRequest(
+          "/me",
+          {
+            accessToken: data.accessToken,
+            parameters: {
+              fields: {
+                string: "email, id, name, first_name, last_name, picture",
+              }
+            },
+          },
+          this._responseInfoCallback,
+        );
+
+        new GraphRequestManager().addRequest(infoRequest).start();
       }
+    }
+  }
+
+  _responseInfoCallback = (error, result) => {
+    if (error) {
+      // console.log(error);
+    } else {
+      // console.log(result);
     }
   }
 
@@ -207,7 +229,7 @@ class LoginForm extends Component {
                   name="arrow-dropright-circle"
                   style={{ fontSize: orientation === "LANDSCAPE" ? 18 : 15, color: "#fff" }}
                   onPress={() => {
-                    this.props.navigation.navigate("SignUp");
+                    this.props.navigation.navigate("RegisterBasicInfo");
                   }}
                 />
               </Text>

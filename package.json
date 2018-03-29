@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "apollo-boost": "0.1.2",
+    "axios": "^0.18.0",
     "date-fns": "1.29.0",
     "graphql": "0.13.1",
     "immutability-helper": "2.6.6",
