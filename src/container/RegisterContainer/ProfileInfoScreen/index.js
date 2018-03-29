@@ -46,10 +46,22 @@ class ProfileInfoScreen extends Component {
       return;
     }
     await this.props.dispatch(changeRegisterProfile({ username, password, phone, email }));
-    // todo
-    this.props.dispatch(NavigationActions.navigate({
-      routeName: "RegisterVerification",
-    }));
+
+    try {
+      const result = await this.props.createUser({
+        variables: {
+          user: this.props.user
+        }
+      });
+      if (result.data) {
+        this.props.dispatch(NavigationActions.navigate({
+          routeName: "RegisterVerification",
+        }));
+      }
+    } catch (e) {
+      let message = e.message.replace("GraphQL error:", "Có lỗi xảy ra:");
+      this.setState({ error: message });
+    }
   }
 
   render() {
