@@ -3,6 +3,7 @@ import { gql } from "apollo-boost";
 export default gql`
   {
     me{
+      _id
       username
       fullName
       profile {
@@ -11,6 +12,7 @@ export default gql`
       email {
         address
       }
+      totalNotification
     }
   }
 `;

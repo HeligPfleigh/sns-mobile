@@ -3,6 +3,7 @@ import {
   CHANGE_REGISTER_BUILDING,
   CHANGE_REGISTER_PROFILE
 } from "./actions";
+import { fakeAvatar } from "../../constants";
 
 const initialState = {
   user: {
@@ -19,7 +20,7 @@ const initialState = {
     },
     username: undefined,
     profile:{
-      picture: "https://yt3.ggpht.com/-f5sSf6tNdZw/AAAAAAAAAAI/AAAAAAAAAAA/iRX9lzsq13U/s88-c-k-no-mo-rj-c0xffffff/photo.jpg",
+      picture: fakeAvatar,
       firstName: undefined,
       lastName: undefined,
     }
@@ -34,6 +35,7 @@ export default function(state = initialState, action){
       let updateState = { ...state };
       updateState.user.profile.firstName = action.payload.firstName;
       updateState.user.profile.lastName = action.payload.lastName;
+      updateState.user.profile.picture = action.payload.picture || fakeAvatar;
       return updateState;
     }
     case CHANGE_REGISTER_BUILDING:

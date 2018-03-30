@@ -31,14 +31,21 @@ export default StyleSheet.create({
   tipText:{
     color: colors.PRIMARY,
     fontSize: 14,
+    fontStyle: "italic",
   },
   label: {
     color: colors.PRIMARY,
     paddingHorizontal: 20,
+    fontSize: 16,
+    fontWeight: "800",
+    fontStyle: "italic",
   },
   input: {
     width: "100%",
     padding: 20,
+    color: colors.PRIMARY,
+    fontWeight: "500",
+    fontStyle: "italic",
   },
   footer: {
     position: "absolute",
@@ -66,6 +73,7 @@ export default StyleSheet.create({
     color: colors.PRIMARY,
     fontSize: 14,
     padding: 15,
+    fontStyle: "italic",
   },
   verifyButton: {
     backgroundColor: colors.PRIMARY,
