@@ -18,6 +18,8 @@ import * as utils from "../../utils/common";
 import { SPINNER_CHANGE, ACCESS_TOKEN } from "../../constants";
 import { LOGIN_SUCCESS, LOGIN_FAILED, LOGIN_CLEAR_STATUS } from "./actions";
 import styles from "./styles";
+import { changeRegisterName, changeRegisterProfile} from "../RegisterContainer/actions";
+import LOGIN_WITH_FACEBOOK from "../../graphql/mutations/loginWithFacebook";
 
 export const loginQuery = gql`
   mutation login($account: String!, $password: String!) {
@@ -35,7 +37,8 @@ export const loginQuery = gql`
     }),
     dispatch => ({ dispatch })
   ),
-  graphql(loginQuery, { name: "loginUser" })
+  graphql(loginQuery, { name: "loginUser" }),
+  graphql(LOGIN_WITH_FACEBOOK, { name: "loginWithFacebook"})
 )
 class LoginForm extends Component {
   constructor(props) {
@@ -106,34 +109,66 @@ class LoginForm extends Component {
 
   _onLoginFbPress = async () => {
     const res = await LoginManager.logInWithReadPermissions(["public_profile", "email"]);
-    if (res.grantedPermissions && !res.isCancelled) {
-      const data = await AccessToken.getCurrentAccessToken();
-      if (data) {
-        // todo: handle login here
-        // console.log(data.accessToken);
-        const infoRequest = new GraphRequest(
-          "/me",
-          {
-            accessToken: data.accessToken,
-            parameters: {
-              fields: {
-                string: "email, id, name, first_name, last_name, picture",
-              }
-            },
-          },
-          this._responseInfoCallback,
-        );
 
-        new GraphRequestManager().addRequest(infoRequest).start();
+    if (res.grantedPermissions && !res.isCancelled) {
+
+      const fbResponse = await AccessToken.getCurrentAccessToken();
+
+      if (fbResponse) {
+
+        try {
+
+          const { data: { loginWithFacebook } } = await this.props.loginWithFacebook({
+            variables: {
+              token: fbResponse.accessToken,
+            }
+          });
+
+          if (!loginWithFacebook || !loginWithFacebook.id_token) {
+            throw new Error("Tài khoản không tồn tại");
+          }
+
+
+          // save token locally
+          await AsyncStorage.setItem(ACCESS_TOKEN, loginWithFacebook.id_token);
+          this.props.dispatch(utils.createAction(LOGIN_SUCCESS));
+          this.props.navigation.navigate("App");
+
+        } catch (err) {
+          const infoRequest = new GraphRequest(
+            "/me",
+            {
+              accessToken: fbResponse.accessToken,
+              parameters: {
+                fields: {
+                  string: "email, id, name, first_name, last_name, picture",
+                }
+              },
+            },
+            this._responseInfoCallback,
+          );
+
+          new GraphRequestManager().addRequest(infoRequest).start();
+        }
       }
     }
   }
 
-  _responseInfoCallback = (error, result) => {
+  _responseInfoCallback = async (error, result) => {
     if (error) {
       // console.log(error);
     } else {
-      // console.log(result);
+      const { first_name, last_name, picture, email } = result;
+      await this.props.dispatch(changeRegisterName({
+        firstName: first_name,
+        lastName: last_name,
+        picture: picture.data.url,
+      }));
+      await this.props.dispatch(changeRegisterProfile({
+        email,
+      }));
+
+      this.props.navigation.navigate("RegisterBasicInfo");
     }
   }
 

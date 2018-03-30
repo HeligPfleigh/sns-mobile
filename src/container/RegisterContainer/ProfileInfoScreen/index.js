@@ -63,7 +63,7 @@ class ProfileInfoScreen extends Component {
       }
     } catch (e) {
       let message = e.message.replace("GraphQL error:", "Có lỗi xảy ra:");
-      this.setState({ error: message });
+      this.setState({ error: message, loading: false });
     }
   }
 
@@ -88,7 +88,7 @@ class ProfileInfoScreen extends Component {
           />
           <Text style={styles.label}>Mật khẩu(*):</Text>
           <TextInput
-            password
+            secureTextEntry={true}
             value={this.state.password}
             autoCapitalize="none"
             style={styles.input}

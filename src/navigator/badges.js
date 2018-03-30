@@ -3,6 +3,8 @@ import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
 import { ActivityIndicator, Text } from "react-native";
 
+import ME_QUERY from "../graphql/queries/me";
+
 class NotificationNumber extends Component {
   constructor(props) {
     super(props);
@@ -22,13 +24,6 @@ class NotificationNumber extends Component {
     return <Text style={{ fontSize: 9 }}> .. </Text>;
   }
 }
-const totalQuery = gql`
-  query {
-    me {
-      totalNotification
-    }
-  }
-`;
 
 const NumberQuery = gql`
   query {
@@ -39,7 +34,7 @@ const NumberQuery = gql`
     }
   }
 `;
-const NotificationNumberWithData = compose(graphql(NumberQuery), graphql(totalQuery, { name: "total" }))(
+const NotificationNumberWithData = compose(graphql(NumberQuery), graphql(ME_QUERY, { name: "total" }))(
   NotificationNumber
 );
 export default NotificationNumberWithData;
