@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   connect(
     ({ userInfo }) => ({
       avatar: userInfo.profile.picture,
+      id: userInfo._id,
     })
   ),
   graphql(CREATE_NEW_COMMENT, {name: "createNewComment"}),
@@ -75,11 +76,11 @@ class AddCommentSection extends Component{
   }
 
   render(){
-    const { avatar } = this.props;
+    const { avatar, id } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
-          <HeaderAvatar avatar={avatar}/>
+          <HeaderAvatar avatar={avatar} id={id}/>
         </View>
         <View style={styles.inputContainer}>
           <TextInput

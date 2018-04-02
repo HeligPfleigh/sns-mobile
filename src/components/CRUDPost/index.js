@@ -13,7 +13,8 @@ const MAX_MESSAGE_CHARACTER = 300;
 
 @connect(
   ({ userInfo }) => ({
-    profile: userInfo.profile
+    profile: userInfo.profile,
+    id: userInfo._id,
   }),
   dispatch => ({ dispatch })
 )
@@ -41,13 +42,13 @@ class CRUDPost extends Component{
   }
 
   render() {
-    const { profile, handlePressPost } = this.props;
+    const { profile, handlePressPost, id } = this.props;
     return (
       <Layout navigation={this.props.navigation}>
         <View style={styles.container}>
           <View style={styles.headerContainer}>
             <View style={styles.avatar} >
-              <HeaderAvatar avatar={profile.picture} />
+              <HeaderAvatar avatar={profile.picture} id={id}/>
             </View>
             <View style={{flex: 4}} />
             <TouchableOpacity style={styles.backButton} onPress={this._handleClose}>

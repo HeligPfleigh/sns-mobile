@@ -115,7 +115,7 @@ class FeedComments extends Component{
     return (
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
-          <HeaderAvatar avatar={avatar}/>
+          <HeaderAvatar avatar={avatar} id={commentInfo.user._id}/>
         </View>
         <View style={styles.leftContainer}>
           <TouchableOpacity style={styles.infoContainer} onPress={this._displayReplyButton}>

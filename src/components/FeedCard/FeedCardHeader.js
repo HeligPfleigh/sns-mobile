@@ -20,11 +20,11 @@ const styles = StyleSheet.create({
 )
 class FeedCardHeader extends Component {
   render(){
-    const { username, createdAt, profile, userInfo, postId, message } = this.props;
+    const { _id, username, createdAt, profile, userInfo, postId, message } = this.props;
     return (
       <CardItem style={styles.container}>
         <Left>
-          <HeaderAvatar avatar={profile.picture} />
+          <HeaderAvatar avatar={profile.picture} id={_id}/>
           <Body>
             <Text>{ username }</Text>
             <Text note>{ distanceInWordToNow(createdAt) } ago</Text>

@@ -15,6 +15,11 @@ const styles = StyleSheet.create({
 });
 
 class HeaderAvatar extends Component {
+  _handlePressAvatar = () => {
+    const {id} = this.props;
+    console.log(id);
+  }
+
   render(){
     const { avatar } = this.props;
     if (!avatar) {
@@ -24,7 +29,7 @@ class HeaderAvatar extends Component {
     }
 
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={this._handlePressAvatar}>
         <Image style={styles.avatar} source={{ uri: avatar || fakeAvatar }}/>
       </TouchableOpacity>
     );

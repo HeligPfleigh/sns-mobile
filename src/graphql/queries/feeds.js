@@ -17,6 +17,7 @@ export default gql`
           _id
           message
           user {
+            _id
             username
             profile {
               picture
@@ -49,6 +50,7 @@ export default gql`
           updatedAt
         }
         author {
+          _id
           username
           profile {
             picture

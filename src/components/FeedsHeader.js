@@ -66,7 +66,7 @@ class FeedsHeader extends Component{
     return (
       <Card style={styles.container}>
         <View style={styles.avatarContainer}>
-          <HeaderAvatar avatar={avatar}/>
+          <HeaderAvatar avatar={avatar} id={info._id}/>
         </View>
         <TouchableOpacity style={styles.textContainer} onPress={this._handlePressNewFeed}>
           <Text style={styles.text}>{text}</Text>

@@ -9,6 +9,7 @@ export default gql`
         _id
         message
         user {
+          _id
           username
           profile {
             picture
