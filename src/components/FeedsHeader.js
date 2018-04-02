@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   dispatch => ({ dispatch })
 )
 class FeedsHeader extends Component{
+
   _handlePressNewFeed = () => {
     const { info } = this.props;
     this.props.dispatch(NavigationActions.navigate({
@@ -62,7 +63,9 @@ class FeedsHeader extends Component{
   render(){
     const { info } = this.props;
     const avatar = info.profile.picture;
-    const text = `What's new with you, ${info.username}? `;
+    const id = info._id;
+    const text = `What's new, ${info.username}? `;
+
     return (
       <Card style={styles.container}>
         <View style={styles.avatarContainer}>

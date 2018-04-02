@@ -9,6 +9,7 @@ import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Tex
 import styles from "./styles";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
+import image from "../../assets/images/anon.jpg";
 
 const Cases = type => {
   var text = "";
@@ -98,12 +99,18 @@ class Notification extends Component {
     this.props
       .updateseen({
         variables: { _id: id }
+      }
+    )
+      .then(res => {
+        this.props.getNotification.refetch();
       })
-      .then(({ data }) => {
+      .then(res => {
         this.props.dispatch(
           NavigationActions.navigate({
-            routeName: "BlankPage"
-          })
+            routeName: "BlankScreen"
+          }
+        )
+
         );
       })
       .catch(error => {

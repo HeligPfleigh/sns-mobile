@@ -2,8 +2,8 @@ import React from "react";
 import { Icon } from "native-base";
 import { StackNavigator, DrawerNavigator, SwitchNavigator, TabNavigator } from "react-navigation";
 import IconBadge from "react-native-icon-badge";
-import NotificationNumberWithData from "./badges";
-
+import NotificationNumber from "./badges";
+import FriendProfileScreen from "../container/FriendProfileScreen";
 // common components
 import icons from "./icons";
 import { TabBar } from "../components/TabNavigator";
@@ -61,7 +61,7 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
         return (
           <IconBadge
             MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
-            BadgeElement={<NotificationNumberWithData/>
+            BadgeElement={<NotificationNumber/>
             }
           />
         );
@@ -70,7 +70,7 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
         return (
           <IconBadge
             MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
-            BadgeElement={<NotificationNumberWithData/>
+            BadgeElement={<NotificationNumber/>
             }
           />
         );

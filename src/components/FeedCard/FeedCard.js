@@ -59,7 +59,6 @@ class FeedCard extends Component {
     const { _id, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt, user, building } = this.props;
 
     const displayText = messagePlainText.length > 300 ? `${messagePlainText.substring(0,300)}...` : messagePlainText;
-
     return (
       <Card style={styles.container}>
         <FeedCardHeader

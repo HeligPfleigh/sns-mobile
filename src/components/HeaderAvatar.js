@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Image, ActivityIndicator, TouchableOpacity } from "react-native";
+import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
 
 import { fakeAvatar } from "../constants";
 
@@ -21,12 +23,15 @@ class HeaderAvatar extends Component {
   }
 
   render(){
+    const { id } = this.props;
     const { avatar } = this.props;
+
     if (!avatar) {
       return (
         <ActivityIndicator size="small"/>
       );
     }
+    console.log(this.props);
 
     return (
       <TouchableOpacity onPress={this._handlePressAvatar}>
@@ -35,5 +40,7 @@ class HeaderAvatar extends Component {
     );
   }
 }
+
+
 
 export default HeaderAvatar;
