@@ -4,6 +4,7 @@ import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
 
+import ME_QUERY from "../../../graphql/queries/me";
 class FriendRequest extends Component {
   accept(id) {
     this.props
@@ -107,23 +108,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const FriendQuery = gql`
-  query {
-    me {
-      friendRequests {
-        username
-        _id
-        profile {
-          picture
-        }
-        building {
-          name
-        }
-      }
-    }
-  }
-`;
-
 const Accept = gql`
   mutation acceptFriend($_id: String!) {
     acceptFriend(_id: $_id) {
@@ -143,7 +127,7 @@ const Deny = gql`
 `;
 
 const FriendRequestWithData = compose(
-  graphql(FriendQuery),
+  graphql(ME_QUERY),
   graphql(Deny, { name: "rejectfriend" }),
   graphql(Accept, { name: "acceptfriend" })
 )(FriendRequest);

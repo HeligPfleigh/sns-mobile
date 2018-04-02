@@ -5,6 +5,8 @@ import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
 
+import ME_QUERY from "../../../graphql/queries/me";
+
 class DataSuggest extends Component {
   accept(id) {
     this.props
@@ -77,23 +79,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const FriendQuery = gql`
-  query {
-    me {
-      friendSuggestions {
-        username
-        _id
-        profile {
-          picture
-        }
-        building {
-          name
-        }
-      }
-    }
-  }
-`;
-
 const AddFriend = gql`
   mutation sendFriendRequest($_id: String!) {
     sendFriendRequest(_id: $_id) {
@@ -102,6 +87,6 @@ const AddFriend = gql`
   }
 `;
 
-const DataSuggestWithData = compose(graphql(FriendQuery), graphql(AddFriend, { name: "addfriend" }))(DataSuggest);
+const DataSuggestWithData = compose(graphql(ME_QUERY), graphql(AddFriend, { name: "addfriend" }))(DataSuggest);
 
 export default DataSuggestWithData;

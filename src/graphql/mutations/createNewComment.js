@@ -7,6 +7,7 @@ export default gql`
       message
       messagePlainText
       user {
+        _id
         username
         profile {
           picture

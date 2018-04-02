@@ -17,6 +17,7 @@ export default gql`
         }
       }
       user {
+        _id
         username
         fullName
         chatId
@@ -26,6 +27,7 @@ export default gql`
         updatedAt
       }
       building {
+        _id
         name
         display
         addressString
@@ -51,6 +53,7 @@ export default gql`
           _id
           message
           user {
+            _id
             username
             profile {
               picture

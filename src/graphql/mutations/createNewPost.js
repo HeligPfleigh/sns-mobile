@@ -7,9 +7,11 @@ export default gql`
       message
       messagePlainText
       comments {
+        _id
         message
         createdAt
         user{
+          _id
           username
           profile{
             picture
@@ -17,6 +19,7 @@ export default gql`
         }
       }
       author {
+        _id
         username
         profile {
           picture

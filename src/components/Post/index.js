@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   commentContainer: {
-    height: "50%",
+    height: Platform.OS === "ios" ? "50%" : "40%",
     alignSelf: "stretch",
   },
   textContent: {

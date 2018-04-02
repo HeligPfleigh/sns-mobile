@@ -13,6 +13,26 @@ export default gql`
         address
       }
       totalNotification
+      friendSuggestions {
+        username
+        _id
+        profile {
+          picture
+        }
+        building {
+          name
+        }
+      }
+      friendRequests {
+        username
+        _id
+        profile {
+          picture
+        }
+        building {
+          name
+        }
+      }
     }
   }
 `;
