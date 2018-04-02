@@ -7,7 +7,7 @@ export const EMAIL_EXISTED = "Email already exists";
 export const USER_EXISTED = "User already exists";
 
 // api server
-export const API_SERVER = "http://192.168.100.6:6868";
+export const API_SERVER = "http://api-sns.mttjsc.com:6868";
 
 // log in action
 export const ACCESS_TOKEN = "@SNS:accessToken";

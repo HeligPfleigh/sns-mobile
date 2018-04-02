@@ -31,11 +31,12 @@ class FeedCardEditMenu extends Component {
   }
 
   _handleEditPost = () => {
-    const { message } = this.props;
+    const { message, postId } = this.props;
     this.props.dispatch(NavigationActions.navigate({
       routeName: "EditPostScreen",
       params: {
-        message: message
+        postId,
+        message
       }
     }));
   }

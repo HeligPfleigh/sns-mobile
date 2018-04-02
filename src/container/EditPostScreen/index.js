@@ -16,7 +16,17 @@ import EDIT_POST from "../../graphql/mutations/editPost";
 )
 class EditPostScreen extends Component {
   handlePressPost = (text) => {
-    // this function will be implement later
+    const { postId } = this.props.navigation.state.params;
+
+    this.props.editPost({
+      variables: {
+        _id: postId,
+        message: text,
+        isMobile: true,
+      },
+      refetch: ["feeds"],
+    });
+
     Keyboard.dismiss();
     this.props.dispatch(NavigationActions.back());
   }
