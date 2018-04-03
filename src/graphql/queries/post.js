@@ -19,22 +19,10 @@ export default gql`
       user {
         _id
         username
-        fullName
-        chatId
-        totalFriends
-        isFriend
-        createdAt
-        updatedAt
       }
       building {
         _id
         name
-        display
-        addressString
-        isAdmin
-        totalApartment
-        createdAt
-        updatedAt
       }
       totalLikes
       totalComments

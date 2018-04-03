@@ -60,13 +60,15 @@ class Post extends Component {
   }
 
   render(){
-    const { author, createdAt, messagePlainText, _id, isLiked, totalComments, totalLikes, comments } = this.props.post;
+    const { author, createdAt, messagePlainText, _id, isLiked, totalComments, totalLikes, comments, user, building } = this.props.post;
     return (
       <View style={{ flex: 1 }}>
         <FeedCardHeader
           {...author}
           createdAt={createdAt}
           postId={_id}
+          friendShared={user}
+          buildingShared={building}
         />
         <View style={styles.contentContainer}>
           <Text style={styles.textContent}>

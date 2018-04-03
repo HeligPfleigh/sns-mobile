@@ -9,7 +9,12 @@ import FeedCardEditMenu from "./FeedCardEditMenu";
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
+    maxHeight: 70,
+  },
+  sharedText: {
+    fontWeight: "700",
+    color: "green",
+    fontStyle: "italic",
   },
 });
 
@@ -19,20 +24,39 @@ const styles = StyleSheet.create({
   }),
 )
 class FeedCardHeader extends Component {
+  _handlePressNameSharing = () => {
+
+  }
+
   render(){
-    const { _id, username, createdAt, profile, userInfo, postId, message } = this.props;
+    const { _id, username, createdAt, profile, userInfo, postId, message, friendShared, buildingShared } = this.props;
+    let shareToFriendOrBuilding = null;
+
+    // if sharing to friend, display his name
+    if (friendShared && friendShared._id !== _id) {
+      shareToFriendOrBuilding = ` > ${friendShared.username}`;
+    }
+
+    // display building name instead of friend name if it's not null
+    if (buildingShared) {
+      shareToFriendOrBuilding = ` > ${buildingShared.name}`;
+    }
     return (
       <CardItem style={styles.container}>
         <Left>
           <HeaderAvatar avatar={profile.picture} id={_id}/>
           <Body>
-            <Text>{ username }</Text>
+            <Text>
+              { username }
+              <Text style={styles.sharedText} onPress={this._handlePressNameSharing}>{ shareToFriendOrBuilding }</Text>
+            </Text>
             <Text note>{ distanceInWordToNow(createdAt) } ago</Text>
           </Body>
         </Left>
+        { userInfo.username === username ?
         <Right>
-          { userInfo.username === username ? <FeedCardEditMenu postId={postId} message={message}/> : null }
-        </Right>
+           <FeedCardEditMenu postId={postId} message={message}/>
+        </Right> : null }
       </CardItem>
     );
   }
