@@ -6,18 +6,6 @@ export default gql`
       _id
       message
       messagePlainText
-      comments {
-        _id
-        message
-        createdAt
-        user{
-          _id
-          username
-          profile{
-            picture
-          }
-        }
-      }
       author {
         _id
         username

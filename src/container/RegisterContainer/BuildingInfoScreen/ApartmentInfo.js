@@ -25,7 +25,7 @@ class ApartmentInfo extends Component {
 
   onApartmentsChange = (value) => {
     this.props.onApartmentsChange(value);
-    this.setState({apartment: value});
+    this.setState({apartments: value});
   }
 
   render(){

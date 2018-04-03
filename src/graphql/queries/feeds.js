@@ -13,43 +13,6 @@ export default gql`
         _id
         message
         messagePlainText
-        comments {
-          _id
-          message
-          user {
-            _id
-            username
-            profile {
-              picture
-            }
-          }
-          messagePlainText
-          reply {
-            _id
-            message
-            user {
-              _id
-              username
-              profile {
-                picture
-              }
-            }
-            messagePlainText
-            reply {
-              message
-              messagePlainText
-              createdAt
-            }
-            totalReply
-            parent
-            createdAt
-            updatedAt
-          }
-          totalReply
-          parent
-          createdAt
-          updatedAt
-        }
         author {
           _id
           username

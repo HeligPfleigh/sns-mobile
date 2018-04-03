@@ -9,7 +9,6 @@ const deviceWidth = Dimensions.get("window").width;
 import { colors } from "../../constants";
 import FeedCardHeader from "./FeedCardHeader";
 import FeedCardBottom from "./FeedCardBottom";
-// import FeedComments from "./FeedComments";
 
 const styles = StyleSheet.create({
   container: {
@@ -57,7 +56,7 @@ class FeedCard extends Component {
   }
 
   render(){
-    const { _id, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt, /* comments */ } = this.props;
+    const { _id, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt } = this.props;
 
     const displayText = messagePlainText.length > 300 ? `${messagePlainText.substring(0,300)}...` : messagePlainText;
 
@@ -72,7 +71,6 @@ class FeedCard extends Component {
           </TouchableOpacity>
         </CardItem>
         <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes}/>
-        { /* totalComments > 0 ? <FeedComments commentInfo={comments[0]} postID={_id} canReply={true}/> : null */}
       </Card>
     );
   }
