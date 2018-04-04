@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    margin: 10
+    margin: 10,
   },
   infoTextContainer: {
     flex: 1,

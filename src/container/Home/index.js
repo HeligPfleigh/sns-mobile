@@ -15,6 +15,7 @@ import ME_QUERY from "../../graphql/queries/me";
 import POST_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/postAdded";
 import styles from "./styles";
 export const SAVE_USER_INFO = "SAVE_USER_INFO";
+
 @compose(
   connect(({ common }) => ({
     orientation: common.orientation

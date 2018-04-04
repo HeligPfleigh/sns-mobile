@@ -9,7 +9,7 @@ import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Tex
 import styles from "./styles";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
-import image from "../../assets/images/anon.jpg";
+
 
 const Cases = type => {
   var text = "";
@@ -95,22 +95,45 @@ class Notification extends Component {
     };
   }
 
-  press(id) {
+  press(id, stuffID, friend) {
     this.props
       .updateseen({
         variables: { _id: id }
-      }
-    )
+      })
       .then(res => {
         this.props.getNotification.refetch();
       })
       .then(res => {
-        this.props.dispatch(
+        if (stuffID !== null) {
+          return this.props.dispatch(
+            NavigationActions.navigate({
+              routeName: "PostDetail",
+              params: {
+                postID: stuffID,
+                limit: 10
+              }
+            })
+          );
+        }
+        if (friend === "ACCEPTED_FRIEND" && "FRIEND_REQUEST") {
+          return this.props.dispatch(
+            NavigationActions.navigate({
+              routeName: "FriendBox",
+              params: {
+                postID: stuffID,
+                limit: 10
+              }
+            })
+          );
+        }
+        return this.props.dispatch(
           NavigationActions.navigate({
-            routeName: "BlankScreen"
-          }
-        )
-
+            routeName: "BlankScreen",
+            params: {
+              postID: stuffID,
+              limit: 10
+            }
+          })
         );
       })
       .catch(error => {
@@ -138,6 +161,7 @@ class Notification extends Component {
     if (getNotification.error) {
       return <Text>An unexpected error occurred</Text>;
     }
+
     return (
       <Layout navigation={this.props.navigation}>
         <Container>
@@ -151,7 +175,7 @@ class Notification extends Component {
               <Title> Thông báo </Title>
             </Body>
             <Right>
-              <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Button transparent>
                 <Icon name="md-settings" />
               </Button>
             </Right>
@@ -168,9 +192,11 @@ class Notification extends Component {
                 getNotification.notifications.pageInfo.hasNextPage === true ? <ActivityIndicator /> : <View />
               }
               renderItem={(item, index) => {
+                const stuff = item.item.subject;
+                const friend = item.item.type;
                 return (
                   <TouchableOpacity
-                    onPress={this.press.bind(this, item.item._id)}
+                    onPress={this.press.bind(this, item.item._id, stuff == null ? null : stuff._id, friend)}
                     style={
                       item.item.isRead === false
                         ? { backgroundColor: "#e7e7e7e3", margin: 5, flexDirection: "row" }
@@ -184,7 +210,7 @@ class Notification extends Component {
                         uri:
                           item.item.actors.length !== 0
                             ? item.item.actors[0].profile.picture
-                            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhgzvzt5q7vctDpxmkbEqKqLt5CBFA14OhoEnO3a20FroysNA8"
+                            : "https://cdn.iconscout.com/public/images/icon/free/png-512/docker-logo-363aabd4e875acdd-512x512.png"
                       }}
                     />
                     <View
@@ -236,11 +262,16 @@ const NotificationQuery = gql`
         subject {
           messagePlainText
           totalLikes
+          _id
         }
         actors {
+          _id
           username
           profile {
             picture
+          }
+          email {
+            address
           }
         }
       }

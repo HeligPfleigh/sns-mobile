@@ -19,7 +19,13 @@ const styles = StyleSheet.create({
 class HeaderAvatar extends Component {
   _handlePressAvatar = () => {
     const {id} = this.props;
-    console.log(id);
+    this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "FriendProfileScreen",
+          params: { id : id}
+        }
+      )
+    );
   }
 
   render(){
@@ -31,9 +37,10 @@ class HeaderAvatar extends Component {
         <ActivityIndicator size="small"/>
       );
     }
-    console.log(this.props);
+
 
     return (
+
       <TouchableOpacity onPress={this._handlePressAvatar}>
         <Image style={styles.avatar} source={{ uri: avatar || fakeAvatar }}/>
       </TouchableOpacity>
@@ -43,4 +50,7 @@ class HeaderAvatar extends Component {
 
 
 
-export default HeaderAvatar;
+
+export default connect(null, dispatch => ({
+  dispatch
+}))(HeaderAvatar);

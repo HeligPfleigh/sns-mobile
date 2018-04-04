@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     userInfo: userInfo,
   }),
 )
+
 class FeedCardHeader extends Component {
   _handlePressNameSharing = () => {
 
