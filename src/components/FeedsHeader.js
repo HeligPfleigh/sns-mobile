@@ -13,32 +13,32 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignSelf: "stretch",
-    minHeight: 50,
-    width: "100%",
+    maxHeight: 50,
+    width: "100%"
   },
   avatarContainer: {
     flex: 1,
     alignSelf: "stretch",
     justifyContent: "center",
-    paddingLeft: 15,
+    paddingLeft: 15
   },
   textContainer: {
     flex: 4,
     alignSelf: "stretch",
     justifyContent: "center",
-    alignItems: "flex-start",
+    alignItems: "flex-start"
   },
   text: {
     fontSize: 16,
     fontWeight: "500",
-    color: colors.LIGHT_GRAY,
+    color: colors.LIGHT_GRAY
   },
   cameraContainer: {
     flex: 1,
     alignSelf: "stretch",
     justifyContent: "center",
-    alignItems: "center",
-  },
+    alignItems: "center"
+  }
 });
 
 @connect(
@@ -48,25 +48,29 @@ const styles = StyleSheet.create({
   }),
   dispatch => ({ dispatch })
 )
-class FeedsHeader extends Component{
+class FeedsHeader extends Component {
   _handlePressNewFeed = () => {
     const { info } = this.props;
-    this.props.dispatch(NavigationActions.navigate({
-      routeName: "NewFeed",
-      params: {
-        user: info,
-      }
-    }));
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "NewFeed",
+        params: {
+          user: info
+        }
+      })
+    );
   }
 
-  render(){
+  render() {
     const { info } = this.props;
     const avatar = info.profile.picture;
-    const text = `What's new with you, ${info.username}? `;
+    const id = info._id;
+    const text = `What's new, ${info.username}? `;
+
     return (
       <Card style={styles.container}>
         <View style={styles.avatarContainer}>
-          <HeaderAvatar avatar={avatar} id={info._id}/>
+          <HeaderAvatar avatar={avatar} id={info._id} info={info} />
         </View>
         <TouchableOpacity style={styles.textContainer} onPress={this._handlePressNewFeed}>
           <Text style={styles.text}>{text}</Text>

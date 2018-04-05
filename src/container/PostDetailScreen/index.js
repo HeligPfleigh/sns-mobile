@@ -39,24 +39,24 @@ const postIsRemovedText = "Oop! Bài viết này đã bị xoá hoặc không c�
     dispatch => ({ dispatch })
   ),
   graphql(GET_POST_QUERY, {
-    options: (ownProps) => {
+    options: ownProps => {
       return {
         variables: {
           _id: ownProps.navigation.state.params.postID,
-          limit: ownProps.navigation.state.params.limit + 20,
+          limit: ownProps.navigation.state.params.limit + 20
         }
       };
     }
   })
 )
 class PostDetailContainer extends Component {
-
   _handlePressBack = () => {
     Keyboard.dismiss();
     this.props.dispatch(NavigationActions.back());
   }
 
   render() {
+    const { post } = this.props.data;
     let content;
     if ( this.props.data.loading ){
       content = <ActivityIndicator size="large"/>;
@@ -75,12 +75,32 @@ class PostDetailContainer extends Component {
           </View>;
       }
     }
+    if (post === null) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Header>
+            <Left>
+              <Button transparent onPress={this._handlePressBack}>
+                <MaterialIcons name="arrow-back" size={20} color={colors.PRIMARY} />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Post</Title>
+            </Body>
+            <Right />
+          </Header>
+          <View style={styles.container}>
+            <Text> Bài viết không còn tồn tại. </Text>
+          </View>
+        </View>
+      );
+    }
     return (
       <View style={{ flex: 1 }}>
         <Header>
           <Left>
             <Button transparent onPress={this._handlePressBack}>
-              <MaterialIcons name="arrow-back" size={20} color={colors.PRIMARY}/>
+              <MaterialIcons name="arrow-back" size={20} color={colors.PRIMARY} />
             </Button>
           </Left>
           <Body>
@@ -88,9 +108,7 @@ class PostDetailContainer extends Component {
           </Body>
           <Right />
         </Header>
-        <View style={styles.container}>
-          { content }
-        </View>
+        <View style={styles.container}>{content}</View>
       </View>
     );
   }

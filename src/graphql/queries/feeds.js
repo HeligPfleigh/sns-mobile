@@ -22,6 +22,7 @@ export default gql`
           email {
             address
           }
+          _id
         }
         user {
           _id

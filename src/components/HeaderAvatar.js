@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Image, ActivityIndicator, TouchableOpacity } from "react-native";
+import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
 
 import { fakeAvatar } from "../constants";
 
@@ -17,18 +19,28 @@ const styles = StyleSheet.create({
 class HeaderAvatar extends Component {
   _handlePressAvatar = () => {
     const {id} = this.props;
-    console.log(id);
+    this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "FriendProfileScreen",
+          params: { id : id}
+        }
+      )
+    );
   }
 
   render(){
+    const { id } = this.props;
     const { avatar } = this.props;
+
     if (!avatar) {
       return (
         <ActivityIndicator size="small"/>
       );
     }
 
+
     return (
+
       <TouchableOpacity onPress={this._handlePressAvatar}>
         <Image style={styles.avatar} source={{ uri: avatar || fakeAvatar }}/>
       </TouchableOpacity>
@@ -36,4 +48,9 @@ class HeaderAvatar extends Component {
   }
 }
 
-export default HeaderAvatar;
+
+
+
+export default connect(null, dispatch => ({
+  dispatch
+}))(HeaderAvatar);
