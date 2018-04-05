@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ActivityIndicator, Keyboard } from "react-native";
-import { Header, Left, Button, Body, Title, Right } from "native-base";
+import { Header, Left, Button, Body, Title, Right, Text } from "native-base";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import { compose, graphql } from "react-apollo";
+import { isEmpty } from "lodash";
 
 import { colors } from "../../constants";
 import GET_POST_QUERY from "../../graphql/queries/post";
@@ -16,7 +17,18 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     backgroundColor: colors.WHITE,
   },
+  postIsRemovedContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+  postIsRemovedText:{
+    color: colors.PRIMARY,
+    fontSize: 14,
+    padding: 20,
+  },
 });
+
+const postIsRemovedText = "Oop! Bài viết này đã bị xoá hoặc không còn khả dụng";
 
 @compose(
   connect(
@@ -51,7 +63,17 @@ class PostDetailContainer extends Component {
     }
     else {
       const { post } = this.props.data;
-      content = <Post post={post} />;
+      if ( !isEmpty(post) ){
+        content = <Post post={post} />;
+      }
+      else {
+        content =
+          <View style={styles.postIsRemovedContainer}>
+            <Text style={styles.postIsRemovedText}>
+              {postIsRemovedText}
+            </Text>
+          </View>;
+      }
     }
     return (
       <View style={{ flex: 1 }}>

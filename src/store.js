@@ -14,6 +14,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 import reducers from "./reducers";
 import { ACCESS_TOKEN, API_SERVER, HOST } from "./constants";
 import { navMiddleware } from "./navigator";
+import { isEmpty } from "lodash";
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -25,11 +26,13 @@ const middlewareAuthLink = new ApolloLink(
     new Observable(observer => {
       AsyncStorage.getItem(ACCESS_TOKEN)
       .then(token => {
-        operation.setContext({
-          headers: {
-            authorization: token,
-          },
-        });
+        if ( !isEmpty(token) ){
+          operation.setContext({
+            headers: {
+              authorization: token,
+            },
+          });
+        }
       })
       .then(() => {
         const subscriber = {
