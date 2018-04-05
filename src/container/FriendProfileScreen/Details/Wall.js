@@ -5,9 +5,10 @@ import {
   Icon,
   Tab,
   Tabs,
-  TabHeading
+  TabHeading,
+  Button
 } from "native-base";
-import { FlatList, Image } from "react-native";
+import { FlatList, Image, Dimensions } from "react-native";
 import Layout from "../../../components/Layout";
 import FeedCard from "../../../components/FeedCard/FeedCard";
 import styles from "../styles";
@@ -31,8 +32,12 @@ class Wall extends Component {
           <Image source={{ uri: this.props.info.profile.picture }} style={styles.avatar} />
           <Text style={{ textAlign: "center", fontSize: 25 }}>{this.props.info.username}</Text>
 
-
-          <Tabs style={{paddingTop:10}}>
+          <View style={{flexDirection: "row", marginTop: 20}}>
+            <Button info bordered  style={{width:Dimensions.get("window").width / 3,margin:5}}><Text style={{textAlign: "center"}}> Kết bạn</Text></Button>
+            <Button danger bordered  style={{width:Dimensions.get("window").width / 3,margin:5}}><Text> Theo dõi</Text></Button>
+            <Button success bordered  style={{width:Dimensions.get("window").width / 3,margin:5}}><Text> Nhắn tin</Text></Button>
+          </View>
+          <Tabs style={{paddingTop:5}}>
             <Tab
               heading={
                 <TabHeading>
@@ -53,6 +58,14 @@ class Wall extends Component {
             >
               <Friends info={info}/>
             </Tab>
+            <Tab
+              heading={
+                <TabHeading>
+                  <Icon name="ios-people-outline" />
+                  <Text style={{fontWeight:"bold"}}>Khác</Text>
+                </TabHeading>
+              }
+             />
           </Tabs>
         </View>
       </View>

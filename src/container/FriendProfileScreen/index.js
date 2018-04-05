@@ -23,7 +23,6 @@ class FriendProfile extends Component {
 
   render() {
 
-
     if (this.props.loading){
       return <ActivityIndicator style={{justifyContent:"center"}}/>;
     }

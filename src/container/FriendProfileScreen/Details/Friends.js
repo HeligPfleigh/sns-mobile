@@ -8,8 +8,8 @@ class Friends extends Component {
       <Card>
         <CardItem>
           <Body>
-      <View style={{ marginTop: 10 }}>
-        <Text> <Icon name="ios-photos-outline" style={{ fontSize: 13 }} /> Bạn bè: {this.props.info.totalFriends} người </Text>
+          <View style={{ margin: 20 }}>
+          <Text > <Icon name="ios-card" style={{ fontSize: 13, lineHeight: 35  }} /> Bạn bè: {this.props.info.totalFriends} người </Text>
 
       </View>
       </Body>

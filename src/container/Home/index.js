@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { View } from "native-base";
+import { View, Body, Title, Header } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
 import { ActivityIndicator, FlatList } from "react-native";
 
@@ -138,6 +138,11 @@ class HomeScreen extends Component {
 
     return (
       <Layout navigation={this.props.navigation}>
+        <Header>
+          <Body>
+            <Title style={{ fontSize: 15 }}> Homepage </Title>
+          </Body>
+        </Header>
         {getMe.me ? (
           <View style={{ height: 100 }}>
             <FeedsHeader info={getMe.me} />

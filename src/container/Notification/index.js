@@ -10,7 +10,6 @@ import styles from "./styles";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
 
-
 const Cases = type => {
   var text = "";
   switch (type) {

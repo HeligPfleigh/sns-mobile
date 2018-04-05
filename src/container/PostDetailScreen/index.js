@@ -75,22 +75,24 @@ class PostDetailContainer extends Component {
           </View>;
       }
     }
-    if (post === null){
+    if (post === null) {
       return (
         <View style={{ flex: 1 }}>
-        <Header>
-          <Left>
-            <Button transparent onPress={this._handlePressBack}>
-              <MaterialIcons name="arrow-back" size={20} color={colors.PRIMARY} />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Post</Title>
-          </Body>
-          <Right />
-        </Header>
-        <View style={styles.container}><Text> Bài viết không còn tồn tại. </Text></View>
-      </View>
+          <Header>
+            <Left>
+              <Button transparent onPress={this._handlePressBack}>
+                <MaterialIcons name="arrow-back" size={20} color={colors.PRIMARY} />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Post</Title>
+            </Body>
+            <Right />
+          </Header>
+          <View style={styles.container}>
+            <Text> Bài viết không còn tồn tại. </Text>
+          </View>
+        </View>
       );
     }
     return (

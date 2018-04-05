@@ -59,16 +59,16 @@ const routes = [
   }
 ];
 
-  @connect(
-    ({ userInfo }) => ({
-      fullName: userInfo.fullName,
-      avatarUri: userInfo && userInfo.profile && userInfo.profile.picture
-    }),
-    dispatch => ({
-      logOut: navigation => dispatch(logOut(navigation))
-    })
-  )
-
+@connect(
+  ({ userInfo }) => ({
+    fullName: userInfo.fullName,
+    id: userInfo._id,
+    avatarUri: userInfo && userInfo.profile && userInfo.profile.picture
+  }),
+  dispatch => ({
+    logOut: navigation => dispatch(logOut(navigation))
+  })
+)
 export default class SidebarContainer extends Component {
   constructor(props) {
     super(props);
@@ -76,6 +76,7 @@ export default class SidebarContainer extends Component {
 
   render() {
     const { navigation, fullName, avatarUri } = this.props;
+
     return (
       <Container>
         <Image source={Images.backgroundHeader} style={{ height: 200, width: "100%" }} />
@@ -99,6 +100,9 @@ export default class SidebarContainer extends Component {
                   onPress={() => {
                     navigation.navigate("DrawerClose");
                     data.route === "Logout" ? this.props.logOut(navigation) : navigation.navigate(data.route);
+                    data.route === "ProfileScreen"
+                      ? this.props.navigation.navigate("FriendProfileScreen", { id: this.props.id })
+                      : navigation.navigate(data.route);
                   }}
                 >
                   {data.drawerIcon}
