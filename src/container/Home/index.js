@@ -12,6 +12,7 @@ import FeedCard from "../../components/FeedCard/FeedCard";
 import FeedsHeader from "../../components/FeedsHeader";
 import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import ME_QUERY from "../../graphql/queries/me";
+import POST_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/postAdded";
 import styles from "./styles";
 export const SAVE_USER_INFO = "SAVE_USER_INFO";
 @compose(
@@ -62,6 +63,31 @@ class HomeScreen extends Component {
     if (props.dispatch) {
       props.dispatch(utils.createAction(SPINNER_CHANGE, false));
     }
+  }
+
+  componentDidMount(){
+    this.props.getFeeds.subscribeToMore({
+      document: POST_ADDED_SUBSCRIPTION,
+      updateQuery : (prev, { subscriptionData }) => {
+        // Hot fix: (need resolve careful later)
+        // sometime it's called duplicate here which caused runtime error(duplicate post in home screen)
+        let newEdges;
+        if (prev.feeds.edges[0]._id !== subscriptionData.data.postAdded._id){
+          newEdges = [subscriptionData.data.postAdded, ...prev.feeds.edges];
+        }
+        else {
+          newEdges = prev.feeds.edges;
+        }
+
+        const pageInfo = prev.feeds.pageInfo;
+        return update(prev, {
+          feeds: {
+            edges: { $set: newEdges },
+            pageInfo: { $set: pageInfo }
+          }
+        });
+      }
+    });
   }
 
   _renderItem = ({ item }) => <FeedCard {...item} />

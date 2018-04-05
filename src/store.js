@@ -2,61 +2,54 @@
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
-import { onError } from "apollo-link-error";
 import { WebSocketLink } from "apollo-link-ws";
-import { ApolloLink } from "apollo-link";
+import { split, ApolloLink } from "apollo-link";
 import { Observable} from "rxjs/Observable";
-import { split } from "apollo-link";
 import { getMainDefinition } from "apollo-utilities";
 
 import { AsyncStorage } from "react-native";
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware, compose } from "redux";
-import isEmpty from "lodash/isEmpty";
 
 import reducers from "./reducers";
 import { ACCESS_TOKEN, API_SERVER, HOST } from "./constants";
 import { navMiddleware } from "./navigator";
-
-const request = async (operation) => {
-  const token = await AsyncStorage.getItem(ACCESS_TOKEN);
-  if (!isEmpty(token)) {
-    operation.setContext({
-      headers: {
-        authorization: token || null
-      }
-    });
-  }
-};
-
-const requestLink = new ApolloLink((operation, forward) =>
-  new Observable(observer => {
-    let handle;
-    Promise.resolve(operation)
-      .then(oper => request(oper))
-      .then(() => {
-        handle = forward(operation).subscribe({
-          next: observer.next.bind(observer),
-          error: observer.error.bind(observer),
-          complete: observer.complete.bind(observer),
-        });
-      })
-      .catch(observer.error.bind(observer));
-
-    return () => {
-      if (handle) {handle.unsubscribe;}
-    };
-  })
-);
 
 // Create an http link:
 const httpLink = new HttpLink({
   uri: `${API_SERVER}/graphql`,
 });
 
+const middlewareAuthLink = new ApolloLink(
+  (operation, forward) =>
+    new Observable(observer => {
+      AsyncStorage.getItem(ACCESS_TOKEN)
+      .then(token => {
+        operation.setContext({
+          headers: {
+            authorization: token,
+          },
+        });
+      })
+      .then(() => {
+        const subscriber = {
+          next: observer.next.bind(observer),
+          error: observer.error.bind(observer),
+          complete: observer.complete.bind(observer),
+        };
+        forward(operation).subscribe(subscriber);
+      })
+      .catch(err => {
+        observer.error(err);
+      });
+    })
+);
+
+const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink);
+
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  uri: `ws://${HOST}/`,
+  uri: `ws://${HOST}/subscriptions`,
   options: {
     reconnect: true,
   }
@@ -71,23 +64,12 @@ const link = split(
     return kind === "OperationDefinition" && operation === "subscription";
   },
   wsLink,
-  httpLink,
+  httpLinkWithAuthToken,
 );
 
 // init apollo client
 export const client = new ApolloClient({
-  link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors) {
-        return graphQLErrors;
-      }
-      if (networkError) {
-        return networkError;
-      }
-    }),
-    requestLink,
-    link,
-  ]),
+  link,
   cache: new InMemoryCache()
 });
 
