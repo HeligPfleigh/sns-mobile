@@ -5,7 +5,7 @@ import { graphql, compose } from "react-apollo";
 import { NavigationActions } from "react-navigation";
 
 import CREATE_NEW_POST from "../../graphql/mutations/createNewPost";
-import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
+// import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import CRUDPost from "../../components/CRUDPost";
 
 @compose(
@@ -22,18 +22,18 @@ class NewFeedContainer extends Component {
         message: text,
         isMobile: true,
       },
-      update: (store, { data: { createNewPost } }) => {
-        const data = store.readQuery({
-          query: GET_FEEDS_QUERY,
-          variables: { limit: 5 },
-        });
-        data.feeds.edges.unshift(createNewPost);
-        store.writeQuery({
-          query: GET_FEEDS_QUERY,
-          variables: { limit: 5 },
-          data
-        });
-      }
+      // update: (store, { data: { createNewPost } }) => {
+      //   const data = store.readQuery({
+      //     query: GET_FEEDS_QUERY,
+      //     variables: { limit: 5 },
+      //   });
+      //   data.feeds.edges.unshift(createNewPost);
+      //   store.writeQuery({
+      //     query: GET_FEEDS_QUERY,
+      //     variables: { limit: 5 },
+      //     data
+      //   });
+      // }
     });
     Keyboard.dismiss();
     this.props.dispatch(NavigationActions.back());

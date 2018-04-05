@@ -56,13 +56,18 @@ class FeedCard extends Component {
   }
 
   render(){
-    const { _id, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt } = this.props;
+    const { _id, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt, user, building } = this.props;
 
     const displayText = messagePlainText.length > 300 ? `${messagePlainText.substring(0,300)}...` : messagePlainText;
 
     return (
       <Card style={styles.container}>
-        <FeedCardHeader {...author} createdAt={createdAt} postId={_id} message={messagePlainText} />
+        <FeedCardHeader
+          {...author}
+          createdAt={createdAt}
+          postId={_id}
+          friendShared={user}
+          buildingShared={building} />
         <CardItem cardBody style={styles.contentContainer}>
           <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
             <Text style={styles.textContent}>

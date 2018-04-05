@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
 export default gql`
-  mutation createNewPost($message: String!, $isMobile: Boolean!){
-    createNewPost(message: $message, isMobile: $isMobile){
+  subscription postAdded{
+    postAdded {
       _id
       message
       messagePlainText

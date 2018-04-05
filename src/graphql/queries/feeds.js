@@ -23,6 +23,14 @@ export default gql`
             address
           }
         }
+        user {
+          _id
+          username
+        }
+        building {
+          _id
+          name
+        }
         createdAt
         totalLikes
         totalComments
