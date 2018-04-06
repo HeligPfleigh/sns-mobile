@@ -9,7 +9,9 @@ import { isEmpty } from "lodash";
 
 import { colors } from "../../constants";
 import GET_POST_QUERY from "../../graphql/queries/post";
+import COMMENT_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/commentAdded";
 import Post from "../../components/Post";
+import update from "immutability-helper";
 
 const styles = StyleSheet.create({
   container: {
@@ -50,13 +52,41 @@ const postIsRemovedText = "Oop! Bài viết này đã bị xoá hoặc không c�
   })
 )
 class PostDetailContainer extends Component {
+
+  componentDidMount() {
+    this.props.data.subscribeToMore({
+      document: COMMENT_ADDED_SUBSCRIPTION,
+      variables: {
+        postID: this.props.navigation.state.params.postID,
+        commentID: null,
+      },
+      updateQuery: (prev, { subscriptionData }) => {
+
+        let newComments = [subscriptionData.data.commentAdded, ...prev.post.comments];
+        let newTotalComments = prev.post.totalComments + 1;
+
+        return update(prev, { post: {
+          author: { $set: prev.post.author },
+          building: { $set: prev.post.building },
+          comments: { $set: newComments },
+          createdAt: { $set: prev.post.createdAt },
+          isLiked: { $set: prev.post.isLiked },
+          message: { $set: prev.post.message },
+          messagePlainText: { $set: prev.post.messagePlainText },
+          totalComments: { $set: newTotalComments },
+          totalLikes: { $set : prev.post.totalLikes },
+          user: { $set: prev.post.user },
+        }});
+      }
+    });
+  }
+
   _handlePressBack = () => {
     Keyboard.dismiss();
     this.props.dispatch(NavigationActions.back());
   }
 
   render() {
-    const { post } = this.props.data;
     let content;
     if ( this.props.data.loading ){
       content = <ActivityIndicator size="large"/>;
@@ -75,26 +105,7 @@ class PostDetailContainer extends Component {
           </View>;
       }
     }
-    if (post === null) {
-      return (
-        <View style={{ flex: 1 }}>
-          <Header>
-            <Left>
-              <Button transparent onPress={this._handlePressBack}>
-                <MaterialIcons name="arrow-back" size={20} color={colors.PRIMARY} />
-              </Button>
-            </Left>
-            <Body>
-              <Title>Post</Title>
-            </Body>
-            <Right />
-          </Header>
-          <View style={styles.container}>
-            <Text> Bài viết không còn tồn tại. </Text>
-          </View>
-        </View>
-      );
-    }
+
     return (
       <View style={{ flex: 1 }}>
         <Header>

@@ -64,7 +64,6 @@ class FeedsHeader extends Component {
   render() {
     const { info } = this.props;
     const avatar = info.profile.picture;
-    const id = info._id;
     const text = `What's new, ${info.username}? `;
 
     return (
