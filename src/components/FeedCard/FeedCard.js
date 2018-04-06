@@ -66,6 +66,7 @@ class FeedCard extends Component {
           {...author}
           createdAt={createdAt}
           postId={_id}
+          message={messagePlainText} // for editting purpose
           friendShared={user}
           buildingShared={building} />
         <CardItem cardBody style={styles.contentContainer}>

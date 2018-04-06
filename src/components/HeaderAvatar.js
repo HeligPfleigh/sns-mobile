@@ -29,7 +29,6 @@ class HeaderAvatar extends Component {
   }
 
   render(){
-    const { id } = this.props;
     const { avatar } = this.props;
 
     if (!avatar) {

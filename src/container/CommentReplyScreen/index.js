@@ -10,6 +10,8 @@ import { colors } from "../../constants";
 import AddCommentSection from "../../components/AddCommentSection";
 import GET_COMMENT_QUERY from "../../graphql/queries/comment";
 import FeedComments from "../../components/FeedCard/FeedComments";
+import COMMENT_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/commentAdded";
+import update from "immutability-helper";
 
 const styles = StyleSheet.create({
   container: {
@@ -52,6 +54,25 @@ class CommentReplyScreen extends Component {
   componentWillMount () {
     this.keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", this._keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", this._keyboardDidHide);
+  }
+
+  componentDidMount () {
+    this.props.data.subscribeToMore({
+      document: COMMENT_ADDED_SUBSCRIPTION,
+      variables: {
+        postID: this.props.navigation.state.params.postID,
+        commentID: this.props.navigation.state.params.commentID,
+      },
+      updateQuery: (prev, { subscriptionData }) => {
+        const newTotalReply = prev.comment.totalReply + 1;
+        const newReplies = [...prev.comment.reply, subscriptionData.data.commentAdded];
+        return update(prev, { comment : {
+          totalReply: { $set: newTotalReply },
+          _id: { $set: prev.comment._id },
+          reply: { $set: newReplies },
+        }});
+      }
+    });
   }
 
   componentWillUnmount () {
