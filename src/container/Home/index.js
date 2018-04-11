@@ -83,7 +83,7 @@ class HomeScreen extends Component {
         const pageInfo = prev.feeds.pageInfo;
         return update(prev, {
           feeds: {
-            edges: { $set: newEdges },
+            edges: { $push: newEdges },
             pageInfo: { $set: pageInfo }
           }
         });

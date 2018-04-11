@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import {
-  Content,
-  Header,
-  Icon,
-  Left,
-  Button,
-  Body,
-  Title,
-  Right,
-  Container
-} from "native-base";
+import { Content, Header, Icon, Left, Button, Body, Title, Right, Container } from "native-base";
 import { ActivityIndicator } from "react-native";
 import Layout from "../../components/Layout";
 import styles from "./styles";
@@ -18,18 +8,13 @@ import { gql } from "apollo-boost";
 import Wall from "./Details/Wall";
 
 class FriendProfile extends Component {
-
-
-
   render() {
-
-    if (this.props.loading){
-      return <ActivityIndicator style={{justifyContent:"center"}}/>;
+    if (this.props.loading) {
+      return <ActivityIndicator style={{ justifyContent: "center" }} />;
     }
 
     if (this.props.data.user) {
       const info = this.props.data.user;
-
       return (
         <Layout navigation={this.props.navigation} style={styles.container}>
           <Container>
@@ -49,13 +34,13 @@ class FriendProfile extends Component {
               </Right>
             </Header>
             <Content padder style={{ backgroundColor: "#fff" }}>
-              <Wall info={info}/>
+              <Wall info={info} />
             </Content>
           </Container>
         </Layout>
       );
     }
-    return <ActivityIndicator style={{justifyContent:"center"}}/>;
+    return <ActivityIndicator style={{ justifyContent: "center" }} />;
   }
 }
 

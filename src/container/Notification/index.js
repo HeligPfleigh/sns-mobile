@@ -9,6 +9,7 @@ import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Tex
 import styles from "./styles";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
+import NOTIFICATION_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/notificationAdded";
 
 const Cases = type => {
   var text = "";
@@ -92,6 +93,30 @@ class Notification extends Component {
       page: 0,
       notiCount: 0
     };
+  }
+
+  componentDidMount() {
+    this.props.getNotification.subscribeToMore({
+      document: NOTIFICATION_ADDED_SUBSCRIPTION,
+      variables: { userID: "59116ea0a951c600115b6d9e" },
+      updateQuery: (prev, { subscriptionData }, edges) => {
+        let newEdges;
+        const pageInfo = prev.notifications.pageInfo;
+
+        if (prev.notifications.edges[0]._id !== subscriptionData.data.notificationAdded._id) {
+          newEdges = [subscriptionData.data.notificationAdded, ...prev.notifications.edges];
+        } else {
+          newEdges = prev.notifications.edges;
+        }
+
+        return update(prev, {
+          notifications: {
+            pageInfo: { $set: pageInfo },
+            edges: { $set: newEdges }
+          }
+        });
+      }
+    });
   }
 
   press(id, stuffID, friend) {
