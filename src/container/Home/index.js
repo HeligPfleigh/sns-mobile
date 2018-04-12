@@ -70,23 +70,25 @@ class HomeScreen extends Component {
     this.props.getFeeds.subscribeToMore({
       document: POST_ADDED_SUBSCRIPTION,
       updateQuery : (prev, { subscriptionData }) => {
-        // Hot fix: (need resolve careful later)
-        // sometime it's called duplicate here which caused runtime error(duplicate post in home screen)
-        let newEdges;
-        if (prev.feeds.edges[0]._id !== subscriptionData.data.postAdded._id){
-          newEdges = [subscriptionData.data.postAdded, ...prev.feeds.edges];
+        // check if edges have duplicate items.
+        if ( prev.feeds.edges.length !== 0 ) {
+          let duplicateItem = prev.feeds.edges.findIndex(element => {
+            return element._id === subscriptionData.data.postAdded._id;
+          });
+
+          if (duplicateItem !== -1) { return prev; }
         }
-        else {
-          newEdges = prev.feeds.edges;
-        }
+
+        let newEdges = [subscriptionData.data.postAdded, ...prev.feeds.edges];
 
         const pageInfo = prev.feeds.pageInfo;
         return update(prev, {
           feeds: {
-            edges: { $push: newEdges },
+            edges: { $set: newEdges },
             pageInfo: { $set: pageInfo }
           }
         });
+
       }
     });
   }

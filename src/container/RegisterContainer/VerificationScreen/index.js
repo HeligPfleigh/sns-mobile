@@ -31,8 +31,26 @@ class VerificationScreen extends Component {
     };
 
     try {
-      await axios.post(`${API_SERVER}/auth/active/`, data);
-      // todo: handle after successful verifycation
+      const activeResult = await axios.post(`${API_SERVER}/auth/active/`, data);
+      // handle after successful verifycation
+      if ( activeResult.status === 200 ){
+        Alert.alert(
+          "Tiến trình kích hoạt",
+          "Xác nhận email thành công, trở về trang đăng nhập",
+          [
+            {
+              text: "Quay về",
+              onPress: () => {
+                this.props.dispatch(NavigationActions.reset({
+                  index: 0,
+                  actions: [NavigationActions.navigate({ routeName: "Login" })]
+                }));
+              }
+            }
+          ],
+          { cancelable: false }
+        );
+      }
     } catch (e) {
       Alert.alert(
         "Tiến trình kích hoạt",
