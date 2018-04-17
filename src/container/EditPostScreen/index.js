@@ -15,7 +15,7 @@ import EDIT_POST from "../../graphql/mutations/editPost";
   graphql(EDIT_POST, { name: "editPost" })
 )
 class EditPostScreen extends Component {
-  handlePressPost = (text) => {
+  handlePressPost = (text, image) => {
     const { postId } = this.props.navigation.state.params;
 
     this.props.editPost({

@@ -34,10 +34,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.WHITE,
   },
   input: {
-    height: "40%",
     width: "90%",
     fontSize: 18,
     color: colors.SECONDARY,
+  },
+  imageContainer: {
+    height: "40%",
+    width: "90%",
   },
   postButton: {
     backgroundColor: colors.LIGHT_GRAY,
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     bottom: 0,
   },
-  mediaContainer: {
+  mediaControlContainer: {
     flex: 1,
     flexDirection:"row",
     alignItems:"center",

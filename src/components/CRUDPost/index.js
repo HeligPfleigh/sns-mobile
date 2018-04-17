@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { View, TextInput, TouchableOpacity, Text, Keyboard } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Keyboard, Image } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
+import ImagePicker from "react-native-image-crop-picker";
 
 import Layout from "../Layout";
 import { colors } from "../../constants";
@@ -23,6 +24,7 @@ class CRUDPost extends Component{
     super(props);
     this.state = {
       text: this.props.message || "",
+      image: null,
     };
   }
 
@@ -41,8 +43,34 @@ class CRUDPost extends Component{
     this.props.dispatch(NavigationActions.back());
   }
 
+  handlePressOpenGalery = async () => {
+    try {
+      const image = await ImagePicker.openPicker({
+        multiple: false
+      });
+      this.setState({
+        image,
+      });
+    } catch (err) {
+      throw new Error("Không thể đọc ảnh từ bộ sưu tập");
+    }
+  }
+
+  handlePressOpenCamera = async () => {
+    try {
+      const image = await ImagePicker.openCamera({});
+      this.setState({
+        image,
+      });
+    } catch (err) {
+      throw new Error("Có lỗi xảy ra khi sử dụng camera");
+    }
+  }
+
   render() {
     const { profile, handlePressPost, id } = this.props;
+    const { text, image } = this.state;
+
     return (
       <Layout navigation={this.props.navigation}>
         <View style={styles.container}>
@@ -59,25 +87,32 @@ class CRUDPost extends Component{
             <TextInput style={styles.input}
               onChangeText={this._onChangeText}
               multiline={true}
-              value={this.state.text}
+              value={text}
               placeholder={!this.props.message ? "What's happening?" : ""}
               maxLength={MAX_MESSAGE_CHARACTER}
               underlineColorAndroid="rgba(0,0,0,0)"
-              autoFocus={true}
             />
+            <View style={styles.imageContainer}>
+              {image ? <Image source={{uri: image.path}} style={{width: "100%", height: "100%"}}/> : null}
+            </View>
           </View>
           <View style={styles.bottomContainer}>
-           <View style={styles.mediaContainer}>
-              <TouchableOpacity style={styles.mediaButton}>
+           <View style={styles.mediaControlContainer}>
+              <TouchableOpacity
+                style={styles.mediaButton}
+                onPress={this.handlePressOpenGalery}>
                 <MaterialIcons name="attachment" size={30} color={colors.LIGHT_GRAY} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.mediaButton}>
+              <TouchableOpacity
+                style={styles.mediaButton}
+                onPress={this.handlePressOpenCamera}
+                >
                 <MaterialIcons name="photo-camera" size={30} color={colors.LIGHT_GRAY} />
               </TouchableOpacity>
             </View>
             <View style={{flex: 1, flexDirection:"row", alignItems:"center", justifyContent:"flex-end"}}>
               <Text style={styles.textLength}>{this._textLength}</Text>
-              <TouchableOpacity style={styles.postButton} disabled={this._buttonDisabled} onPress={() => handlePressPost(this.state.text)}>
+              <TouchableOpacity style={styles.postButton} disabled={this._buttonDisabled} onPress={() => handlePressPost(text, image)}>
                 <Text style={styles.postButtonText}>Submit</Text>
               </TouchableOpacity>
             </View>
