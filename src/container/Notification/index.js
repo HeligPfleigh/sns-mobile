@@ -98,7 +98,7 @@ class Notification extends Component {
   componentDidMount() {
     this.props.getNotification.subscribeToMore({
       document: NOTIFICATION_ADDED_SUBSCRIPTION,
-      variables: { userID: "59116ea0a951c600115b6d9e" },
+      variables: { userID: this.props.userInfo._id },
       updateQuery: (prev, { subscriptionData }, edges) => {
         let newEdges;
         const pageInfo = prev.notifications.pageInfo;
@@ -119,7 +119,7 @@ class Notification extends Component {
     });
   }
 
-  press(id, stuffID, friend) {
+  press(id, stuffID, friend, isRead) {
     this.props
       .updateseen({
         variables: { _id: id }
@@ -163,6 +163,12 @@ class Notification extends Component {
       .catch(error => {
         throw error;
       });
+    if (!isRead) {
+      this.props.dispatch({
+        type: "COUNTINGDOWN",
+        payload: { params : this.props.counting.params - 1}
+      });
+    }
   }
 
   end() {
@@ -220,7 +226,13 @@ class Notification extends Component {
                 const friend = item.item.type;
                 return (
                   <TouchableOpacity
-                    onPress={this.press.bind(this, item.item._id, stuff == null ? null : stuff._id, friend)}
+                    onPress={this.press.bind(
+                      this,
+                      item.item._id,
+                      stuff == null ? null : stuff._id,
+                      friend,
+                      item.item.isRead
+                    )}
                     style={
                       item.item.isRead === false
                         ? { backgroundColor: "#e7e7e7e3", margin: 5, flexDirection: "row" }
@@ -312,9 +324,12 @@ const UpdateReadPost = gql`
 `;
 
 const NotificationWithData = compose(
-  connect(null, dispatch => ({
-    dispatch
-  })),
+  connect(
+    ({ counting, userInfo }) => ({ counting, userInfo }),
+    dispatch => ({
+      dispatch
+    })
+  ),
   graphql(NotificationQuery, {
     name: "getNotification",
     options: () => ({

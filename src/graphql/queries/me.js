@@ -13,6 +13,7 @@ export default gql`
         address
       }
       totalNotification
+      totalUnreadNotification
       friendSuggestions {
         username
         _id

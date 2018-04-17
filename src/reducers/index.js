@@ -9,6 +9,7 @@ import loginReducer from "../container/Login/reducer";
 import signupReducer from "../container/SignUp/reducer";
 import saveUserInfoReducer from "../container/Home/reducer";
 import registerReducer from "../container/RegisterContainer/reducer";
+import countingReducer from "../navigator/reducer";
 
 const appReducer = combineReducers({
   form: formReducer.plugin({
@@ -43,6 +44,7 @@ const appReducer = combineReducers({
   signup: signupReducer,
   userInfo: saveUserInfoReducer,
   registerInfo: registerReducer,
+  counting: countingReducer
 });
 
 const initialState = appReducer({}, {});

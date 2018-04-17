@@ -63,13 +63,6 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
             BadgeElement={<NotificationNumber />}
           />
         );
-      } else if (icons[routeName] === "contacts") {
-        return (
-          <IconBadge
-            MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
-            BadgeElement={<NotificationNumber />}
-          />
-        );
       }
       return <Icon name={icons[routeName]} style={{ fontSize: 29 }} />;
     }
