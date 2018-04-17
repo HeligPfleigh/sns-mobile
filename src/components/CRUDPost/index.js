@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput, TouchableOpacity, Text, Keyboard } from "react-native";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 
@@ -52,7 +52,7 @@ class CRUDPost extends Component{
             </View>
             <View style={{flex: 4}} />
             <TouchableOpacity style={styles.backButton} onPress={this._handleClose}>
-              <EvilIcons name="close" size={30} color={colors.PRIMARY} />
+              <MaterialIcons name="close" size={30} color={colors.LIGHT_GRAY} />
             </TouchableOpacity>
           </View>
           <View style={styles.wrapper}>
@@ -60,16 +60,28 @@ class CRUDPost extends Component{
               onChangeText={this._onChangeText}
               multiline={true}
               value={this.state.text}
-              placeholder={this.props.message === "" ? "What's happening?" : ""}
+              placeholder={!this.props.message ? "What's happening?" : ""}
               maxLength={MAX_MESSAGE_CHARACTER}
               underlineColorAndroid="rgba(0,0,0,0)"
               autoFocus={true}
             />
-            <Text style={styles.textLength}>{this._textLength}</Text>
           </View>
-          <TouchableOpacity style={styles.postButton} disabled={this._buttonDisabled} onPress={() => handlePressPost(this.state.text)}>
-            <Text style={styles.postButtonText}>Submit</Text>
-          </TouchableOpacity>
+          <View style={styles.bottomContainer}>
+           <View style={styles.mediaContainer}>
+              <TouchableOpacity style={styles.mediaButton}>
+                <MaterialIcons name="attachment" size={30} color={colors.LIGHT_GRAY} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.mediaButton}>
+                <MaterialIcons name="photo-camera" size={30} color={colors.LIGHT_GRAY} />
+              </TouchableOpacity>
+            </View>
+            <View style={{flex: 1, flexDirection:"row", alignItems:"center", justifyContent:"flex-end"}}>
+              <Text style={styles.textLength}>{this._textLength}</Text>
+              <TouchableOpacity style={styles.postButton} disabled={this._buttonDisabled} onPress={() => handlePressPost(this.state.text)}>
+                <Text style={styles.postButtonText}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </Layout>
     );
