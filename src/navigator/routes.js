@@ -61,7 +61,7 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
         return (
           <IconBadge
             MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
-            BadgeElement={<NotificationNumber number={number}/>}
+            BadgeElement={<NotificationNumber />}
           />
         );
       }
