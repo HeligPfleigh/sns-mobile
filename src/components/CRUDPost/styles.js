@@ -40,15 +40,12 @@ const styles = StyleSheet.create({
     color: colors.SECONDARY,
   },
   postButton: {
-    backgroundColor: colors.PRIMARY,
+    backgroundColor: colors.LIGHT_GRAY,
     justifyContent: "center",
     alignItems: "center",
+    marginHorizontal: 20,
     width: 80,
     height: 40,
-    borderRadius: 20,
-    position: "absolute",
-    top: "52%",
-    right: "5%",
   },
   postButtonText: {
     color: colors.WHITE,
@@ -57,9 +54,25 @@ const styles = StyleSheet.create({
   textLength: {
     fontSize: 18,
     color: colors.PRIMARY,
+  },
+  bottomContainer: {
     position: "absolute",
-    top: "42%",
-    right: "10%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
+    height: 50,
+    zIndex: 2,
+    bottom: 0,
+  },
+  mediaContainer: {
+    flex: 1,
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"center",
+  },
+  mediaButton: {
+    marginHorizontal: 10,
   }
 });
 
