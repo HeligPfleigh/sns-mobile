@@ -16,7 +16,7 @@ import CRUDPost from "../../components/CRUDPost";
   graphql(CREATE_NEW_POST, {name: "createNewPost"}),
 )
 class NewFeedContainer extends Component {
-  _handlePressPost = (text) => {
+  _handlePressPost = (text, image) => {
     this.props.createNewPost({
       variables: {
         message: text,
