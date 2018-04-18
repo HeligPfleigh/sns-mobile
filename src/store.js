@@ -52,7 +52,7 @@ const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink);
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  uri: `ws://${HOST}/subscriptions`,
+  uri: `wss://${HOST}/subscriptions`,
   options: {
     reconnect: true,
   }
