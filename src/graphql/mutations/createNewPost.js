@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
 export default gql`
-  mutation createNewPost($message: String!, $isMobile: Boolean!){
-    createNewPost(message: $message, isMobile: $isMobile){
+  mutation createNewPost($message: String!, $isMobile: Boolean!, $photos: [String]){
+    createNewPost(message: $message, isMobile: $isMobile, photos: $photos){
       _id
       message
       messagePlainText
@@ -24,6 +24,7 @@ export default gql`
         _id
         name
       }
+      photos
       createdAt
       totalLikes
       totalComments

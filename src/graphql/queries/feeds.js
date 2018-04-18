@@ -32,6 +32,7 @@ export default gql`
           _id
           name
         }
+        photos
         createdAt
         totalLikes
         totalComments

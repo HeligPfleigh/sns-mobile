@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, TouchableOpacity, Text, Keyboard, Image } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Keyboard, Image, ScrollView } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -24,7 +24,7 @@ class CRUDPost extends Component{
     super(props);
     this.state = {
       text: this.props.message || "",
-      image: null,
+      images: null,
     };
   }
 
@@ -45,31 +45,42 @@ class CRUDPost extends Component{
 
   handlePressOpenGalery = async () => {
     try {
-      const image = await ImagePicker.openPicker({
-        multiple: false
+      const images = await ImagePicker.openPicker({
+        multiple: true
       });
+
       this.setState({
-        image,
+        images,
       });
     } catch (err) {
-      throw new Error("Không thể đọc ảnh từ bộ sưu tập");
+      this.setState({
+        images: null,
+      });
     }
   }
 
   handlePressOpenCamera = async () => {
     try {
-      const image = await ImagePicker.openCamera({});
+      let images = [];
+      const data = await ImagePicker.openCamera({});
+      images.push(data);
+
       this.setState({
-        image,
+        images,
       });
+
     } catch (err) {
-      throw new Error("Có lỗi xảy ra khi sử dụng camera");
+      this.setState({
+        images: null,
+      });
     }
   }
 
   render() {
     const { profile, handlePressPost, id } = this.props;
-    const { text, image } = this.state;
+    const { text, images } = this.state;
+
+    const listImage = images ? images.map((item, idx) => <Image key={idx} source={{uri: item.path}} style={{width: "100%", height: 200, marginVertical: 10}}/>) : null;
 
     return (
       <Layout navigation={this.props.navigation}>
@@ -92,9 +103,10 @@ class CRUDPost extends Component{
               maxLength={MAX_MESSAGE_CHARACTER}
               underlineColorAndroid="rgba(0,0,0,0)"
             />
-            <View style={styles.imageContainer}>
-              {image ? <Image source={{uri: image.path}} style={{width: "100%", height: "100%"}}/> : null}
-            </View>
+            <ScrollView style={styles.imageContainer}>
+              {/* {image ? <Image source={{uri: image.path}} style={{width: "100%", height: 300}}/> : null} */}
+              {listImage}
+            </ScrollView>
           </View>
           <View style={styles.bottomContainer}>
            <View style={styles.mediaControlContainer}>
@@ -112,7 +124,7 @@ class CRUDPost extends Component{
             </View>
             <View style={{flex: 1, flexDirection:"row", alignItems:"center", justifyContent:"flex-end"}}>
               <Text style={styles.textLength}>{this._textLength}</Text>
-              <TouchableOpacity style={styles.postButton} disabled={this._buttonDisabled} onPress={() => handlePressPost(text, image)}>
+              <TouchableOpacity style={styles.postButton} disabled={this._buttonDisabled} onPress={() => handlePressPost(text, images)}>
                 <Text style={styles.postButtonText}>Submit</Text>
               </TouchableOpacity>
             </View>

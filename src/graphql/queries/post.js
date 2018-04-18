@@ -63,6 +63,7 @@ export default gql`
         createdAt
         updatedAt
       }
+      photos
       isLiked
       createdAt
     }

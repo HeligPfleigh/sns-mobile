@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+    backgroundColor: "#f9f9f9",
     width: "100%",
     height: 50,
     zIndex: 2,
