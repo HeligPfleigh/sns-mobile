@@ -4,5 +4,5 @@ export default {
   Chat: "chatbubbles",
   FriendBox: "contacts",
   Notification: "notifications",
-  BlankScreen: "search",
+  SearchBox: "search",
 };

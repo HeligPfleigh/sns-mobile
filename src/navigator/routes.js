@@ -8,6 +8,7 @@ import FriendProfileScreen from "../container/FriendProfileScreen";
 import icons from "./icons";
 import { TabBar } from "../components/TabNavigator";
 
+
 // Welcome screen
 import Welcome from "../container/Welcome";
 // Auth screen
@@ -31,7 +32,7 @@ import CommentReplyScreen from "../container/CommentReplyScreen";
 import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
 import Notification from "../container/Notification";
-
+import SearchBox from "../container/SearchBox";
 // Screens from drawer menu
 import ProfileScreen from "../container/ProfileScreen";
 import ChangePasswordScreen from "../container/ChangePasswordScreen";
@@ -42,7 +43,7 @@ import ChangePasswordScreen from "../container/ChangePasswordScreen";
 const TabsRouteConfig = {
   Home: { screen: Home },
   FriendBox: { screen: FriendBox },
-  BlankScreen: { screen: BlankScreen },
+  SearchBox: { screen: SearchBox },
   Notification: { screen: Notification }
 };
 
@@ -55,19 +56,13 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
   navigationOptions: ({ navigation }) => ({
     tabBarIcon: () => {
       const { routeName } = navigation.state;
+      var  number;
 
       if (icons[routeName] === "notifications") {
         return (
           <IconBadge
             MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
-            BadgeElement={<NotificationNumber />}
-          />
-        );
-      } else if (icons[routeName] === "contacts") {
-        return (
-          <IconBadge
-            MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
-            BadgeElement={<NotificationNumber />}
+            BadgeElement={<NotificationNumber number={number}/>}
           />
         );
       }
@@ -75,6 +70,7 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
     }
   })
 });
+
 
 const MenuRouteConfig = {
   ...TabsRouteConfig,
@@ -111,7 +107,7 @@ const StackAppRouteConfig = StackNavigator(
     NewFeed: { screen: NewFeedScreen },
     EditPostScreen: { screen: EditPostScreen },
     CommentReplyScreen: { screen: CommentReplyScreen },
-    FriendProfileScreen: { screen: FriendProfileScreen },
+    FriendProfileScreen: { screen: FriendProfileScreen }
   },
   {
     headerMode: "none"

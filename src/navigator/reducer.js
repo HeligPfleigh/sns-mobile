@@ -1,16 +1,27 @@
-import { SAVE_USER_INFO } from "./index";
+import { COUNTING } from "./action";
+import { COUNTINGDOWN } from "./action";
+
+
 const initialState = {};
 
 export default function(state = initialState, action) {
 
   switch (action.type) {
-
-    case SAVE_USER_INFO:
+    case COUNTING:
       return {
         ...state,
         ...action.payload
       };
+    case COUNTINGDOWN:
+
+      return {
+        ...state,
+        ...action.payload
+      };
+
     default:
       return state;
   }
 }
+
+
