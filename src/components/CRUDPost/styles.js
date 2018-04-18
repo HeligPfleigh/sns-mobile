@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     justifyContent:"center",
   },
   mediaButton: {
-    marginHorizontal: 10,
+    marginHorizontal: 15,
   }
 });
 

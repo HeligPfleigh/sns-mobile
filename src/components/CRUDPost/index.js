@@ -46,7 +46,8 @@ class CRUDPost extends Component{
   handlePressOpenGalery = async () => {
     try {
       const images = await ImagePicker.openPicker({
-        multiple: true
+        multiple: true,
+        mediaType: "photo",
       });
 
       this.setState({
