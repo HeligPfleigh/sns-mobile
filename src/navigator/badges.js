@@ -4,7 +4,6 @@ import { graphql, compose, withApollo } from "react-apollo";
 import { ActivityIndicator, Text } from "react-native";
 import { connect } from "react-redux";
 import { counting } from "./action";
-import * as utils from "./../utils/common";
 
 class NotificationNumber extends Component {
   constructor(props) {
