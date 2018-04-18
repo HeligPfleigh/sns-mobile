@@ -9,6 +9,7 @@ export const USER_EXISTED = "User already exists";
 // api server
 export const API_SERVER = "https://api-sns.mttjsc.com";
 export const HOST = "api-sns.mttjsc.com";
+export const MEDIA_SERVER = "https://scontent.mttjsc.com";
 
 // log in action
 export const ACCESS_TOKEN = "@SNS:accessToken";

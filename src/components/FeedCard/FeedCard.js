@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
 import { Card, CardItem } from "native-base";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -57,7 +57,8 @@ class FeedCard extends Component {
   }
 
   render(){
-    const { _id, messagePlainText, author, isLiked, totalComments, totalLikes, createdAt, user, building } = this.props;
+    const { _id, messagePlainText, author, isLiked, totalComments,
+      totalLikes, createdAt, user, building, photos } = this.props;
 
     const displayText = messagePlainText.length > 300 ? `${messagePlainText.substring(0, 300)}...` : messagePlainText;
     return (
@@ -72,6 +73,7 @@ class FeedCard extends Component {
         <CardItem cardBody style={styles.contentContainer}>
           <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
             <Text style={styles.textContent}>{displayText}</Text>
+            {photos ? <Image source={{uri: photos[0]}} style={{width: "100%", height: "100%"}}/> : null}
           </TouchableOpacity>
         </CardItem>
         <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes} />

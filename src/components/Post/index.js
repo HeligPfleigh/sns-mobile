@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, FlatList, Keyboard, Platform } from "react-native";
+import { View, StyleSheet, Text, FlatList, Keyboard, Platform, ScrollView, Image } from "react-native";
 
 import { colors } from "../../constants";
 import FeedCardHeader from "../FeedCard/FeedCardHeader";
@@ -9,7 +9,7 @@ import AddCommentSection from "../AddCommentSection";
 
 const styles = StyleSheet.create({
   contentContainer: {
-    minHeight: 180,
+    minHeight: "50%",
     alignSelf: "stretch",
     padding: 10,
   },
@@ -60,7 +60,15 @@ class Post extends Component {
   }
 
   render(){
-    const { author, createdAt, messagePlainText, _id, isLiked, totalComments, totalLikes, comments, user, building } = this.props.post;
+    const { author, createdAt, messagePlainText, _id,
+      isLiked, totalComments, totalLikes,
+      comments, user, building, photos } = this.props.post;
+
+    const listImage = photos ? photos.map((item, idx) =>
+      <Image source={{ uri: item }}
+        style={{width: "100%", height: 300, marginVertical: 10}}
+        key={idx}/>) : null;
+
     return (
       <View style={{ flex: 1 }}>
         <FeedCardHeader
@@ -70,11 +78,12 @@ class Post extends Component {
           friendShared={user}
           buildingShared={building}
         />
-        <View style={styles.contentContainer}>
+        <ScrollView style={styles.contentContainer}>
           <Text style={styles.textContent}>
             {messagePlainText}
           </Text>
-        </View>
+          {listImage}
+        </ScrollView>
         <PostFeedBack
           postID={_id}
           isLiked={isLiked}
