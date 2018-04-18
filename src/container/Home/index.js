@@ -101,17 +101,15 @@ class HomeScreen extends Component {
   }
 
   _handleEnd = () => {
-    this.setState(
-      {
-        page: this.state.page + 1
-      },
-      () => {
-        if (this.props.getFeeds.feeds.pageInfo.hasNextPage) {
-          this.props.loadMoreRows();
-        }
-      }
-    );
+    if (this.props.getFeeds.feeds.pageInfo.hasNextPage && !this.state.refreshing) {
+      this.setState({ refreshing: true }, () => {
+        this.props.loadMoreRows().then(() => {
+          this.setState({ refreshing: false });
+        });
+      });
+    }
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.getMe.me && nextProps.getMe.me !== this.props.getMe.me) {
       this.props.dispatch(utils.createAction(SAVE_USER_INFO, nextProps.getMe.me));
@@ -130,7 +128,8 @@ class HomeScreen extends Component {
           contentContainerStyle={{ alignSelf: "stretch" }}
           data={getFeeds.feeds.edges}
           onEndReached={this._handleEnd}
-          onEndReachedThreshold={0}
+          onEndReachedThreshold={0.1}
+          refreshing={this.state.refreshing}
           ListFooterComponent={() => (this.state.loading ? null : <ActivityIndicator size="large" />)}
           keyExtractor={item => item._id}
           renderItem={this._renderItem}

@@ -16,7 +16,7 @@ class FriendsBox extends Component {
               </Button>
             </Left>
             <Body>
-              <Title> Tìm kiếm </Title>
+              <Title> Bạn bè </Title>
             </Body>
             <Right>
               <Button transparent>
