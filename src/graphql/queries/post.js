@@ -1,71 +1,16 @@
 import { gql } from "apollo-boost";
+import PostFragments from "../fragments/PostFragments";
+import CommentFragments from "../fragments/CommentFragments";
 
 export default gql`
   query post( $_id : String!, $limit: Int){
     post( _id: $_id){
-      _id
-      message
-      messagePlainText
-      author {
-        _id
-        username
-        profile {
-          picture
-        }
-        email {
-          address
-        }
-      }
-      user {
-        _id
-        username
-      }
-      building {
-        _id
-        name
-      }
-      totalLikes
-      totalComments
+      ...PostView
       comments(limit: $limit) {
-        _id
-        message
-        user {
-          _id
-          username
-          profile {
-            picture
-          }
-        }
-        messagePlainText
-        reply {
-          _id
-          message
-          user {
-            _id
-            username
-            profile {
-              picture
-            }
-          }
-          messagePlainText
-          reply {
-            message
-            messagePlainText
-            createdAt
-          }
-          totalReply
-          parent
-          createdAt
-          updatedAt
-        }
-        totalReply
-        parent
-        createdAt
-        updatedAt
+        ...CommentView
       }
-      photos
-      isLiked
-      createdAt
     }
   }
+  ${PostFragments.postView}
+  ${CommentFragments.commentView}
 `;

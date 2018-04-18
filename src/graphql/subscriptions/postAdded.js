@@ -1,34 +1,11 @@
 import { gql } from "apollo-boost";
+import PostFragments from "../fragments/PostFragments";
 
 export default gql`
   subscription postAdded{
     postAdded {
-      _id
-      message
-      messagePlainText
-      author {
-        _id
-        username
-        profile {
-          picture
-        }
-        email {
-          address
-        }
-      }
-      user {
-        _id
-        username
-      }
-      building {
-        _id
-        name
-      }
-      photos
-      createdAt
-      totalLikes
-      totalComments
-      isLiked
+      ...PostView
     }
   }
+  ${PostFragments.postView}
 `;

@@ -1,4 +1,5 @@
 import { gql } from "apollo-boost";
+import PostFragments from "../fragments/PostFragments";
 
 export default gql`
   query feeds($limit: Int, $cursor: String) {
@@ -10,34 +11,9 @@ export default gql`
         limit
       }
       edges {
-        _id
-        message
-        messagePlainText
-        author {
-          _id
-          username
-          profile {
-            picture
-          }
-          email {
-            address
-          }
-          _id
-        }
-        user {
-          _id
-          username
-        }
-        building {
-          _id
-          name
-        }
-        photos
-        createdAt
-        totalLikes
-        totalComments
-        isLiked
+        ...PostView
       }
     }
   }
+  ${PostFragments.postView}
 `;

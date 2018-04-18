@@ -1,4 +1,5 @@
 import { gql } from "apollo-boost";
+import PostFragments from "../fragments/PostFragments";
 
 export default gql`
   query user($_id: String!) {
@@ -8,33 +9,7 @@ export default gql`
       totalFriends
       isFriend
       posts {
-        _id
-        message
-        messagePlainText
-        author {
-          _id
-          username
-          profile {
-            picture
-          }
-          email {
-            address
-          }
-          _id
-        }
-        user {
-          _id
-          username
-        }
-        building {
-          _id
-          name
-        }
-        photos
-        createdAt
-        totalLikes
-        totalComments
-        isLiked
+        ...PostView
       }
       phone {
         number
@@ -53,4 +28,5 @@ export default gql`
       }
     }
   }
+  ${PostFragments.postView}
 `;

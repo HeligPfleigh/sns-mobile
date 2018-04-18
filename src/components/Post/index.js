@@ -9,8 +9,6 @@ import AddCommentSection from "../AddCommentSection";
 
 const styles = StyleSheet.create({
   contentContainer: {
-    minHeight: "50%",
-    alignSelf: "stretch",
     padding: 10,
   },
   commentContainer: {
