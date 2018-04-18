@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Content, Header, Icon, Left, Button, Body, Title, Right, Container } from "native-base";
 import { ActivityIndicator } from "react-native";
+import { graphql } from "react-apollo";
+
 import Layout from "../../components/Layout";
 import styles from "./styles";
-import { graphql } from "react-apollo";
-import { gql } from "apollo-boost";
 import Wall from "./Details/Wall";
+import USER_QUERY from "../../graphql/queries/user";
 
 class FriendProfile extends Component {
   render() {
@@ -44,58 +45,7 @@ class FriendProfile extends Component {
   }
 }
 
-const FriendQuery = gql`
-  query user($_id: String!) {
-    user(_id: $_id) {
-      _id
-      username
-      totalFriends
-      isFriend
-      posts {
-        _id
-        message
-        messagePlainText
-        totalLikes
-        totalComments
-        author {
-          username
-          profile {
-            picture
-          }
-          username
-          _id
-        }
-        comments {
-          message
-          messagePlainText
-          totalReply
-          parent
-          createdAt
-          updatedAt
-        }
-        isLiked
-        createdAt
-        updatedAt
-      }
-      phone {
-        number
-      }
-      profile {
-        picture
-        gender
-        dob
-        address
-      }
-      email {
-        address
-      }
-      building {
-        name
-      }
-    }
-  }
-`;
-const FriendProfileWithData = graphql(FriendQuery, {
+const FriendProfileWithData = graphql(USER_QUERY, {
   options: ownProps => {
     return {
       variables: { _id: ownProps.navigation.state.params.id }
