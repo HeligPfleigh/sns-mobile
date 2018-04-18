@@ -32,6 +32,7 @@ import CommentReplyScreen from "../container/CommentReplyScreen";
 import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
 import Notification from "../container/Notification";
+import SearchBox from "../container/SearchBox";
 // Screens from drawer menu
 import ProfileScreen from "../container/ProfileScreen";
 import ChangePasswordScreen from "../container/ChangePasswordScreen";
@@ -42,7 +43,7 @@ import ChangePasswordScreen from "../container/ChangePasswordScreen";
 const TabsRouteConfig = {
   Home: { screen: Home },
   FriendBox: { screen: FriendBox },
-  BlankScreen: { screen: BlankScreen },
+  SearchBox: { screen: SearchBox },
   Notification: { screen: Notification }
 };
 
