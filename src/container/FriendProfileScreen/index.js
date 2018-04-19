@@ -34,9 +34,7 @@ class FriendProfile extends Component {
                 </Button>
               </Right>
             </Header>
-            <Content padder style={{ backgroundColor: "#fff" }}>
               <Wall info={info} />
-            </Content>
           </Container>
         </Layout>
       );

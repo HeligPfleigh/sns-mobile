@@ -16,14 +16,9 @@ import Intro from "./Intro";
 import Friends from "./Friends";
 
 class Wall extends Component {
-  end() {
-  }
+
   _renderItem = ({ item }) => <FeedCard {...item} />
-  _disableScroll() {
-    this._list.getScrollResponder().setNativeProps({
-      scrollEnabled: false
-    });
-  }
+
   renderHeader = () => {
     const info = this.props.info;
     return (
@@ -33,9 +28,9 @@ class Wall extends Component {
           <Text style={{ textAlign: "center", fontSize: 25 }}>{this.props.info.username}</Text>
 
           <View style={{flexDirection: "row", marginTop: 20}}>
-            <Button info bordered  style={{width:Dimensions.get("window").width / 3,margin:5}}><Text style={{textAlign: "center"}}> Kết bạn</Text></Button>
-            <Button danger bordered  style={{width:Dimensions.get("window").width / 3,margin:5}}><Text> Theo dõi</Text></Button>
-            <Button success bordered  style={{width:Dimensions.get("window").width / 3,margin:5}}><Text> Nhắn tin</Text></Button>
+            <Button info   style={{width:Dimensions.get("window").width / 3.5,margin:5}}><Text style={{textAlign: "center"}}> Kết bạn</Text></Button>
+            <Button danger   style={{width:Dimensions.get("window").width / 3.5,margin:5}}><Text> Theo dõi</Text></Button>
+            <Button success   style={{width:Dimensions.get("window").width / 3.5,margin:5}}><Text> Nhắn tin</Text></Button>
           </View>
           <Tabs style={{paddingTop:5}}>
             <Tab
@@ -61,7 +56,7 @@ class Wall extends Component {
             <Tab
               heading={
                 <TabHeading>
-                  <Icon name="ios-people-outline" />
+                  <Icon name="ios-code-working" />
                   <Text style={{fontWeight:"bold"}}>Khác</Text>
                 </TabHeading>
               }
@@ -77,7 +72,6 @@ class Wall extends Component {
       <FlatList
         keyExtractor={index => index._id}
         contentContainerStyle={{ alignSelf: "stretch" }}
-        onEndReached={this.end.bind(this)}
         onEndReachedThreshold={0.1}
         data={this.props.info.posts}
         renderItem={this._renderItem.bind(this)}
@@ -86,9 +80,7 @@ class Wall extends Component {
     );
 
     return (
-      <Layout>
         <View>{content}</View>
-      </Layout>
     );
   }
 }
