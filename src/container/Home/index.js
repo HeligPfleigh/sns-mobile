@@ -54,8 +54,7 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 0,
-      loading: false
+      refreshing: false
     };
     if (this.props.getMe.me) {
       this.props.dispatch(utils.createAction(SAVE_USER_INFO, this.props.getMe.me));
@@ -130,7 +129,7 @@ class HomeScreen extends Component {
           onEndReached={this._handleEnd}
           onEndReachedThreshold={0.1}
           refreshing={this.state.refreshing}
-          ListFooterComponent={() => (this.state.loading ? null : <ActivityIndicator size="large" />)}
+          ListFooterComponent={() => (!this.state.refreshing ? null : <ActivityIndicator size="large" />)}
           keyExtractor={item => item._id}
           renderItem={this._renderItem}
         />

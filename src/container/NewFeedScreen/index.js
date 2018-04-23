@@ -37,7 +37,8 @@ class NewFeedContainer extends Component {
 
       try {
         const response = await axios.post(url, body);
-        photos = response.data.map(item => item.URL);
+        // store all information get from media server
+        photos = response.data.map(item => JSON.stringify(item));
       } catch (err) {
 
         Alert.alert(

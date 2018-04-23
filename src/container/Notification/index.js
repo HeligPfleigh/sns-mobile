@@ -103,10 +103,13 @@ class Notification extends Component {
         let newEdges;
         const pageInfo = prev.notifications.pageInfo;
 
-        if (prev.notifications.edges[0]._id !== subscriptionData.data.notificationAdded._id) {
+        const duplicateIdx = prev.notifications.edges.findIndex(item => item._id === subscriptionData.data.notificationAdded._id);
+
+        if (duplicateIdx === -1){
           newEdges = [subscriptionData.data.notificationAdded, ...prev.notifications.edges];
-        } else {
-          newEdges = prev.notifications.edges;
+        }
+        else {
+          newEdges = [...prev.notifications.edges.slice(0, duplicateIdx), subscriptionData.data.notificationAdded, ...prev.notifications.edges.slice(duplicateIdx + 1)];
         }
 
         return update(prev, {

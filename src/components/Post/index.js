@@ -63,7 +63,7 @@ class Post extends Component {
       comments, user, building, photos } = this.props.post;
 
     const listImage = photos ? photos.map((item, idx) =>
-      <Image source={{ uri: item }}
+      <Image source={{ uri: JSON.parse(item).URL }}
         style={{width: "100%", height: 300, marginVertical: 10}}
         key={idx}/>) : null;
 

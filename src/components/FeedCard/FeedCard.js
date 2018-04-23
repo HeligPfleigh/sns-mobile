@@ -73,7 +73,7 @@ class FeedCard extends Component {
         <CardItem cardBody style={styles.contentContainer}>
           <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
             <Text style={styles.textContent}>{displayText}</Text>
-            {photos ? <Image source={{uri: photos[0]}} style={{width: "100%", height: "100%"}}/> : null}
+            {photos && photos.length ? <Image source={{uri: JSON.parse(photos[0]).URL}} style={{width: "100%", height: "100%"}}/> : null}
           </TouchableOpacity>
         </CardItem>
         <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes} />
