@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Card, CardItem } from "native-base";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -8,6 +8,7 @@ const deviceWidth = Dimensions.get("window").width;
 import { colors } from "../../constants";
 import FeedCardHeader from "./FeedCardHeader";
 import FeedCardBottom from "./FeedCardBottom";
+import FeedCardPhotos from "../Photos/FeedCardPhotos";
 
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +74,7 @@ class FeedCard extends Component {
         <CardItem cardBody style={styles.contentContainer}>
           <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
             <Text style={styles.textContent}>{displayText}</Text>
-            {photos && photos.length ? <Image source={{uri: JSON.parse(photos[0]).URL}} style={{width: "100%", height: "100%"}}/> : null}
+            <FeedCardPhotos photos={photos}/>
           </TouchableOpacity>
         </CardItem>
         <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes} />
