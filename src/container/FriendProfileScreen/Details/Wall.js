@@ -9,7 +9,6 @@ import {
   Button
 } from "native-base";
 import { FlatList, Image, Dimensions } from "react-native";
-import Layout from "../../../components/Layout";
 import FeedCard from "../../../components/FeedCard/FeedCard";
 import styles from "../styles";
 import Intro from "./Intro";
@@ -72,7 +71,6 @@ class Wall extends Component {
       <FlatList
         keyExtractor={index => index._id}
         contentContainerStyle={{ alignSelf: "stretch" }}
-        onEndReachedThreshold={0.1}
         data={this.props.info.posts}
         renderItem={this._renderItem.bind(this)}
         ListHeaderComponent={this.renderHeader}

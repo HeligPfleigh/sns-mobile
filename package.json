@@ -57,6 +57,7 @@
     "graphql": "0.13.1",
     "immutability-helper": "2.6.6",
     "lodash": "4.17.5",
+    "lottie-react-native": "^2.3.2",
     "native-base": "2.3.10",
     "prop-types": "15.6.1",
     "react": "16.2.0",

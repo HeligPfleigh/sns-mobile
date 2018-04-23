@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Content, Header, Icon, Left, Button, Body, Title, Right, Container } from "native-base";
+import { Header, Icon, Left, Button, Body, Title, Right, Container } from "native-base";
 import { ActivityIndicator } from "react-native";
 import { graphql } from "react-apollo";
 

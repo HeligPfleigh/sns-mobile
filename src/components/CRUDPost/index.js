@@ -4,11 +4,13 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import ImagePicker from "react-native-image-crop-picker";
+import LottieAnimation from "lottie-react-native";
 
 import Layout from "../Layout";
 import { colors } from "../../constants";
 import styles from "./styles";
 import HeaderAvatar from "../HeaderAvatar";
+import LottieAsset from "../../assets/lotties";
 
 const MAX_MESSAGE_CHARACTER = 300;
 
@@ -26,6 +28,10 @@ class CRUDPost extends Component{
       text: this.props.message || "",
       images: null,
     };
+  }
+
+  componentDidMount() {
+    this.animation.play();
   }
 
   _onChangeText = text => this.setState({ text });
@@ -117,11 +123,19 @@ class CRUDPost extends Component{
                 <MaterialIcons name="attachment" size={30} color={colors.LIGHT_GRAY} />
               </TouchableOpacity>
               <TouchableOpacity
+                style={[styles.mediaButton, {width: 30, height: 30}]}
+                onPress={this.handlePressOpenCamera}>
+                <LottieAnimation
+                  ref={animation => { this.animation = animation;}}
+                  source={LottieAsset.camera}
+                />
+              </TouchableOpacity>
+              {/* <TouchableOpacity
                 style={styles.mediaButton}
                 onPress={this.handlePressOpenCamera}
                 >
                 <MaterialIcons name="photo-camera" size={30} color={colors.LIGHT_GRAY} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <View style={{flex: 1, flexDirection:"row", alignItems:"center", justifyContent:"flex-end"}}>
               <Text style={styles.textLength}>{this._textLength}</Text>

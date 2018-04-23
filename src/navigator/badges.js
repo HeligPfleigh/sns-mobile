@@ -11,7 +11,7 @@ class NotificationNumber extends Component {
     this.state = {
       number: ""
     };
-    setTimeout(() => {
+    this._interval = setTimeout(() => {
       this.setState({
         number: this.props.userInfo.totalUnreadNotification
       });
@@ -19,6 +19,10 @@ class NotificationNumber extends Component {
         this.props.dispatch(counting({ params: this.state.number }));
       }
     }, 2000);
+  }
+
+  componentWillUnmount(){
+    clearTimeout(this._interval);
   }
 
   render() {

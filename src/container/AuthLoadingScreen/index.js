@@ -27,7 +27,7 @@ class AuthLoadingScreen extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       SplashScreen.hide();
-    }, 1500);
+    }, 500);
   }
 
   render() {
