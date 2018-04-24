@@ -17,6 +17,13 @@ export const USER_ID = "@SNS:userId";
 export const CREATE_TIME = "@SNS:createTime";
 export const TTL = "@SNS:ttl";
 
+// privacy for post
+const PUBLIC = "PUBLIC";
+const FRIEND = "FRIEND";
+const ONLY_ME = "ONLY_ME";
+export const POST_PRIVACY = [PUBLIC, FRIEND, ONLY_ME];
+export const POST_PRIVACY_DISPLAY = ["Công khai", "Bạn bè", "Chỉ mình tôi"];
+
 export const colors = {
   PRIMARY: "#55ACEE",
   SECONDARY: "#444B52",

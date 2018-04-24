@@ -8,7 +8,7 @@ import axios from "axios";
 import CREATE_NEW_POST from "../../graphql/mutations/createNewPost";
 // import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import CRUDPost from "../../components/CRUDPost";
-import { MEDIA_SERVER } from "../../constants";
+import { MEDIA_SERVER, POST_PRIVACY } from "../../constants";
 
 @compose(
   connect(
@@ -18,7 +18,7 @@ import { MEDIA_SERVER } from "../../constants";
   graphql(CREATE_NEW_POST, {name: "createNewPost"}),
 )
 class NewFeedContainer extends Component {
-  _handlePressPost = async (text, images) => {
+  _handlePressPost = async (text, images, privacyIndex) => {
     let photos = [];
     if (images){
       const body = new FormData();
@@ -61,6 +61,7 @@ class NewFeedContainer extends Component {
         message: text,
         isMobile: true,
         photos,
+        privacy: POST_PRIVACY[privacyIndex]
       },
     });
     Keyboard.dismiss();

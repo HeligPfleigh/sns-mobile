@@ -5,9 +5,10 @@ import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import ImagePicker from "react-native-image-crop-picker";
 import LottieAnimation from "lottie-react-native";
+import ModalDropdown from "react-native-modal-dropdown";
 
 import Layout from "../Layout";
-import { colors } from "../../constants";
+import { colors, POST_PRIVACY_DISPLAY } from "../../constants";
 import styles from "./styles";
 import HeaderAvatar from "../HeaderAvatar";
 import LottieAsset from "../../assets/lotties";
@@ -27,6 +28,7 @@ class CRUDPost extends Component{
     this.state = {
       text: this.props.message || "",
       images: null,
+      privacyIndex: 0,
     };
   }
 
@@ -85,22 +87,31 @@ class CRUDPost extends Component{
 
   render() {
     const { profile, handlePressPost, id } = this.props;
-    const { text, images } = this.state;
+    const { text, images, privacyIndex } = this.state;
 
     const listImage = images ? images.map((item, idx) => <Image key={idx} source={{uri: item.path}} style={{width: "100%", height: 200, marginVertical: 10}}/>) : null;
 
     return (
       <Layout navigation={this.props.navigation}>
         <View style={styles.container}>
+
           <View style={styles.headerContainer}>
             <View style={styles.avatar} >
               <HeaderAvatar avatar={profile.picture} id={id}/>
             </View>
-            <View style={{flex: 4}} />
+            <View style={{flex: 4, justifyContent:"center", alignItems:"center"}}>
+              <ModalDropdown
+                textStyle={{fontSize: 16}}
+                dropdownTextStyle={{fontSize: 16}}
+                options={POST_PRIVACY_DISPLAY}
+                defaultValue={POST_PRIVACY_DISPLAY[0]}
+                onSelect={(index, value)=>this.setState({privacyIndex: index})}/>
+            </View>
             <TouchableOpacity style={styles.backButton} onPress={this._handleClose}>
               <MaterialIcons name="close" size={30} color={colors.LIGHT_GRAY} />
             </TouchableOpacity>
           </View>
+
           <View style={styles.wrapper}>
             <TextInput style={styles.input}
               onChangeText={this._onChangeText}
@@ -111,12 +122,12 @@ class CRUDPost extends Component{
               underlineColorAndroid="rgba(0,0,0,0)"
             />
             <ScrollView style={styles.imageContainer}>
-              {/* {image ? <Image source={{uri: image.path}} style={{width: "100%", height: 300}}/> : null} */}
               {listImage}
             </ScrollView>
           </View>
+
           <View style={styles.bottomContainer}>
-           <View style={styles.mediaControlContainer}>
+            <View style={styles.mediaControlContainer}>
               <TouchableOpacity
                 style={styles.mediaButton}
                 onPress={this.handlePressOpenGalery}>
@@ -130,21 +141,17 @@ class CRUDPost extends Component{
                   source={LottieAsset.camera}
                 />
               </TouchableOpacity>
-              {/* <TouchableOpacity
-                style={styles.mediaButton}
-                onPress={this.handlePressOpenCamera}
-                >
-                <MaterialIcons name="photo-camera" size={30} color={colors.LIGHT_GRAY} />
-              </TouchableOpacity> */}
             </View>
+
             <View style={{flex: 1, flexDirection:"row", alignItems:"center", justifyContent:"flex-end"}}>
-              <Text style={styles.textLength}>{this._textLength}</Text>
-              <TouchableOpacity style={styles.postButton} disabled={this._buttonDisabled} onPress={() => handlePressPost(text, images)}>
-                <Text style={styles.postButtonText}>Submit</Text>
-              </TouchableOpacity>
+                <Text style={styles.textLength}>{this._textLength}</Text>
+                <TouchableOpacity style={styles.postButton} disabled={this._buttonDisabled} onPress={() => handlePressPost(text, images, privacyIndex)}>
+                  <Text style={styles.postButtonText}>Submit</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
         </View>
+
       </Layout>
     );
   }
