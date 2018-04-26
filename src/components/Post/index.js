@@ -3,11 +3,11 @@ import { View, StyleSheet, Text, FlatList, Keyboard, Platform, ScrollView } from
 
 import { colors } from "../../constants";
 import FeedCardHeader from "../FeedCard/FeedCardHeader";
-import PostFeedBack from "./PostFeedBack";
 import FeedComment from "../FeedCard/FeedComments";
 import AddCommentSection from "../AddCommentSection";
 import PhotoContainer from "../Photos/PhotoContainer";
 import PhotoViewer from "../Photos/PhotoViewer";
+import FeedCardBottom from "../../components/FeedCard/FeedCardBottom";
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -93,11 +93,6 @@ class Post extends Component {
       isLiked, totalComments, totalLikes,
       comments, user, building, photos } = this.props.post;
 
-    // const listImage = photos ? photos.map((item, idx) =>
-    //   <Image source={{ uri: JSON.parse(item).URL }}
-    //     style={{width: "100%", height: 300, marginVertical: 10}}
-    //     key={idx}/>) : null;
-
     const listImage = photos ? photos.map((item, index) =>
       <PhotoContainer image={JSON.parse(item).URL} key={index} onPress={this.showImage}/>
     ) : null;
@@ -117,7 +112,7 @@ class Post extends Component {
           </Text>
           {listImage}
 
-          <PostFeedBack
+          <FeedCardBottom
             postID={_id}
             isLiked={isLiked}
             totalComments={totalComments}

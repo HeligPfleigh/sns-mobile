@@ -77,7 +77,12 @@ class FeedCard extends Component {
             <FeedCardPhotos photos={photos}/>
           </TouchableOpacity>
         </CardItem>
-        <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes} />
+        <FeedCardBottom
+          postID={_id}
+          isLiked={isLiked}
+          totalComments={totalComments}
+          totalLikes={totalLikes}
+          handlePressComment={this._handlePressContent} />
       </Card>
     );
   }
