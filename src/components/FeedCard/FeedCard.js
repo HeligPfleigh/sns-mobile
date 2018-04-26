@@ -9,6 +9,7 @@ import { colors } from "../../constants";
 import FeedCardHeader from "./FeedCardHeader";
 import FeedCardBottom from "./FeedCardBottom";
 import FeedCardPhotos from "../Photos/FeedCardPhotos";
+import SharedPost from "../Post/SharedPost";
 
 const styles = StyleSheet.create({
   container: {
@@ -59,7 +60,7 @@ class FeedCard extends Component {
 
   render(){
     const { _id, messagePlainText, author, isLiked, totalComments,
-      totalLikes, createdAt, user, building, photos } = this.props;
+      totalLikes, createdAt, user, building, photos, sharing } = this.props;
 
     const displayText = messagePlainText.length > 300 ? `${messagePlainText.substring(0, 300)}...` : messagePlainText;
     return (
@@ -74,7 +75,8 @@ class FeedCard extends Component {
         <CardItem cardBody style={styles.contentContainer}>
           <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
             <Text style={styles.textContent}>{displayText}</Text>
-            <FeedCardPhotos photos={photos}/>
+            <FeedCardPhotos photos={photos} height={300}/>
+            { sharing ? <SharedPost postID={sharing._id}/> : null }
           </TouchableOpacity>
         </CardItem>
         <FeedCardBottom

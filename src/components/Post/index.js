@@ -8,6 +8,7 @@ import AddCommentSection from "../AddCommentSection";
 import PhotoContainer from "../Photos/PhotoContainer";
 import PhotoViewer from "../Photos/PhotoViewer";
 import FeedCardBottom from "../../components/FeedCard/FeedCardBottom";
+import SharedPost from "./SharedPost";
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -91,7 +92,7 @@ class Post extends Component {
   render(){
     const { author, createdAt, messagePlainText, _id,
       isLiked, totalComments, totalLikes,
-      comments, user, building, photos } = this.props.post;
+      comments, user, building, photos, sharing } = this.props.post;
 
     const listImage = photos ? photos.map((item, index) =>
       <PhotoContainer image={JSON.parse(item).URL} key={index} onPress={this.showImage}/>
@@ -111,6 +112,8 @@ class Post extends Component {
             {messagePlainText}
           </Text>
           {listImage}
+
+          { sharing ? <SharedPost postID={sharing._id}/> : null }
 
           <FeedCardBottom
             postID={_id}
