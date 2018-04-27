@@ -3,10 +3,12 @@ import { View, StyleSheet, TouchableOpacity, TextInput, Text } from "react-nativ
 import { connect } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import ModalDropdown from "react-native-modal-dropdown";
+import { graphql, compose } from "react-apollo";
 
-import { colors } from "../../constants";
+import { colors, POST_PRIVACY } from "../../constants";
 import HeaderAvatar from "../HeaderAvatar";
 import SharedPost from "./SharedPost";
+import SHARING_POST_MUTATION from "../../graphql/mutations/sharingPost";
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -55,24 +57,45 @@ const styles = StyleSheet.create({
   },
 });
 
-@connect(
-  ({ userInfo }) => ({
-    profile: userInfo.profile,
-    id: userInfo._id,
-    friends: userInfo.friends,
-  }),
-  dispatch => ({ dispatch })
+@compose(
+  connect(
+    ({ userInfo }) => ({
+      profile: userInfo.profile,
+      id: userInfo._id,
+      friends: userInfo.friends,
+    }),
+    dispatch => ({ dispatch })
+  ),
+  graphql(SHARING_POST_MUTATION, {name: "sharePost"}),
 )
 class SharedModal extends Component{
   constructor(props){
     super(props);
     this.state = {
-      friendIdx: 0,
+      friendIdx: -1,
       text: null,
     };
   }
 
   _onChangeText = text => this.setState({ text });
+
+  _handlePressSubmit = async () => {
+    const { text, friendIdx } = this.state;
+    const { sharingPostID, friends, onToggleSharingModal } = this.props;
+    if (!text || !text.length || friendIdx === -1) {return;}
+
+    const friendId = friends[friendIdx]._id;
+    await this.props.sharePost({
+      variables: {
+        _id: sharingPostID,
+        message: text,
+        isMobile: true,
+        friendId,
+        privacy: POST_PRIVACY[0]
+      },
+    });
+    onToggleSharingModal(false);
+  }
 
   render(){
     const { profile, id, onToggleSharingModal, friends, sharingPostID } = this.props;
@@ -97,7 +120,6 @@ class SharedModal extends Component{
                 textStyle={{fontSize: 16}}
                 dropdownTextStyle={{fontSize: 16}}
                 options={friendsName}
-                defaultValue={friendsName[0]}
                 onSelect={(index, value)=>this.setState({friendIdx: index})}/>
             </View>
             <TouchableOpacity style={styles.backButton} onPress={() => onToggleSharingModal(false)}>
@@ -116,7 +138,7 @@ class SharedModal extends Component{
             {sharingPostID ? <SharedPost postID={sharingPostID}/> : null}
           </View>
           <View style={styles.bottom}>
-            <TouchableOpacity style={styles.postButton}>
+            <TouchableOpacity style={styles.postButton} onPress={this._handlePressSubmit}>
                 <Text style={styles.postButtonText}>Đăng</Text>
             </TouchableOpacity>
           </View>
