@@ -47,6 +47,7 @@ class FeedCardBottom extends Component{
 
   static defaultProps = {
     handlePressComment: emptyFn,
+    onToggleSharingModal: emptyFn,
   }
 
   _handleLike = async () => {
@@ -80,7 +81,7 @@ class FeedCardBottom extends Component{
   }
 
   render(){
-    const { totalComments, handlePressComment } = this.props;
+    const { totalComments, handlePressComment, onToggleSharingModal, postID } = this.props;
     const { isLiked, totalLikes } = this.state;
     return (
       <CardItem style={styles.container}>
@@ -94,7 +95,7 @@ class FeedCardBottom extends Component{
           <Text style={styles.buttonText}> {totalComments} </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => onToggleSharingModal(true, postID)}>
           <MaterialCommunityIcons name="share" size={ICON_SIZE} color={colors.LIGHT_GRAY}/>
         </TouchableOpacity>
       </CardItem>

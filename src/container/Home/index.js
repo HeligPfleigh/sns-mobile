@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import update from "immutability-helper";
 import { View, Body, Title, Header } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
-import { ActivityIndicator, FlatList } from "react-native";
+import { ActivityIndicator, FlatList, Modal } from "react-native";
 
 import * as utils from "../../utils/common";
 import { SPINNER_CHANGE } from "../../constants";
 import Layout from "../../components/Layout";
 import FeedCard from "../../components/FeedCard/FeedCard";
 import FeedsHeader from "../../components/FeedsHeader";
+import SharedModal from "../../components/Post/SharedModal";
 import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import ME_QUERY from "../../graphql/queries/me";
 import POST_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/postAdded";
@@ -54,7 +55,9 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      refreshing: false
+      refreshing: false,
+      sharingModalVisible: false,
+      sharingPostID: null,
     };
     if (this.props.getMe.me) {
       this.props.dispatch(utils.createAction(SAVE_USER_INFO, this.props.getMe.me));
@@ -92,7 +95,7 @@ class HomeScreen extends Component {
     });
   }
 
-  _renderItem = ({ item }) => <FeedCard {...item} />
+  _renderItem = ({ item }) => <FeedCard {...item} onToggleSharingModal={this._onToggleSharingModal}/>
 
   _renderFeedHeader = () => {
     const { getMe } = this.props;
@@ -115,8 +118,14 @@ class HomeScreen extends Component {
     }
   }
 
+  _onToggleSharingModal = (visible, id) => this.setState({
+    sharingModalVisible: visible,
+    sharingPostID: id,
+  })
+
   render() {
     const { getMe, getFeeds } = this.props;
+    const { sharingModalVisible, refreshing, sharingPostID } = this.state;
     let content;
     if (getFeeds.loading || getMe.loading) {
       content = <ActivityIndicator size="large" />;
@@ -128,8 +137,8 @@ class HomeScreen extends Component {
           data={getFeeds.feeds.edges}
           onEndReached={this._handleEnd}
           onEndReachedThreshold={0.1}
-          refreshing={this.state.refreshing}
-          ListFooterComponent={() => (!this.state.refreshing ? null : <ActivityIndicator size="large" />)}
+          refreshing={refreshing}
+          ListFooterComponent={() => (!refreshing ? null : <ActivityIndicator size="large" />)}
           keyExtractor={item => item._id}
           renderItem={this._renderItem}
         />
@@ -149,6 +158,13 @@ class HomeScreen extends Component {
           </View>
         ) : null}
         <View style={styles.root}>{content}</View>
+        {getMe.me ? <Modal
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => this._onToggleSharingModal(false, null)}
+          visible={sharingModalVisible}>
+          <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={sharingPostID}/>
+        </Modal> : null}
       </Layout>
     );
   }
