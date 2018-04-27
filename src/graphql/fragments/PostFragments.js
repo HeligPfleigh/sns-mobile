@@ -15,7 +15,6 @@ export default {
         email {
           address
         }
-        _id
       }
       user {
         _id
@@ -26,6 +25,9 @@ export default {
         name
       }
       photos
+      sharing {
+        _id
+      }
       createdAt
       totalLikes
       totalComments

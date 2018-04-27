@@ -9,6 +9,7 @@ import { colors } from "../../constants";
 import FeedCardHeader from "./FeedCardHeader";
 import FeedCardBottom from "./FeedCardBottom";
 import FeedCardPhotos from "../Photos/FeedCardPhotos";
+import SharedPost from "../Post/SharedPost";
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +37,8 @@ const styles = StyleSheet.create({
   }
 });
 
+const emptyFn = () => {};
+
 @connect(
   ({ common, nav }) => ({
     nav: nav,
@@ -44,6 +47,10 @@ const styles = StyleSheet.create({
   dispatch => ({ dispatch })
 )
 class FeedCard extends Component {
+  static defaultProps = {
+    onToggleSharingModal: emptyFn,
+  }
+
   _handlePressContent = () => {
     const { _id, totalComments } = this.props;
     this.props.dispatch(
@@ -59,7 +66,8 @@ class FeedCard extends Component {
 
   render(){
     const { _id, messagePlainText, author, isLiked, totalComments,
-      totalLikes, createdAt, user, building, photos } = this.props;
+      totalLikes, createdAt, user, building,
+      photos, sharing, onToggleSharingModal } = this.props;
 
     const displayText = messagePlainText.length > 300 ? `${messagePlainText.substring(0, 300)}...` : messagePlainText;
     return (
@@ -74,10 +82,17 @@ class FeedCard extends Component {
         <CardItem cardBody style={styles.contentContainer}>
           <TouchableOpacity style={styles.touchableContent} onPress={this._handlePressContent}>
             <Text style={styles.textContent}>{displayText}</Text>
-            <FeedCardPhotos photos={photos}/>
+            <FeedCardPhotos photos={photos} height={300}/>
+            { sharing ? <SharedPost postID={sharing._id}/> : null }
           </TouchableOpacity>
         </CardItem>
-        <FeedCardBottom postID={_id} isLiked={isLiked} totalComments={totalComments} totalLikes={totalLikes} />
+        <FeedCardBottom
+          postID={_id}
+          isLiked={isLiked}
+          totalComments={totalComments}
+          totalLikes={totalLikes}
+          onToggleSharingModal={onToggleSharingModal}
+          handlePressComment={this._handlePressContent} />
       </Card>
     );
   }

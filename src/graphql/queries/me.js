@@ -24,6 +24,10 @@ export default gql`
           name
         }
       }
+      friends {
+        _id
+        username
+      }
       friendRequests {
         username
         _id

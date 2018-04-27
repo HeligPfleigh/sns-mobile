@@ -1,13 +1,16 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, FlatList, Keyboard, Platform, ScrollView } from "react-native";
+import { View, StyleSheet, Text, FlatList,
+  Keyboard, Platform, ScrollView, Modal } from "react-native";
 
 import { colors } from "../../constants";
 import FeedCardHeader from "../FeedCard/FeedCardHeader";
-import PostFeedBack from "./PostFeedBack";
 import FeedComment from "../FeedCard/FeedComments";
 import AddCommentSection from "../AddCommentSection";
 import PhotoContainer from "../Photos/PhotoContainer";
 import PhotoViewer from "../Photos/PhotoViewer";
+import FeedCardBottom from "../../components/FeedCard/FeedCardBottom";
+import SharedPost from "./SharedPost";
+import SharedModal from "./SharedModal";
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -36,6 +39,7 @@ class Post extends Component {
     bottom: 0,
     selected: null,
     position: null,
+    sharingModalVisible: false,
   }
 
   componentWillMount () {
@@ -88,15 +92,16 @@ class Post extends Component {
     }
   }
 
+  _onToggleSharingModal = (visible) => this.setState({
+    sharingModalVisible: visible,
+  })
+
   render(){
     const { author, createdAt, messagePlainText, _id,
       isLiked, totalComments, totalLikes,
-      comments, user, building, photos } = this.props.post;
+      comments, user, building, photos, sharing } = this.props.post;
 
-    // const listImage = photos ? photos.map((item, idx) =>
-    //   <Image source={{ uri: JSON.parse(item).URL }}
-    //     style={{width: "100%", height: 300, marginVertical: 10}}
-    //     key={idx}/>) : null;
+    const { sharingModalVisible } = this.state;
 
     const listImage = photos ? photos.map((item, index) =>
       <PhotoContainer image={JSON.parse(item).URL} key={index} onPress={this.showImage}/>
@@ -117,11 +122,14 @@ class Post extends Component {
           </Text>
           {listImage}
 
-          <PostFeedBack
+          { sharing ? <SharedPost postID={sharing._id}/> : null }
+
+          <FeedCardBottom
             postID={_id}
             isLiked={isLiked}
             totalComments={totalComments}
             totalLikes={totalLikes}
+            onToggleSharingModal={this._onToggleSharingModal}
             />
           <View style={styles.commentContainer}>
             {totalComments > 0
@@ -137,6 +145,13 @@ class Post extends Component {
           <AddCommentSection postId={_id} commentID={null}/>
         </View>
         {this.renderViewer()}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => this._onToggleSharingModal(false, null)}
+          visible={sharingModalVisible}>
+          <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={_id}/>
+        </Modal>
       </View>
     );
   }
