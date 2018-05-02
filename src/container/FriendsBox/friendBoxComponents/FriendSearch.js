@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Data from "./Data";
 import DataSuggest from "./DataSuggest";
 import { ScrollView } from "react-native";
-import { Container, View, Content, Text, Item, Input } from "native-base";
+import { Container, View, Content, Item, Input } from "native-base";
 
 class FriendSearch extends Component {
   constructor(props) {

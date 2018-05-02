@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Header, Icon, Left, Button, Body, Title, Right, Container } from "native-base";
+import { Header, Icon, Left, Button, Body, Right, Container } from "native-base";
 import { ActivityIndicator } from "react-native";
 import { graphql } from "react-apollo";
 
@@ -25,14 +25,8 @@ class FriendProfile extends Component {
                   <Icon name="ios-arrow-back" />
                 </Button>
               </Left>
-              <Body>
-                <Title style={{ fontSize: 15 }}> Thông tin cá nhân </Title>
-              </Body>
-              <Right>
-                <Button transparent onPress={() => this.props.navigation.goBack()}>
-                  <Icon name="md-settings" />
-                </Button>
-              </Right>
+              <Body />
+              <Right />
             </Header>
               <Wall info={info} />
           </Container>

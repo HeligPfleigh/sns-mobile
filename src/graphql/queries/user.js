@@ -19,6 +19,7 @@ export default gql`
         gender
         dob
         address
+        banner
       }
       email {
         address
