@@ -12,7 +12,6 @@ import { TabBar } from "../components/TabNavigator";
 // Welcome screen
 import Welcome from "../container/Welcome";
 // Auth screen
-import BlankScreen from "../container/BlankScreen";
 import SignUp from "../container/SignUp";
 import Login from "../container/Login";
 import ForgotPassword from "../container/ForgotPassword";

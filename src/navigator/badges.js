@@ -5,6 +5,7 @@ import { ActivityIndicator, Text } from "react-native";
 import { connect } from "react-redux";
 import { counting } from "./action";
 
+
 class NotificationNumber extends Component {
   constructor(props) {
     super(props);
@@ -26,8 +27,8 @@ class NotificationNumber extends Component {
   }
 
   render() {
-    if (this.props.userInfo) {
-      return <Text style={{ fontSize: 11, color: "white" }}>{this.props.counting.params}</Text>;
+    if (this.props.data.me) {
+      return <Text style={{ fontSize: 11, color: "white" }}> {this.props.data.me.totalUnreadNotification} </Text>;
     }
     return <ActivityIndicator />;
   }

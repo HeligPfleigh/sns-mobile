@@ -10,6 +10,8 @@ import styles from "./styles";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
 import NOTIFICATION_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/notificationAdded";
+import ME_QUERY from "../../graphql/queries/me";
+
 
 const Cases = type => {
   var text = "";
@@ -109,7 +111,7 @@ class Notification extends Component {
           newEdges = [subscriptionData.data.notificationAdded, ...prev.notifications.edges];
         }
         else {
-          newEdges = [...prev.notifications.edges.slice(0, duplicateIdx), subscriptionData.data.notificationAdded, ...prev.notifications.edges.slice(duplicateIdx + 1)];
+          newEdges = [subscriptionData.data.notificationAdded,...prev.notifications.edges.slice(0, duplicateIdx),  ...prev.notifications.edges.slice(duplicateIdx + 1)];
         }
 
         return update(prev, {
@@ -125,8 +127,12 @@ class Notification extends Component {
   press(id, stuffID, friend, isRead) {
     this.props
       .updateseen({
-        variables: { _id: id }
+        variables: { _id: id },
+        refetchQueries : [{
+          query: ME_QUERY
+        }]
       })
+
       .then(res => {
         this.props.getNotification.refetch();
       })
@@ -166,12 +172,12 @@ class Notification extends Component {
       .catch(error => {
         throw error;
       });
-    if (!isRead) {
-      this.props.dispatch({
-        type: "COUNTINGDOWN",
-        payload: { params : this.props.counting.params - 1}
-      });
-    }
+    // if (!isRead) {
+    //   this.props.dispatch({
+    //     type: "COUNTINGDOWN",
+    //     payload: { params : this.props.counting.params - 1}
+    //   });
+    // }
   }
 
   end() {
