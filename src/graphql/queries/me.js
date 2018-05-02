@@ -8,6 +8,7 @@ export default gql`
       fullName
       profile {
         picture
+        banner
       }
       email {
         address

@@ -4,7 +4,6 @@ import { Text, View, Image, StyleSheet } from "react-native";
 import { Container, List, ListItem, Content } from "native-base";
 
 import OtherIcon from "react-native-vector-icons/Entypo";
-import Images from "../../assets/images";
 import { logOut } from "./actions";
 import { fakeAvatar } from "../../constants";
 
@@ -63,7 +62,8 @@ const routes = [
   ({ userInfo }) => ({
     fullName: userInfo.fullName,
     id: userInfo._id,
-    avatarUri: userInfo && userInfo.profile && userInfo.profile.picture
+    avatarUri: userInfo && userInfo.profile && userInfo.profile.picture,
+    banner : userInfo && userInfo.profile && userInfo.profile.banner
   }),
   dispatch => ({
     logOut: navigation => dispatch(logOut(navigation))
@@ -75,11 +75,11 @@ export default class SidebarContainer extends Component {
   }
 
   render() {
-    const { navigation, fullName, avatarUri } = this.props;
+    const { navigation, fullName, avatarUri, banner } = this.props;
 
     return (
       <Container>
-        <Image source={Images.backgroundHeader} style={{ height: 200, width: "100%" }} />
+        <Image source={{ uri : banner }} style={{ height: 200, width: "100%" }} />
         <View style={{ flexDirection: "row", marginLeft: 20, marginTop: -40, height: 100 }}>
           <Image source={{ uri: avatarUri || fakeAvatar }} style={styles.avatar} />
           <Text style={{ fontSize: 20, backgroundColor: "transparent", marginTop: 50, marginLeft: 10 }}>
