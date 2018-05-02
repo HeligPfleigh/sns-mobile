@@ -3,7 +3,7 @@ import Data from "./Data";
 import DataSuggest from "./DataSuggest";
 import { ScrollView } from "react-native";
 import { Container, View, Content, Item, Input } from "native-base";
-
+import { Text } from "react-native";
 class FriendSearch extends Component {
   constructor(props) {
     super(props);
