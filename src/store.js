@@ -6,6 +6,7 @@ import { WebSocketLink } from "apollo-link-ws";
 import { split, ApolloLink } from "apollo-link";
 import { Observable} from "rxjs/Observable";
 import { getMainDefinition } from "apollo-utilities";
+import { SubscriptionClient } from "subscriptions-transport-ws";
 
 import { AsyncStorage } from "react-native";
 import thunk from "redux-thunk";
@@ -51,12 +52,20 @@ const middlewareAuthLink = new ApolloLink(
 const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink);
 
 // Create a WebSocket link:
-const wsLink = new WebSocketLink({
-  uri: `wss://${HOST}/subscriptions`,
-  options: {
+export const wsClient = new SubscriptionClient(
+  `wss://${HOST}/subscriptions`,
+  {
     reconnect: true,
+    lazy: true,
+    connectionParams: async () => {
+      return {
+        token: await AsyncStorage.getItem(ACCESS_TOKEN),
+      };
+    }
   }
-});
+);
+
+const wsLink = new WebSocketLink(wsClient);
 
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
