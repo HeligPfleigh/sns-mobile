@@ -1,11 +1,23 @@
 import React, { Component } from "react";
 import { Text, Button, Left, Body, ListItem, Thumbnail } from "native-base";
 import { graphql, compose } from "react-apollo";
-import { gql } from "apollo-boost";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
-
+import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
 import ME_QUERY from "../../../graphql/queries/me";
+import Accept from "../../../graphql/mutations/acceptFriend";
+import Deny from "../../../graphql/mutations/rejectFriend";
+
 class FriendRequest extends Component {
+  _handlePressAvatar = id => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "FriendProfileScreen",
+        params: { id: id }
+      })
+    );
+  }
+
   accept(id) {
     this.props
       .acceptfriend({
@@ -53,7 +65,7 @@ class FriendRequest extends Component {
           return (
             <ListItem key={index}>
               <Left>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={this._handlePressAvatar.bind(this, item.item._id)}>
                   <Thumbnail large source={{ uri: item.item.profile.picture }} />
                 </TouchableOpacity>
 
@@ -108,28 +120,13 @@ const styles = StyleSheet.create({
   }
 });
 
-const Accept = gql`
-  mutation acceptFriend($_id: String!) {
-    acceptFriend(_id: $_id) {
-      username
-      _id
-    }
-  }
-`;
-
-const Deny = gql`
-  mutation rejectFriend($_id: String!) {
-    rejectFriend(_id: $_id) {
-      username
-      _id
-    }
-  }
-`;
-
 const FriendRequestWithData = compose(
   graphql(ME_QUERY),
   graphql(Deny, { name: "rejectfriend" }),
-  graphql(Accept, { name: "acceptfriend" })
+  graphql(Accept, { name: "acceptfriend" }),
+  connect(null, dispatch => ({
+    dispatch
+  }))
 )(FriendRequest);
 
 export default FriendRequestWithData;

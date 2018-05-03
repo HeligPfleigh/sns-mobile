@@ -16,6 +16,7 @@ class FriendProfile extends Component {
 
     if (this.props.data.user) {
       const info = this.props.data.user;
+      const data = this.props.data;
       return (
         <Layout navigation={this.props.navigation} style={styles.container}>
           <Container>
@@ -28,7 +29,7 @@ class FriendProfile extends Component {
               <Body />
               <Right />
             </Header>
-              <Wall info={info} />
+              <Wall info={info} data={data}/>
           </Container>
         </Layout>
       );

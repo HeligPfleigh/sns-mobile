@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { Text, Button, Body, ListItem, Thumbnail } from "native-base";
 import { graphql, compose } from "react-apollo";
-import { gql } from "apollo-boost";
 import propTypes from "prop-types";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, View } from "react-native";
+import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
+import AddFriendNew from "../../../graphql/mutations/sendFriendRequest";
+import fakeAvatar from "../../../constants";
+import SearchQuery from "../../../graphql/queries/SearchQuery";
 
 class Data extends Component {
   constructor(props) {
@@ -11,6 +15,15 @@ class Data extends Component {
     this.state = {
       status: "..."
     };
+  }
+  _handlePressAvatar = (id) => {
+    this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "FriendProfileScreen",
+          params: { id : id}
+        }
+      )
+    );
   }
 
   accept(id) {
@@ -35,7 +48,6 @@ class Data extends Component {
     if (data.error) {
       return <Text>An unexpected error occurred</Text>;
     }
-
     return (
       <FlatList
         keyExtractor={index => index._id}
@@ -43,8 +55,8 @@ class Data extends Component {
         renderItem={(item, index) => {
           return (
             <ListItem key={index}>
-              <TouchableOpacity style={styles.button}>
-                <Thumbnail large source={{ uri: item.item.profile.picture }} />
+              <TouchableOpacity style={styles.button} onPress={this._handlePressAvatar.bind(this, item.item._id)}>
+                <Thumbnail large source={{ uri: item.item.profile.picture || fakeAvatar }} />
               </TouchableOpacity>
 
               <Body>
@@ -101,30 +113,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const SearchQuery = gql`
-  query SearchQuery($keyword: String!) {
-    search(keyword: $keyword) {
-      username
-      _id
-      friendStatus
-      profile {
-        picture
-      }
-      building {
-        name
-      }
-    }
-  }
-`;
-
-const AddFriendNew = gql`
-  mutation sendFriendRequest($_id: String!) {
-    sendFriendRequest(_id: $_id) {
-      username
-    }
-  }
-`;
-
 const DataWithData = compose(
   graphql(AddFriendNew, {
     name: "addfriendnew"
@@ -137,7 +125,10 @@ const DataWithData = compose(
         }
       };
     }
-  })
+  }),
+  connect(null, dispatch => ({
+    dispatch
+  }))
 )(Data);
 
 export default DataWithData;
