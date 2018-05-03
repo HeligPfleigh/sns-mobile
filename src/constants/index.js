@@ -33,3 +33,4 @@ export const colors = {
 
 export const fakeAvatar =
   "https://yt3.ggpht.com/-f5sSf6tNdZw/AAAAAAAAAAI/AAAAAAAAAAA/iRX9lzsq13U/s88-c-k-no-mo-rj-c0xffffff/photo.jpg";
+export const fakeBanner = "http://i2.kym-cdn.com/photos/images/newsfeed/000/234/772/71e.jpg";

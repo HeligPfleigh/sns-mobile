@@ -11,6 +11,11 @@ import { connect } from "react-redux";
 import { graphql, compose } from "react-apollo";
 import ChangeAvatar from "../../../graphql/mutations/changeAvatar";
 import ChangeBanner from "../../../graphql/mutations/changeBanner";
+import { fakeBanner } from "../../../constants";
+import { fakeAvatar } from "../../../constants";
+import ME_QUERY from "../../../graphql/queries/me";
+
+import update from "immutability-helper";
 
 class Wall extends Component {
   constructor(props) {
@@ -20,7 +25,33 @@ class Wall extends Component {
       imagesBackground: null
     };
   }
+  clickBackground() {
+    const imageUpload = ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      multiple: true,
+      mediaType: "photo"
+    })
 
+      .then(imageUpload => {
+        this.setState({
+          imagesBackground: imageUpload
+        });
+        this.props.bannerChanger({
+          variables: { banner: this.state.imagesBackground[0].path },
+          refetchQueries : [{
+            query: ME_QUERY
+          }]
+        });
+      })
+      .catch(err => {
+        this.setState({
+          images: null
+        });
+        throw (err);
+      });
+  }
 
   clickAvatar() {
     const imageUpload = ImagePicker.openPicker({
@@ -36,33 +67,10 @@ class Wall extends Component {
           images: imageUpload
         });
         this.props.avatarChanger({
-          variables: { picture: this.state.images[0].path }
-        });
-
-      })
-      .catch(err => {
-        this.setState({
-          images: null
-        });
-        throw (err);
-      });
-  }
-
-  clickBackground() {
-    const imageUpload = ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-      multiple: true,
-      mediaType: "photo"
-    })
-
-      .then(imageUpload => {
-        this.setState({
-          imagesBackground: imageUpload
-        });
-        this.props.bannerChanger({
-          variables: { banner: this.state.imagesBackground[0].path }
+          variables: { picture: this.state.images[0].path },
+          refetchQueries : [{
+            query: ME_QUERY
+          }]
         });
       })
       .catch(err => {
@@ -72,20 +80,21 @@ class Wall extends Component {
         throw (err);
       });
   }
+
+
 
   _renderItem = ({ item }) => <FeedCard {...item} />
 
   renderHeader = () => {
     const info = this.props.info;
     const { images, imagesBackground } = this.state;
-
     return (
       <View>
         {this.props.info.username === this.props.userInfo.username ? (
           <View>
             <TouchableOpacity onPress={this.clickBackground.bind(this)}>
               {imagesBackground == null ? (
-                <Image source={{ uri: info.profile.banner }} style={{ height: 200, width: "100%" }} />
+                <Image source={{ uri: this.props.userInfo.profile.banner || fakeBanner }} style={{ height: 200, width: "100%" }} />
               ) : (
                 imagesBackground.map((item, idx) => (
                   <Image key={idx} source={{ uri: item.path }} style={{ height: 250, width: "100%" }} />
@@ -98,7 +107,7 @@ class Wall extends Component {
               onPress={this.clickAvatar.bind(this)}
             >
               {images === null ? (
-                <Image source={{ uri: info.profile.picture }} style={styles.avatar} />
+                <Image source={{ uri: this.props.userInfo.profile.picture || fakeAvatar }} style={styles.avatar} />
               ) : (
                 images.map((item, idx) => <Image key={idx} source={{ uri: item.path }} style={styles.avatar} />)
               )}
@@ -107,7 +116,7 @@ class Wall extends Component {
         ) : (
           <View>
             <Image
-              source={info.profile.banner == null ? Images.backgroundHeader : info.profile.banner}
+              source={{ uri : info.profile.banner || fakeBanner }}
               style={{ height: 200, width: "100%" }}
             />
             <View style={{ flexDirection: "row", marginLeft: 30, marginTop: -40, height: 100 }}>
