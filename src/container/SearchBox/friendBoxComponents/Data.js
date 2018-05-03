@@ -6,6 +6,8 @@ import propTypes from "prop-types";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, View } from "react-native";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
+import SearchQuery from "../../../graphql/queries/SearchQuery";
+import AddFriendNew from "../../../graphql/mutations/sendFriendRequest";
 
 class Data extends Component {
   constructor(props) {
@@ -28,13 +30,12 @@ class Data extends Component {
       });
   }
 
-  _handlePressAvatar = (id) => {
+  _handlePressAvatar = id => {
     this.props.dispatch(
-        NavigationActions.navigate({
-          routeName: "FriendProfileScreen",
-          params: { id : id}
-        }
-      )
+      NavigationActions.navigate({
+        routeName: "FriendProfileScreen",
+        params: { id: id }
+      })
     );
   }
 
@@ -113,34 +114,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const SearchQuery = gql`
-  query SearchQuery($keyword: String!) {
-    search(keyword: $keyword) {
-      username
-      _id
-      friendStatus
-      profile {
-        picture
-      }
-      building {
-        name
-      }
-    }
-  }
-`;
-
-const AddFriendNew = gql`
-  mutation sendFriendRequest($_id: String!) {
-    sendFriendRequest(_id: $_id) {
-      username
-    }
-  }
-`;
-
 const DataWithData = compose(
   connect(null, dispatch => ({
     dispatch
-  })), withApollo ,
+  })),
+  withApollo,
   graphql(AddFriendNew, {
     name: "addfriendnew"
   }),

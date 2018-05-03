@@ -1,13 +1,23 @@
 import React, { Component } from "react";
-
 import { Text, Button, Left, Body, ListItem, Thumbnail } from "native-base";
 import { graphql, compose } from "react-apollo";
-import { gql } from "apollo-boost";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
-
+import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
+import AddFriendNew from "../../../graphql/mutations/sendFriendRequest";
 import ME_QUERY from "../../../graphql/queries/me";
+import fakeAvatar from "../../../constants";
 
 class DataSuggest extends Component {
+  _handlePressAvatar = id => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "FriendProfileScreen",
+        params: { id: id }
+      })
+    );
+  }
+
   accept(id) {
     this.props
       .addfriend({
@@ -38,8 +48,8 @@ class DataSuggest extends Component {
           return (
             <ListItem key={index}>
               <Left>
-                <TouchableOpacity style={styles.button}>
-                  <Thumbnail large source={{ uri: item.item.profile.picture }} />
+                <TouchableOpacity style={styles.button} onPress={this._handlePressAvatar.bind(this, item.item._id)}>
+                  <Thumbnail large source={{ uri: item.item.profile.picture || fakeAvatar }} />
                 </TouchableOpacity>
 
                 <Body>
@@ -79,14 +89,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const AddFriend = gql`
-  mutation sendFriendRequest($_id: String!) {
-    sendFriendRequest(_id: $_id) {
-      username
-    }
-  }
-`;
-
-const DataSuggestWithData = compose(graphql(ME_QUERY), graphql(AddFriend, { name: "addfriend" }))(DataSuggest);
+const DataSuggestWithData = compose(
+  graphql(ME_QUERY),
+  graphql(AddFriendNew, { name: "addfriend" }),
+  connect(null, dispatch => ({
+    dispatch
+  }))
+)(DataSuggest);
 
 export default DataSuggestWithData;

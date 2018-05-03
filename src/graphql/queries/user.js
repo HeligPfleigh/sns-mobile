@@ -7,6 +7,7 @@ export default gql`
       _id
       username
       totalFriends
+      friendStatus
       isFriend
       posts {
         ...PostView
