@@ -141,6 +141,7 @@ class Post extends Component {
                   />
               : null}
           </View>
+          <View style={{height: 200}} />
         </ScrollView>
         <View style={[styles.addCommentContainer, { bottom: this.state.bottom }]}>
           <AddCommentSection postId={_id} commentID={null}/>

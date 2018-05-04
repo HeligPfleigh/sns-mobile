@@ -12,8 +12,8 @@ import SHARING_POST_MUTATION from "../../graphql/mutations/sharingPost";
 
 const styles = StyleSheet.create({
   mainContainer: {
-    width: 300,
-    height: 400,
+    width: 350,
+    height: 450,
     backgroundColor: colors.WHITE,
     borderWidth: 1,
     borderRadius: 2,
@@ -147,7 +147,7 @@ class SharedModal extends Component {
             maxLength={50}
             underlineColorAndroid="rgba(0,0,0,0)"
           />
-          {sharingPostID ? <SharedPost postID={sharingPostID} /> : null}
+          {sharingPostID ? <SharedPost postID={sharingPostID} fromSharedModal /> : null}
         </View>
         <View style={styles.bottom}>
           <Text>Chia sẻ với </Text>

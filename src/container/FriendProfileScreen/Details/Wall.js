@@ -177,6 +177,7 @@ class Wall extends Component {
         data={this.props.info.posts}
         renderItem={this._renderItem.bind(this)}
         ListHeaderComponent={this.renderHeader}
+        ListFooterComponent={()=><View style={{height: 200}} />}
       />
     );
 
