@@ -10,6 +10,7 @@ import FeedCardHeader from "./FeedCardHeader";
 import FeedCardBottom from "./FeedCardBottom";
 import FeedCardPhotos from "../Photos/FeedCardPhotos";
 import SharedPost from "../Post/SharedPost";
+import { lineBreakCount } from "../../utils/common";
 
 const styles = StyleSheet.create({
   container: {
@@ -69,7 +70,19 @@ class FeedCard extends Component {
       totalLikes, createdAt, user, building,
       photos, sharing, onToggleSharingModal } = this.props;
 
-    const displayText = messagePlainText.length > 300 ? `${messagePlainText.substring(0, 300)}...` : messagePlainText;
+    let displayText = messagePlainText;
+    // strim 80 first characters
+    const shortenText = messagePlainText.length > 100 ? messagePlainText.substring(0, 100) : messagePlainText;
+    displayText = shortenText;
+    // get the first line of this sentences
+    if (lineBreakCount(shortenText) > 1) {
+      const firstLine = messagePlainText.split("\n")[0];
+      displayText = `${firstLine}...`;
+    }
+    else {
+      displayText = `${shortenText}...`;
+    }
+
     return (
       <Card style={styles.container}>
         <FeedCardHeader

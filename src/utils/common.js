@@ -18,3 +18,13 @@ export const noInternetAccess = () => {
     );
   }, 200);
 };
+
+// utilitity function for count amount of lines in a string
+export const lineBreakCount = (str) => {
+	/* counts \n */
+	try {
+		return ((str.match(/[^\n]*\n[^\n]*/gi).length));
+	} catch (e) {
+		return 0;
+	}
+};

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, ScrollView, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
 import { Card } from "native-base";
 import { compose, graphql } from "react-apollo";
+import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
 
 import FeedCardHeader from "../FeedCard/FeedCardHeader";
 import GET_POST_QUERY from "../../graphql/queries/post";
 import FeedCardPhotos from "../../components/Photos/FeedCardPhotos";
-
+import { lineBreakCount } from "../../utils/common";
 import { colors } from "../../constants";
 
 const styles = StyleSheet.create({
@@ -31,6 +33,9 @@ const styles = StyleSheet.create({
 });
 
 @compose(
+  connect(
+    dispatch => ({ dispatch })
+  ),
   graphql(GET_POST_QUERY, {
     options: ownProps => {
       return {
@@ -43,6 +48,19 @@ const styles = StyleSheet.create({
   })
 )
 class SharedPost extends Component{
+  pressOnSharedPost = () => {
+    const { post: { _id } } = this.props.data;
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "PostDetail",
+        params: {
+          postID: _id,
+          limit: 0,
+        }
+      })
+    );
+  }
+
   render(){
     let content;
     if ( this.props.data.loading ){
@@ -54,8 +72,22 @@ class SharedPost extends Component{
       if (!post) {return null;}
 
       const { messagePlainText, createdAt, author, _id, user, building, photos } = post;
+
+      let displayText = messagePlainText;
+      // strim 80 first characters
+      const shortenText = messagePlainText.length > 100 ? messagePlainText.substring(0, 100) : messagePlainText;
+      displayText = shortenText;
+      // get the first line of this sentences
+      if (lineBreakCount(shortenText) > 1) {
+        const firstLine = messagePlainText.split("\n")[0];
+        displayText = `${firstLine}...`;
+      }
+      else {
+        displayText = `${shortenText}...`;
+      }
+
       content =
-        <View>
+        <TouchableOpacity onPress={this.pressOnSharedPost}>
           <FeedCardHeader
             {...author}
             createdAt={createdAt}
@@ -65,11 +97,11 @@ class SharedPost extends Component{
             />
           <ScrollView style={styles.contentContainer} alwaysBounceVertical={false}>
             <Text style={styles.textContent}>
-              {messagePlainText}
+              {displayText}
             </Text>
             <FeedCardPhotos photos={photos} height={150}/>
           </ScrollView>
-        </View>;
+        </TouchableOpacity>;
     }
     return (
       <Card>
