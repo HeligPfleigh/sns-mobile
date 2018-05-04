@@ -3,7 +3,7 @@ import { StyleSheet, Text, ScrollView, ActivityIndicator, TouchableOpacity } fro
 import { Card } from "native-base";
 import { compose, graphql } from "react-apollo";
 import { connect } from "react-redux";
-import { NavigationActions } from "react-navigation";
+// import { NavigationActions } from "react-navigation";
 
 import FeedCardHeader from "../FeedCard/FeedCardHeader";
 import GET_POST_QUERY from "../../graphql/queries/post";
@@ -48,18 +48,18 @@ const styles = StyleSheet.create({
   })
 )
 class SharedPost extends Component{
-  pressOnSharedPost = () => {
-    const { post: { _id } } = this.props.data;
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: "PostDetail",
-        params: {
-          postID: _id,
-          limit: 0,
-        }
-      })
-    );
-  }
+  // pressOnSharedPost = () => {
+  //   const { post: { _id } } = this.props.data;
+  //   this.props.dispatch(
+  //     NavigationActions.navigate({
+  //       routeName: "PostDetail",
+  //       params: {
+  //         postID: _id,
+  //         limit: 0,
+  //       }
+  //     })
+  //   );
+  // }
 
   render(){
     let content;
@@ -79,15 +79,15 @@ class SharedPost extends Component{
       displayText = shortenText;
       // get the first line of this sentences
       if (lineBreakCount(shortenText) > 1) {
-        const firstLine = messagePlainText.split("\n")[0];
+        const firstLine = shortenText.split("\n")[0];
         displayText = `${firstLine}...`;
       }
       else {
-        displayText = `${shortenText}...`;
+        displayText = messagePlainText.length > 100 ? `${messagePlainText.substring(0, 100)}...` : messagePlainText;
       }
 
       content =
-        <TouchableOpacity onPress={this.pressOnSharedPost}>
+        <TouchableOpacity /* onPress={this.pressOnSharedPost} */>
           <FeedCardHeader
             {...author}
             createdAt={createdAt}

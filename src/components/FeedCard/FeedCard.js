@@ -76,11 +76,11 @@ class FeedCard extends Component {
     displayText = shortenText;
     // get the first line of this sentences
     if (lineBreakCount(shortenText) > 1) {
-      const firstLine = messagePlainText.split("\n")[0];
+      const firstLine = shortenText.split("\n")[0];
       displayText = `${firstLine}...`;
     }
     else {
-      displayText = `${shortenText}...`;
+      displayText = messagePlainText.length > 100 ? `${messagePlainText.substring(0, 100)}...` : messagePlainText;
     }
 
     return (
