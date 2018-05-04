@@ -7,6 +7,8 @@ import { graphql, compose } from "react-apollo";
 import { colors } from "../../constants";
 import LIKE_POST_MUTATION from "../../graphql/mutations/likePost";
 import UNLIKE_POST_MUTATION from "../../graphql/mutations/unlikePost";
+import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
+import GET_POST_QUERY from "../../graphql/queries/post";
 
 const styles = StyleSheet.create({
   container: {
@@ -36,14 +38,6 @@ const emptyFn = () => {};
   graphql(UNLIKE_POST_MUTATION, { name: "likePostMutation" }),
 )
 class FeedCardBottom extends Component{
-  constructor(props){
-    super(props);
-    const { isLiked, totalLikes } = this.props;
-    this.state = {
-      isLiked: isLiked,
-      totalLikes: totalLikes,
-    };
-  }
 
   static defaultProps = {
     handlePressComment: emptyFn,
@@ -51,18 +45,17 @@ class FeedCardBottom extends Component{
   }
 
   _handleLike = async () => {
-    const { isLiked, totalLikes } = this.state;
-    const { postID, likePostMutation, unlikePostMutation } = this.props;
+    const { isLiked, postID, likePostMutation, unlikePostMutation } = this.props;
     // unlike
     if ( isLiked ){
       await likePostMutation({
         variables:{
           _id: postID,
-        }
-      });
-      this.setState({
-        isLiked: false,
-        totalLikes: totalLikes - 1,
+        },
+        refetchQueries : [
+          { query: GET_FEEDS_QUERY, variables: { limit: 5 }},
+          { query: GET_POST_QUERY, variables: { _id: postID }}
+        ],
       });
       return;
     }
@@ -71,18 +64,17 @@ class FeedCardBottom extends Component{
       await unlikePostMutation({
         variables:{
           _id: postID,
-        }
-      });
-      this.setState({
-        isLiked: true,
-        totalLikes: totalLikes + 1,
+        },
+        refetchQueries : [
+          { query: GET_FEEDS_QUERY, variables: { limit: 5 }},
+          { query: GET_POST_QUERY, variables: { _id: postID }}
+        ],
       });
     }
   }
 
   render(){
-    const { totalComments, handlePressComment, onToggleSharingModal, postID } = this.props;
-    const { isLiked, totalLikes } = this.state;
+    const { totalComments, handlePressComment, onToggleSharingModal, postID, isLiked, totalLikes } = this.props;
     return (
       <CardItem style={styles.container}>
         <TouchableOpacity style={styles.button} onPress={this._handleLike}>
