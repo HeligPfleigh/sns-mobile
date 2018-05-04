@@ -5,7 +5,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import ModalDropdown from "react-native-modal-dropdown";
 import { graphql, compose } from "react-apollo";
 
-import { colors, POST_PRIVACY } from "../../constants";
+import { colors, POST_PRIVACY, POST_PRIVACY_DISPLAY } from "../../constants";
 import HeaderAvatar from "../HeaderAvatar";
 import SharedPost from "./SharedPost";
 import SHARING_POST_MUTATION from "../../graphql/mutations/sharingPost";
@@ -28,34 +28,35 @@ const styles = StyleSheet.create({
   headerContainer: {
     height: "10%",
     flexDirection: "row",
-    alignSelf: "stretch"
+    alignSelf: "stretch",
   },
   avatar: {
     flex: 1,
     alignSelf: "stretch",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   backButton: {
     flex: 1,
     alignSelf: "stretch",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   wrapper: {
-    height: "80%"
+    height: "80%",
+    marginHorizontal: 8,
   },
   bottom: {
     height: "10%",
     alignSelf: "stretch",
     justifyContent: "center",
-    alignItems: "flex-end"
+    alignItems: "center",
+    flexDirection: "row",
   },
   input: {
     width: "90%",
-    margin: 2,
     fontSize: 16,
-    color: colors.SECONDARY
+    color: colors.SECONDARY,
   },
   postButton: {
     backgroundColor: colors.PRIMARY,
@@ -63,11 +64,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 50,
     height: 30,
-    marginHorizontal: 10
+    marginLeft: 15,
   },
   postButtonText: {
     color: colors.WHITE,
-    fontSize: 16
+    fontSize: 16,
   }
 });
 
@@ -87,14 +88,15 @@ class SharedModal extends Component {
     super(props);
     this.state = {
       friendIdx: -1,
-      text: null
+      privacyIndex: 0,
+      text: null,
     };
   }
 
   _onChangeText = text => this.setState({ text })
 
   _handlePressSubmit = async () => {
-    const { text, friendIdx } = this.state;
+    const { text, friendIdx, privacyIndex } = this.state;
     const { sharingPostID, friends, onToggleSharingModal } = this.props;
     if (!text || !text.length || friendIdx === -1) {
       return;
@@ -107,7 +109,7 @@ class SharedModal extends Component {
         message: text,
         isMobile: true,
         friendId,
-        privacy: POST_PRIVACY[0]
+        privacy: POST_PRIVACY[privacyIndex],
       }
     });
     onToggleSharingModal(false);
@@ -125,11 +127,11 @@ class SharedModal extends Component {
           </View>
           <View style={{ flex: 4, justifyContent: "center", alignItems: "center" }}>
             <ModalDropdown
-              textStyle={{ fontSize: 16 }}
-              dropdownTextStyle={{ fontSize: 16 }}
-              options={friendsName}
-              onSelect={(index, value) => this.setState({ friendIdx: index })}
-            />
+              textStyle={{fontSize: 16}}
+              dropdownTextStyle={{fontSize: 16}}
+              options={POST_PRIVACY_DISPLAY}
+              defaultValue={POST_PRIVACY_DISPLAY[0]}
+              onSelect={(index, value)=>this.setState({privacyIndex: index})}/>
           </View>
           <TouchableOpacity style={styles.backButton} onPress={() => onToggleSharingModal(false)}>
             <MaterialIcons name="close" size={30} color={colors.LIGHT_GRAY} />
@@ -148,6 +150,14 @@ class SharedModal extends Component {
           {sharingPostID ? <SharedPost postID={sharingPostID} /> : null}
         </View>
         <View style={styles.bottom}>
+          <Text>Chia sẻ với </Text>
+          <ModalDropdown
+              textStyle={{ fontSize: 16 }}
+              dropdownTextStyle={{ fontSize: 16 }}
+              defaultValue="..."
+              options={friendsName}
+              onSelect={(index, value) => this.setState({ friendIdx: index })}
+          />
           <TouchableOpacity style={styles.postButton} onPress={this._handlePressSubmit}>
             <Text style={styles.postButtonText}>Đăng</Text>
           </TouchableOpacity>
