@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text, FlatList,
-  Keyboard, Platform, ScrollView, Modal } from "react-native";
+  Keyboard, Platform, ScrollView } from "react-native";
+import Modal from "react-native-modal";
 
 import { colors } from "../../constants";
 import FeedCardHeader from "../FeedCard/FeedCardHeader";
@@ -146,10 +147,9 @@ class Post extends Component {
         </View>
         {this.renderViewer()}
         <Modal
-          animationType="slide"
-          transparent={true}
-          onRequestClose={() => this._onToggleSharingModal(false, null)}
-          visible={sharingModalVisible}>
+          isVisible={sharingModalVisible}
+          style={{alignItems: "center"}}
+          onBackdropPress={() => this._onToggleSharingModal(false)}>
           <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={_id}/>
         </Modal>
       </View>

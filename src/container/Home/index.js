@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import update from "immutability-helper";
 import { View, Body, Title, Header } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
-import { ActivityIndicator, FlatList, Modal } from "react-native";
+import { ActivityIndicator, FlatList } from "react-native";
+import Modal from "react-native-modal";
 
 import * as utils from "../../utils/common";
 import { SPINNER_CHANGE } from "../../constants";
@@ -159,10 +160,9 @@ class HomeScreen extends Component {
         ) : null}
         <View style={styles.root}>{content}</View>
         {getMe.me ? <Modal
-          animationType="slide"
-          transparent={true}
-          onRequestClose={() => this._onToggleSharingModal(false, null)}
-          visible={sharingModalVisible}>
+          isVisible={sharingModalVisible}
+          style={{alignItems: "center"}}
+          onBackdropPress={() => this._onToggleSharingModal(false)}>
           <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={sharingPostID}/>
         </Modal> : null}
       </Layout>
