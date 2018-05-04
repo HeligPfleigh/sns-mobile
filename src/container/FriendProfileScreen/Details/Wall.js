@@ -122,7 +122,7 @@ class Wall extends Component {
           <View>
             <Image source={{ uri: info.profile.banner || fakeBanner }} style={{ height: 200, width: "100%" }} />
             <View style={{ flexDirection: "row", marginLeft: 30, marginTop: -40, height: 100 }}>
-              <Image source={{ uri: this.props.info.profile.picture }} style={styles.avatar} />
+              <Image source={{ uri: info.profile.picture || "https://blog.charmes.net/images/docker-whale.png" }} style={styles.avatar} />
             </View>
           </View>
         )}

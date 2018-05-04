@@ -32,5 +32,5 @@ export const colors = {
 };
 
 export const fakeAvatar =
-  "https://yt3.ggpht.com/-f5sSf6tNdZw/AAAAAAAAAAI/AAAAAAAAAAA/iRX9lzsq13U/s88-c-k-no-mo-rj-c0xffffff/photo.jpg";
+  "https://kursusportalen.karnovgroup.dk/assets/medium_avatar_missing-dc86c963e66dba7ad5f653e30d8fd44a.png";
 export const fakeBanner = "https://lh3.googleusercontent.com/5gzGzs-hdkX_SrOhUrzTnZJSp2ZC5Z8XqhSXXDbd8B-8-GlR5f6MdyLUhRXxFCWnl6pMo_4u=w640-h400-e365";

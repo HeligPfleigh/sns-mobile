@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Header, Icon, Left, Button, Body, Right, Container } from "native-base";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { graphql } from "react-apollo";
 
 import Layout from "../../components/Layout";
@@ -30,6 +30,7 @@ class FriendProfile extends Component {
               <Right />
             </Header>
               <Wall info={info} data={data}/>
+
           </Container>
         </Layout>
       );

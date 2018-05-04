@@ -58,7 +58,7 @@ class HomeScreen extends Component {
     this.state = {
       refreshing: false,
       sharingModalVisible: false,
-      sharingPostID: null,
+      sharingPostID: null
     };
     if (this.props.getMe.me) {
       this.props.dispatch(utils.createAction(SAVE_USER_INFO, this.props.getMe.me));
@@ -69,17 +69,19 @@ class HomeScreen extends Component {
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.getFeeds.subscribeToMore({
       document: POST_ADDED_SUBSCRIPTION,
-      updateQuery : (prev, { subscriptionData }) => {
+      updateQuery: (prev, { subscriptionData }) => {
         // check if edges have duplicate items.
-        if ( prev.feeds.edges.length !== 0 ) {
+        if (prev.feeds.edges.length !== 0) {
           let duplicateItem = prev.feeds.edges.findIndex(element => {
             return element._id === subscriptionData.data.postAdded._id;
           });
 
-          if (duplicateItem !== -1) { return prev; }
+          if (duplicateItem !== -1) {
+            return prev;
+          }
         }
 
         let newEdges = [subscriptionData.data.postAdded, ...prev.feeds.edges];
@@ -91,12 +93,11 @@ class HomeScreen extends Component {
             pageInfo: { $set: pageInfo }
           }
         });
-
       }
     });
   }
 
-  _renderItem = ({ item }) => <FeedCard {...item} onToggleSharingModal={this._onToggleSharingModal}/>
+  _renderItem = ({ item }) => <FeedCard {...item} onToggleSharingModal={this._onToggleSharingModal} />
 
   _renderFeedHeader = () => {
     const { getMe } = this.props;
@@ -119,10 +120,11 @@ class HomeScreen extends Component {
     }
   }
 
-  _onToggleSharingModal = (visible, id) => this.setState({
-    sharingModalVisible: visible,
-    sharingPostID: id,
-  })
+  _onToggleSharingModal = (visible, id) =>
+    this.setState({
+      sharingModalVisible: visible,
+      sharingPostID: id
+    })
 
   render() {
     const { getMe, getFeeds } = this.props;
@@ -148,13 +150,8 @@ class HomeScreen extends Component {
 
     return (
       <Layout navigation={this.props.navigation}>
-        <Header>
-          <Body>
-            <Title style={{ fontSize: 15 }}> Homepage </Title>
-          </Body>
-        </Header>
         {getMe.me ? (
-          <View style={{ height: 100 }}>
+          <View style={{ height: 70, marginTop: 50 }}>
             <FeedsHeader info={getMe.me} />
           </View>
         ) : null}

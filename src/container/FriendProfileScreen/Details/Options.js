@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import SendFriendRequest from "../../../graphql/mutations/sendFriendRequest";
 import SAVE_USER_INFO from "../../../graphql/queries/user";
 import SearchQuery from "../../../graphql/queries/SearchQuery";
+import ME_QUERY from "../../../graphql/queries/me";
 
 class Options extends Component {
   addFriend(id) {
@@ -19,6 +20,9 @@ class Options extends Component {
         {
           query: SearchQuery,
           variables : { keyword : "a" }
+        },
+        {
+          query: ME_QUERY
         }
       ]
       })
@@ -44,7 +48,7 @@ class Options extends Component {
                 margin: 5
               }}
             >
-              <Text style={{ color: "white", fontSize: 15, textAlign: "justify" }}> Bạn bè </Text>
+              <Text style={{ color: "white", fontSize: 15, textAlign: "center" }}> Bạn bè </Text>
             </Button>
           ) : info.friendStatus === "STRANGER" ? (
             <Button
