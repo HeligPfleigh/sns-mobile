@@ -1,7 +1,6 @@
 import React from "react";
 import { Icon } from "native-base";
 import { StackNavigator, DrawerNavigator, SwitchNavigator, TabNavigator } from "react-navigation";
-import IconBadge from "react-native-icon-badge";
 import NotificationNumber from "./badges";
 import FriendProfileScreen from "../container/FriendProfileScreen";
 // common components

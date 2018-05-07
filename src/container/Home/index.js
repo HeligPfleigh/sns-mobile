@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { View, Body, Title, Header } from "native-base";
+import { View } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
 import { ActivityIndicator, FlatList } from "react-native";
 import Modal from "react-native-modal";
