@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Header, Icon, Left, Button, Body, Right, Container } from "native-base";
+import { Container } from "native-base";
 import { ActivityIndicator } from "react-native";
 import { graphql } from "react-apollo";
 
@@ -17,19 +17,12 @@ class FriendProfile extends Component {
     if (this.props.data.user) {
       const info = this.props.data.user;
       const data = this.props.data;
+      const navigation = this.props.navigation;
+
       return (
         <Layout navigation={this.props.navigation} style={styles.container}>
           <Container>
-            <Header>
-              <Left>
-                <Button transparent onPress={() => this.props.navigation.goBack()}>
-                  <Icon name="ios-arrow-back" />
-                </Button>
-              </Left>
-              <Body />
-              <Right />
-            </Header>
-              <Wall info={info} data={data}/>
+            <Wall info={info} data={data} navigation={navigation}/>
           </Container>
         </Layout>
       );

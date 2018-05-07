@@ -1,13 +1,11 @@
 import React from "react";
 import { Icon } from "native-base";
 import { StackNavigator, DrawerNavigator, SwitchNavigator, TabNavigator } from "react-navigation";
-import IconBadge from "react-native-icon-badge";
 import NotificationNumber from "./badges";
 import FriendProfileScreen from "../container/FriendProfileScreen";
 // common components
 import icons from "./icons";
 import { TabBar } from "../components/TabNavigator";
-
 
 // Welcome screen
 import Welcome from "../container/Welcome";
@@ -55,21 +53,14 @@ const AppRouteConfig = TabNavigator(TabsRouteConfig, {
   navigationOptions: ({ navigation }) => ({
     tabBarIcon: () => {
       const { routeName } = navigation.state;
-      var  number;
 
       if (icons[routeName] === "notifications") {
-        return (
-          <IconBadge
-            MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
-            BadgeElement={<NotificationNumber number={number}/>}
-          />
-        );
+        return <NotificationNumber iconName={icons[routeName]} />;
       }
       return <Icon name={icons[routeName]} style={{ fontSize: 29 }} />;
     }
   })
 });
-
 
 const MenuRouteConfig = {
   ...TabsRouteConfig,
@@ -87,12 +78,7 @@ const MenuWithTabRouteConfig = TabNavigator(MenuRouteConfig, {
     tabBarIcon: () => {
       const { routeName } = navigation.state;
       if (icons[routeName] === "notifications") {
-        return (
-          <IconBadge
-            MainElement={<Icon name={icons[routeName] || "home"} style={{ fontSize: 29 }} />}
-            BadgeElement={<NotificationNumber />}
-          />
-        );
+        return <NotificationNumber iconName={icons[routeName]} />;
       }
       return <Icon name={icons[routeName]} style={{ fontSize: 29 }} />;
     }

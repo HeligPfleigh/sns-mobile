@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import ME_QUERY from "../graphql/queries/me";
-import { graphql, compose, withApollo } from "react-apollo";
-import { ActivityIndicator, Text } from "react-native";
 import { connect } from "react-redux";
-import { counting } from "./action";
+import { ActivityIndicator, Text } from "react-native";
+import { Icon } from "native-base";
+import IconBadge from "react-native-icon-badge";
+import { graphql, compose, withApollo } from "react-apollo";
 
+import { counting } from "./action";
+import ME_QUERY from "../graphql/queries/me";
 
 class NotificationNumber extends Component {
   constructor(props) {
@@ -22,20 +24,32 @@ class NotificationNumber extends Component {
     }, 2000);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearTimeout(this._interval);
   }
 
   render() {
-    if (this.props.data.me) {
-      return <Text style={{ fontSize: 11, color: "white" }}> {this.props.data.me.totalUnreadNotification} </Text>;
+    const { iconName, data: { loading, me } } = this.props;
+
+    if (loading) {
+      return <ActivityIndicator />;
     }
-    return <ActivityIndicator />;
+
+    if (me && me.totalUnreadNotification > 0) {
+      return (
+        <IconBadge
+          MainElement={<Icon name={iconName || "home"} style={{ fontSize: 29 }} />}
+          BadgeElement={<Text style={{ fontSize: 11, color: "white" }}> {me.totalUnreadNotification} </Text>}
+        />
+      );
+    } else {
+      return <Icon name={iconName} style={{ fontSize: 29 }} />;
+    }
   }
 }
 
 const NotificationNumberWithData = compose(
-  connect(({ counting, userInfo }) => ({ counting, userInfo }),  dispatch => ({ dispatch })),
+  connect(({ userInfo }) => ({ userInfo }), dispatch => ({ dispatch })),
   withApollo,
   graphql(ME_QUERY)
 )(NotificationNumber);

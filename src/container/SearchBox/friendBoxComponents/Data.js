@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Text, Button, Body, ListItem, Thumbnail } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
-import { gql } from "apollo-boost";
 import propTypes from "prop-types";
 import { FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, View } from "react-native";
 import { NavigationActions } from "react-navigation";
