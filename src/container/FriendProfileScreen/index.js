@@ -17,10 +17,12 @@ class FriendProfile extends Component {
     if (this.props.data.user) {
       const info = this.props.data.user;
       const data = this.props.data;
+      const navigation = this.props.navigation;
+
       return (
         <Layout navigation={this.props.navigation} style={styles.container}>
           <Container>
-            <Wall info={info} data={data} />
+            <Wall info={info} data={data} navigation={navigation}/>
           </Container>
         </Layout>
       );

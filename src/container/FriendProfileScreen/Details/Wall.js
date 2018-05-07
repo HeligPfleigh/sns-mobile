@@ -195,12 +195,20 @@ class Wall extends Component {
         ListFooterComponent={()=><View style={{height: 200}} />}
       />
     );
+    console.log(this.props);
 
     return (
       <View>
         <Animated.View style={{ position: "absolute", width: "100%", backgroundColor: this.headerBg, zIndex: 1 }}>
           <Header style={{ backgroundColor: "transparent" }} hasTabs>
             <Body>
+            <Button
+                  transparent
+                  style={{ position: "absolute", top: -10, left: 10, zIndex: 1000 }}
+                  onPress={() => this.props.navigation.goBack()}
+                >
+                  <Icon name="ios-arrow-back" style={{ color: "white" }} />
+                </Button>
               <Title>
                 <Animated.Text style={{ color: this.textColor, fontSize: 20, fontWeight: "300" }}>
                   {this.props.userInfo.username}
@@ -238,13 +246,7 @@ class Wall extends Component {
                   )}
                 </TouchableOpacity>
 
-                <Button
-                  transparent
-                  style={{ position: "absolute", top: 10, left: 10, zIndex: 1000 }}
-                  onPress={() => this.props.navigation.goBack()}
-                >
-                  <Icon name="ios-arrow-back" style={{ color: "white" }} />
-                </Button>
+
 
                 <TouchableOpacity
                   style={{ flexDirection: "row", marginLeft: 40, marginTop: -120, height: 120 }}
