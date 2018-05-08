@@ -12,6 +12,7 @@ import { SPINNER_CHANGE } from "../../constants";
 import FeedCard from "../../components/FeedCard/FeedCard";
 import FeedsHeader from "../../components/FeedsHeader";
 import EventCard from "../../components/EventCard/EventCard";
+import ListEventsFooter from "../../components/EventCard/ListEventsFooter";
 import SharedModal from "../../components/Post/SharedModal";
 import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import ME_QUERY from "../../graphql/queries/me";
@@ -185,6 +186,7 @@ class HomeScreen extends Component {
           keyExtractor={item => item._id}
           renderItem={this._renderEvent}
           showsHorizontalScrollIndicator={false}
+          ListFooterComponent={() => <ListEventsFooter />}
         />
       );
     }

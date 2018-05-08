@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, TouchableOpacity, Dimensions, View, Image } from "react-native";
-import { Card, Button, Icon } from "native-base";
+import { Card, Button } from "native-base";
 import { connect } from "react-redux";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+
 const deviceWidth = Dimensions.get("window").width;
 
 import { colors } from "../../constants";
@@ -14,9 +16,37 @@ const styles = StyleSheet.create({
     minHeight: 300,
     width: deviceWidth - 20
   },
+  imageBannerContainer: {
+    flex: 7,
+  },
+  imageBanner: {
+    width: "100%",
+    height: 200,
+  },
+  contentContainer: {
+    flex: 2,
+    flexDirection:"row",
+  },
+  leftSideContentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  rightSideContentContainer: {
+    flex: 5,
+    padding: 5,
+    justifyContent: "center",
+  },
+  headerTextContent: {
+    fontWeight: "800",
+    fontSize: 16,
+    margin: 5,
+  },
+  textContent: {
+    marginHorizontal: 5,
+    marginVertical: 2,
+  }
 });
-
-const emptyFn = () => {};
 
 @connect(
   ({ common, nav }) => ({
@@ -26,38 +56,41 @@ const emptyFn = () => {};
   dispatch => ({ dispatch })
 )
 class EventCard extends Component {
-  static defaultProps = {
-    onToggleSharingModal: emptyFn,
-  }
 
   render(){
-    const { photos, name, start, end, interests } = this.props;
+    const { photos, name, start, end, interests, isInterest, location } = this.props;
     return (
       <Card>
-        {/* image banner */}
         <TouchableOpacity style={styles.container}>
-          <View style={{flex: 7}}>
+
+          {/* image banner */}
+          <View style={styles.imageBannerContainer}>
             { photos && photos.length ? <Image
               source={{uri: JSON.parse(photos[0]).URL}}
-              style={{width: "100%", height: 200}}/> : null }
+              style={styles.imageBanner}/> : null }
           </View>
-          <View style={{flex: 2, flexDirection:"row"}}>
-            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+
+          {/* content container */}
+          <View style={styles.contentContainer}>
+            <View style={styles.leftSideContentContainer}>
               <Text style={{color: "#f44283", fontSize: 16}}>THÁNG</Text>
               <Text style={{fontSize: 16}}>8</Text>
             </View>
-            <View style={{flex: 5, padding: 5, justifyContent: "center"}}>
-              <Text style={{fontWeight: "800", fontSize: 16, margin: 5}}>{name}</Text>
-              <Text style={{ marginHorizontal: 5, marginVertical: 2 }}>{`Bắt đầu: ${start}`}</Text>
-              <Text style={{ marginHorizontal: 5, marginVertical: 2 }}>{`Kết thúc: ${end}`}</Text>
-              <Text style={{ marginHorizontal: 5, marginVertical: 2 }}>{`${interests.length} người quan tâm`}</Text>
+            <View style={styles.rightSideContentContainer}>
+              <Text style={styles.headerTextContent}>{name}</Text>
+              <Text style={styles.textContent}>{`Bắt đầu: ${start}`}</Text>
+              <Text style={styles.textContent}>{`Kết thúc: ${end}`}</Text>
+              <Text style={styles.textContent}>{`Địa điểm: ${location}`}</Text>
+              <Text style={styles.textContent}>{`${interests.length} người quan tâm`}</Text>
             </View>
           </View>
+
+          {/* footer container */}
           <View style={{flex: 2, flexDirection:"row"}}>
             <View style={{flex: 2}}/>
             <View style={{flex: 1}}>
               <Button iconLeft transparent primary>
-                <Icon name="star" color="black"/>
+              <MaterialIcons name={isInterest ? "star" : "star-border"} size={20} color={colors.PRIMARY}/>
                 <Text style={{ marginHorizontal: 5 }}>Quan tâm</Text>
               </Button>
             </View>
