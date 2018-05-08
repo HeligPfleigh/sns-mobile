@@ -178,11 +178,12 @@ class HomeScreen extends Component {
       listEventsContent = <ActivityIndicator size="large" />;
     }
     else {
+      const fiveFirstEvents = getListEvents.listEvent.edges.slice(0, 5);
       listEventsContent = (
         <FlatList
           horizontal
           contentContainerStyle={{ alignSelf: "stretch" }}
-          data={getListEvents.listEvent.edges}
+          data={fiveFirstEvents}
           keyExtractor={item => item._id}
           renderItem={this._renderEvent}
           showsHorizontalScrollIndicator={false}

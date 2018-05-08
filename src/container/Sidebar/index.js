@@ -29,11 +29,6 @@ const routes = [
   },
   {
     route: "BlankScreen",
-    caption: "Sự kiện",
-    drawerIcon: <OtherIcon name="direction" size={20} color="lightgrey" />
-  },
-  {
-    route: "BlankScreen",
     caption: "Chung cư của tôi",
     drawerIcon: <OtherIcon name="shopping-bag" size={20} color="lightgrey" />
   },

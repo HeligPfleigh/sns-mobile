@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, TouchableOpacity, Dimensions, View, Image } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import { Card, Button } from "native-base";
 import { connect } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
-
-const deviceWidth = Dimensions.get("window").width;
 
 import { colors } from "../../constants";
 
@@ -15,7 +13,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "stretch",
     minHeight: 300,
-    width: deviceWidth - 20
   },
   imageBannerContainer: {
     flex: 7,
@@ -88,14 +85,11 @@ class EventCard extends Component {
           </View>
 
           {/* footer container */}
-          <View style={{flex: 2, flexDirection:"row"}}>
-            <View style={{flex: 2}}/>
-            <View style={{flex: 1}}>
-              <Button iconLeft transparent primary>
-              <MaterialIcons name={isInterest ? "star" : "star-border"} size={20} color={colors.PRIMARY}/>
-                <Text style={{ marginHorizontal: 5 }}>Quan tâm</Text>
-              </Button>
-            </View>
+          <View style={{flex: 2, flexDirection:"row", justifyContent: "flex-end"}}>
+            <Button iconLeft transparent primary>
+            <MaterialIcons name={isInterest ? "star" : "star-border"} size={20} color={colors.PRIMARY}/>
+              <Text style={{ marginHorizontal: 5 }}>Quan tâm</Text>
+            </Button>
           </View>
         </TouchableOpacity>
       </Card>

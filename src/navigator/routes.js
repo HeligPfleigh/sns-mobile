@@ -30,6 +30,7 @@ import Sidebar from "../container/Sidebar";
 import FriendBox from "../container/FriendsBox";
 import Notification from "../container/Notification";
 import SearchBox from "../container/SearchBox";
+import ListEventsScreen from "../container/ListEventsContainer";
 // Screens from drawer menu
 import ProfileScreen from "../container/ProfileScreen";
 import ChangePasswordScreen from "../container/ChangePasswordScreen";
@@ -92,7 +93,8 @@ const StackAppRouteConfig = StackNavigator(
     NewFeed: { screen: NewFeedScreen },
     EditPostScreen: { screen: EditPostScreen },
     CommentReplyScreen: { screen: CommentReplyScreen },
-    FriendProfileScreen: { screen: FriendProfileScreen }
+    FriendProfileScreen: { screen: FriendProfileScreen },
+    ListEventsScreen: { screen: ListEventsScreen},
   },
   {
     headerMode: "none"
