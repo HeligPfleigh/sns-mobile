@@ -55,7 +55,7 @@ class Wall extends Component {
   })
   headerBg = this.scroll.interpolate({
     inputRange: [0, SCROLL_HEIGHT, SCROLL_HEIGHT + 1],
-    outputRange: ["transparent", "transparent", THEME_COLOR],
+    outputRange: ["transparent", FADED_THEME_COLOR, FADED_THEME_COLOR],
     extrapolate: "clamp"
   })
   imgScale = this.nScroll.interpolate({
@@ -195,12 +195,11 @@ class Wall extends Component {
         ListFooterComponent={()=><View style={{height: 200}} />}
       />
     );
-    console.log(this.props);
 
     return (
       <View>
         <Animated.View style={{ position: "absolute", width: "100%", backgroundColor: this.headerBg, zIndex: 1 }}>
-          <Header style={{ backgroundColor: "transparent" }} hasTabs>
+          <Header style={{ backgroundColor: "transparent", justifyContent : "center" }} hasTabs>
             <Body>
             <Button
                   transparent
@@ -281,7 +280,7 @@ class Wall extends Component {
           </Animated.View>
 
           <Animated.View style={{ zIndex: 1, width: "100%", backgroundColor: "white" }}>
-            <ScrollView>{content}</ScrollView>
+            <ScrollView style={{marginLeft:5}}>{content}</ScrollView>
           </Animated.View>
           <View />
         </Animated.ScrollView>

@@ -1,28 +1,29 @@
 import { gql } from "apollo-boost";
 
 export default gql`
-subscription notificationAdded($userID: String!){
-  notificationAdded(userID: $userID){
-    _id
-    isRead
-    createdAt
-    updatedAt
-    type
-    subject {
-      messagePlainText
-      totalLikes
+  subscription notificationAdded($userID: String!) {
+    notificationAdded(userID: $userID) {
       _id
-    }
-    actors {
-      _id
-      username
-      profile {
-        picture
+      isRead
+      createdAt
+      updatedAt
+      type
+      totalUnreadNotification
+      subject {
+        messagePlainText
+        totalLikes
+        _id
       }
-      email {
-        address
+      actors {
+        _id
+        username
+        profile {
+          picture
+        }
+        email {
+          address
+        }
       }
     }
   }
-}
 `;
