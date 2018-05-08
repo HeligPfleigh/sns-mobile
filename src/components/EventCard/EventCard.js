@@ -3,6 +3,7 @@ import { Text, StyleSheet, TouchableOpacity, Dimensions, View, Image } from "rea
 import { Card, Button } from "native-base";
 import { connect } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import moment from "moment";
 
 const deviceWidth = Dimensions.get("window").width;
 
@@ -59,6 +60,7 @@ class EventCard extends Component {
 
   render(){
     const { photos, name, start, end, interests, isInterest, location } = this.props;
+    moment.locale("vi");
     return (
       <Card>
         <TouchableOpacity style={styles.container}>
@@ -74,12 +76,12 @@ class EventCard extends Component {
           <View style={styles.contentContainer}>
             <View style={styles.leftSideContentContainer}>
               <Text style={{color: "#f44283", fontSize: 16}}>THÁNG</Text>
-              <Text style={{fontSize: 16}}>8</Text>
+              <Text style={{fontSize: 16}}>{moment(start).format("M")}</Text>
             </View>
             <View style={styles.rightSideContentContainer}>
               <Text style={styles.headerTextContent}>{name}</Text>
-              <Text style={styles.textContent}>{`Bắt đầu: ${start}`}</Text>
-              <Text style={styles.textContent}>{`Kết thúc: ${end}`}</Text>
+              <Text style={styles.textContent}>{`Bắt đầu: ${moment(start).format("MMMM Do YYYY, h:mm:ss a")}`}</Text>
+              <Text style={styles.textContent}>{`Kết thúc: ${moment(end).format("MMMM Do YYYY, h:mm:ss a")}`}</Text>
               <Text style={styles.textContent}>{`Địa điểm: ${location}`}</Text>
               <Text style={styles.textContent}>{`${interests.length} người quan tâm`}</Text>
             </View>

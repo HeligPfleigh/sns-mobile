@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import distanceInWordToNow from "date-fns/distance_in_words_to_now";
+import moment from "moment";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -121,7 +121,7 @@ class FeedComments extends Component{
           <TouchableOpacity style={styles.infoContainer} onPress={this._displayReplyButton}>
             <View style={styles.metaContainer}>
               <Text style={styles.nameText}>{name}</Text>
-              <Text style={styles.timeText}>{ distanceInWordToNow(createdAt) }</Text>
+              <Text style={styles.timeText}>{ moment(createdAt).fromNow() }</Text>
             </View>
             <View style={styles.contentContainer}>
               <Text style={styles.commentText}>{comment}</Text>
