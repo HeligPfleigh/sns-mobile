@@ -4,6 +4,8 @@ import { ActivityIndicator, Text } from "react-native";
 import { Icon } from "native-base";
 import IconBadge from "react-native-icon-badge";
 import { graphql, compose, withApollo } from "react-apollo";
+import NOTIFICATION_ADDED_SUBSCRIPTION from "../graphql/subscriptions/notificationAdded";
+import update from "immutability-helper";
 
 import { counting } from "./action";
 import ME_QUERY from "../graphql/queries/me";
@@ -14,18 +16,20 @@ class NotificationNumber extends Component {
     this.state = {
       number: ""
     };
-    this._interval = setTimeout(() => {
-      this.setState({
-        number: this.props.userInfo.totalUnreadNotification
-      });
-      if (this.props) {
-        this.props.dispatch(counting({ params: this.state.number }));
-      }
-    }, 2000);
   }
 
-  componentWillUnmount() {
-    clearTimeout(this._interval);
+  componentDidMount() {
+    this.props.data.subscribeToMore({
+      document: NOTIFICATION_ADDED_SUBSCRIPTION,
+      variables: { userID: "5ae971f852a6f3002ff85c1d" },
+      updateQuery: (store, { subscriptionData }) => {
+        return update(store, {
+          me: {
+            totalUnreadNotification: { $set: subscriptionData.data.notificationAdded.totalUnreadNotification }
+          }
+        });
+      }
+    });
   }
 
   render() {
@@ -34,7 +38,6 @@ class NotificationNumber extends Component {
     if (loading) {
       return <ActivityIndicator />;
     }
-
     if (me && me.totalUnreadNotification > 0) {
       return (
         <IconBadge

@@ -83,7 +83,7 @@ class Options extends Component {
               margin: 5
             }}
           >
-            <Text style={{ color: "white", fontSize: 15, textAlign: "justify" }}> Report </Text>
+            <Text style={{ color: "white", fontSize: 15, textAlign: "justify" }}> Báo cáo </Text>
           </Button>
           <Button
             success
