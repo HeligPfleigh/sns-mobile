@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Alert } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { View, TouchableOpacity } from "react-native";
+import { Icon } from "native-base";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import { compose, graphql } from "react-apollo";
@@ -54,17 +54,19 @@ class FeedCardEditMenu extends Component {
   render() {
     return (
       <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity
-          onPress={this._handleEditPost}
-          style={{ alignSelf: "center", backgroundColor: "transparent", paddingLeft: 15, paddingRight: 5 }}
-        >
-          <MaterialIcons name="edit" size={ICON_SIZE} color={colors.PRIMARY} />
+        <TouchableOpacity onPress={this._handleEditPost} style={{alignSelf:"center",backgroundColor:"transparent",paddingLeft:15, paddingRight: 5}}>
+          <Icon
+            type="MaterialIcons"
+            name="edit"
+            style={{ fontSize: ICON_SIZE, color: colors.PRIMARY }}
+          />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={this._handleDeletePost}
-          style={{ alignSelf: "center", backgroundColor: "transparent", paddingRight: 15 }}
-        >
-          <MaterialIcons name="delete" size={ICON_SIZE} color="#ff6666" />
+        <TouchableOpacity onPress={this._handleDeletePost} style={{alignSelf:"center",backgroundColor:"transparent",paddingRight:15}}>
+          <Icon
+            type="MaterialIcons"
+            name="delete"
+            style={{ fontSize: ICON_SIZE, color: "#ff6666" }}
+          />
         </TouchableOpacity>
       </View>
     );

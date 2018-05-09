@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, Header, Left, Body, Right, Button, Title } from "native-base";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { View, Header, Left, Body, Right, Button, Title, Icon } from "native-base";
 import { connect } from "react-redux";
 import { compose, graphql } from "react-apollo";
 import { NavigationActions } from "react-navigation";
@@ -9,6 +8,7 @@ import { FlatList, ActivityIndicator } from "react-native";
 
 import GET_LIST_EVENTS from "../../graphql/queries/listEvent";
 import EventCard from "../../components/EventCard/EventCard";
+import ListEventsHeader from "../../components/EventCard/ListEventsHeader";
 import { colors } from "../../constants";
 
 @compose(
@@ -80,6 +80,7 @@ class ListEventsContainer extends Component {
           onEndReached={this._handleEnd}
           onEndReachedThreshold={0.1}
           refreshing={refreshing}
+          ListHeaderComponent={() => <ListEventsHeader />}
           ListFooterComponent={() => (!refreshing ? null : <ActivityIndicator size="large" />)}
           showsHorizontalScrollIndicator={false}
         />
@@ -90,7 +91,7 @@ class ListEventsContainer extends Component {
         <Header>
           <Left>
             <Button transparent onPress={this._handlePressBack}>
-              <MaterialIcons name="arrow-back" size={20} color={colors.PRIMARY} />
+              <Icon type="MaterialIcons" name="arrow-back" style={{ fontSize: 20, color: colors.PRIMARY }} />
             </Button>
           </Left>
           <Body>

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, TouchableOpacity, View, Image } from "react-native";
-import { Card, Button } from "native-base";
+import { Card, Button, Icon } from "native-base";
 import { connect } from "react-redux";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
 
 import { colors } from "../../constants";
@@ -87,7 +86,7 @@ class EventCard extends Component {
           {/* footer container */}
           <View style={{flex: 2, flexDirection:"row", justifyContent: "flex-end"}}>
             <Button iconLeft transparent primary>
-            <MaterialIcons name={isInterest ? "star" : "star-border"} size={20} color={colors.PRIMARY}/>
+            <Icon type="MaterialIcons" name={isInterest ? "star" : "star-border"} style={{ fontSize: 20, color: colors.PRIMARY }}/>
               <Text style={{ marginHorizontal: 5 }}>Quan tâm</Text>
             </Button>
           </View>

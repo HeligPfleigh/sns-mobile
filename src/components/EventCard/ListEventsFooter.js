@@ -22,17 +22,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const emptyFn = () => {};
-
 @connect(
   null,
   dispatch => ({ dispatch })
 )
 class ListEventsFooter extends Component {
-  static defaultProps = {
-    onToggleSharingModal: emptyFn,
-  }
-
   componentDidMount() {
     this.animation.play();
   }

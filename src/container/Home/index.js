@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { View, Card } from "native-base";
+import { View, Card, Icon } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
 import { ActivityIndicator, FlatList, ScrollView, Text } from "react-native";
 import Modal from "react-native-modal";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import * as utils from "../../utils/common";
 import { SPINNER_CHANGE } from "../../constants";
@@ -19,6 +18,7 @@ import ME_QUERY from "../../graphql/queries/me";
 import GET_LIST_EVENTS from "../../graphql/queries/listEvent";
 import POST_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/postAdded";
 import styles from "./styles";
+import { colors } from "../../constants";
 export const SAVE_USER_INFO = "SAVE_USER_INFO";
 
 class TextBanner extends Component {
@@ -26,8 +26,8 @@ class TextBanner extends Component {
     const { text, icon } = this.props;
     return (
       <Card style={{height: 40, flexDirection: "row", alignItems: "center"}}>
-        <MaterialIcons style={{marginLeft: 10}} name={icon} size={20} color="rgba(85,186,255, 1)"/>
-        <Text style={{marginLeft: 10, fontSize: 20, color: "rgba(85,186,255, 1)"}}>{text}</Text>
+        <Icon type="MaterialIcons" style={{marginLeft: 10, color: colors.PRIMARY, fontSize: 20}} name={icon}/>
+        <Text style={{marginLeft: 10, fontSize: 20, color: colors.PRIMARY}}>{text}</Text>
       </Card>
     );
   }
