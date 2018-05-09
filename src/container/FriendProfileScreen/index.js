@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Container } from "native-base";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, StatusBar } from "react-native";
 import { graphql } from "react-apollo";
-
 import Layout from "../../components/Layout";
 import styles from "./styles";
 import Wall from "./Details/Wall";
@@ -22,7 +21,8 @@ class FriendProfile extends Component {
       return (
         <Layout navigation={this.props.navigation} style={styles.container}>
           <Container>
-            <Wall info={info} data={data} navigation={navigation}/>
+          <StatusBar translucent backgroundColor="rgba(255, 255, 255, 0)" />
+          <Wall info={info} data={data} navigation={navigation} />
           </Container>
         </Layout>
       );

@@ -15,6 +15,8 @@ import { fakeAvatar } from "../../../constants";
 import ME_QUERY from "../../../graphql/queries/me";
 import Options from "./Options";
 import { NavigationActions } from "react-navigation";
+import GET_FEEDS_QUERY from "../../../graphql/queries/feeds";
+
 
 const IMAGE_HEIGHT = 250;
 const HEADER_HEIGHT = Platform.OS === "ios" ? 64 : 50;
@@ -55,7 +57,7 @@ class Wall extends Component {
   })
   headerBg = this.scroll.interpolate({
     inputRange: [0, SCROLL_HEIGHT, SCROLL_HEIGHT + 1],
-    outputRange: ["transparent", FADED_THEME_COLOR, FADED_THEME_COLOR],
+    outputRange: ["transparent", FADED_THEME_COLOR, THEME_COLOR],
     extrapolate: "clamp"
   })
   imgScale = this.nScroll.interpolate({
@@ -128,7 +130,7 @@ class Wall extends Component {
       });
   }
 
-  _renderItem = ({ item }) => <FeedCard {...item} />
+  _renderItem = ({ item }) => <FeedCard {...item} stuff={this.props}/>
 
   renderHeader = () => {
     const info = this.props.info;
@@ -150,8 +152,8 @@ class Wall extends Component {
             <Tab
               heading={
                 <TabHeading>
-                  <Icon name="person-add" />
-                  <Text style={{ fontWeight: "bold", paddingLeft: 5, color: THEME_COLOR }}>Giới thiệu</Text>
+                  <Icon name="ios-person-outline" />
+                  <Text style={{ fontWeight: "400", paddingLeft: 5, color: THEME_COLOR }}>Giới thiệu</Text>
                 </TabHeading>
               }
             >
@@ -161,7 +163,7 @@ class Wall extends Component {
               heading={
                 <TabHeading>
                   <Icon name="ios-people-outline" />
-                  <Text style={{ fontWeight: "bold", paddingLeft: 5, color: THEME_COLOR }}>Bạn bè</Text>
+                  <Text style={{ fontWeight: "400", paddingLeft: 5, color: THEME_COLOR }}>Bạn bè</Text>
                 </TabHeading>
               }
             >
@@ -170,8 +172,8 @@ class Wall extends Component {
             <Tab
               heading={
                 <TabHeading>
-                  <Icon name="ios-code-working" />
-                  <Text style={{ fontWeight: "bold", paddingLeft: 5, color: THEME_COLOR }}>Khác</Text>
+                  <Icon name="ios-more" />
+                  <Text style={{ fontWeight: "400", paddingLeft: 5, color: THEME_COLOR }}>Khác</Text>
                 </TabHeading>
               }
             />
@@ -192,25 +194,24 @@ class Wall extends Component {
         data={this.props.info.posts}
         renderItem={this._renderItem.bind(this)}
         ListHeaderComponent={this.renderHeader}
-        ListFooterComponent={()=><View style={{height: 200}} />}
+        ListFooterComponent={() => <View style={{ height: 200 }} />}
       />
     );
-
     return (
       <View>
         <Animated.View style={{ position: "absolute", width: "100%", backgroundColor: this.headerBg, zIndex: 1 }}>
-          <Header style={{ backgroundColor: "transparent", justifyContent : "center" }} hasTabs>
+          <Header style={{ backgroundColor: "transparent", justifyContent: "center" }} hasTabs>
             <Body>
-            <Button
-                  transparent
-                  style={{ position: "absolute", top: -10, left: 10, zIndex: 1000 }}
-                  onPress={() => this.props.navigation.goBack()}
-                >
-                  <Icon name="ios-arrow-back" style={{ color: "white" }} />
-                </Button>
+              <Button
+                transparent
+                style={{ position: "absolute", top: -10, left: 10, zIndex: 1000 }}
+                onPress={() => this.props.navigation.goBack()}
+              >
+                <Icon name="ios-arrow-back" style={{ color: "white" }} />
+              </Button>
               <Title>
                 <Animated.Text style={{ color: this.textColor, fontSize: 20, fontWeight: "300" }}>
-                  {this.props.userInfo.username}
+                  {this.props.info.username}
                 </Animated.Text>
               </Title>
             </Body>
@@ -245,8 +246,6 @@ class Wall extends Component {
                   )}
                 </TouchableOpacity>
 
-
-
                 <TouchableOpacity
                   style={{ flexDirection: "row", marginLeft: 40, marginTop: -120, height: 120 }}
                   onPress={this.clickAvatar.bind(this)}
@@ -270,17 +269,14 @@ class Wall extends Component {
                   style={{ height: 200, width: "100%" }}
                 />
                 <View style={{ flexDirection: "row", marginLeft: 40, marginTop: -120, height: 120 }}>
-                  <Animated.Image
-                    source={{ uri: info.profile.picture || "https://blog.charmes.net/images/docker-whale.png" }}
-                    style={styles.avatar}
-                  />
+                  <Animated.Image source={{ uri: info.profile.picture || fakeBanner }} style={styles.avatar} />
                 </View>
               </View>
             )}
           </Animated.View>
 
           <Animated.View style={{ zIndex: 1, width: "100%", backgroundColor: "white" }}>
-            <ScrollView style={{marginLeft:5}}>{content}</ScrollView>
+            <ScrollView style={{ marginLeft: 10 }}>{content}</ScrollView>
           </Animated.View>
           <View />
         </Animated.ScrollView>
@@ -296,7 +292,7 @@ const WallWithData = compose(
       dispatch
     })
   ),
-
+  graphql(GET_FEEDS_QUERY, { name: "getFeeds" }),
   graphql(ChangeAvatar, { name: "avatarChanger" }),
   graphql(ChangeBanner, { name: "bannerChanger" })
 )(Wall);

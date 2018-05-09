@@ -32,7 +32,6 @@ class FeedCardHeader extends Component {
   render(){
     const { _id, username, createdAt, profile, userInfo, postId, message, friendShared, buildingShared } = this.props;
     let shareToFriendOrBuilding = null;
-
     // if sharing to friend, display his name
     if (friendShared && friendShared._id !== _id) {
       shareToFriendOrBuilding = ` > ${friendShared.username}`;
@@ -56,7 +55,7 @@ class FeedCardHeader extends Component {
         </Left>
         { userInfo.username === username ?
         <Right>
-           <FeedCardEditMenu postId={postId} message={message}/>
+           <FeedCardEditMenu postId={postId} message={message} stuff={this.props}/>
         </Right> : null }
       </CardItem>
     );
