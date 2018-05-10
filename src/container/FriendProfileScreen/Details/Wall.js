@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Body, Header, Tab, TabHeading, Tabs, Title, Icon, Button } from "native-base";
-import { Dimensions, Platform, Text, FlatList, TouchableOpacity, Animated, ScrollView, View } from "react-native";
+import { Platform, Text, FlatList, TouchableOpacity, Animated, ScrollView, View } from "react-native";
 import FeedCard from "../../../components/FeedCard/FeedCard";
 import styles from "../styles";
 import Intro from "./Intro";
@@ -14,9 +14,7 @@ import { fakeBanner } from "../../../constants";
 import { fakeAvatar } from "../../../constants";
 import ME_QUERY from "../../../graphql/queries/me";
 import Options from "./Options";
-import { NavigationActions } from "react-navigation";
 import GET_FEEDS_QUERY from "../../../graphql/queries/feeds";
-
 
 const IMAGE_HEIGHT = 250;
 const HEADER_HEIGHT = Platform.OS === "ios" ? 64 : 50;
@@ -37,12 +35,12 @@ class Wall extends Component {
   nScroll = new Animated.Value(0)
   scroll = new Animated.Value(0)
   textColor = this.scroll.interpolate({
-    inputRange: [0, SCROLL_HEIGHT / 5, SCROLL_HEIGHT],
+    inputRange: [0, SCROLL_HEIGHT / 5 + 70, SCROLL_HEIGHT],
     outputRange: ["rgba(0, 0, 0, 0)", FADED_THEME_COLOR, "white"],
     extrapolate: "clamp"
   })
   textBigColor = this.scroll.interpolate({
-    inputRange: [0, SCROLL_HEIGHT / 5, SCROLL_HEIGHT],
+    inputRange: [0, SCROLL_HEIGHT / 5 + 70, SCROLL_HEIGHT],
     outputRange: [THEME_COLOR, FADED_THEME_COLOR, "transparent"],
     extrapolate: "clamp"
   })
@@ -101,7 +99,7 @@ class Wall extends Component {
   }
 
   clickAvatar() {
-    const imageUpload = ImagePicker.openPicker({
+    const imageUploadAvatar = ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
@@ -109,9 +107,9 @@ class Wall extends Component {
       mediaType: "photo"
     })
 
-      .then(imageUpload => {
+      .then(imageUploadAvatar => {
         this.setState({
-          images: imageUpload
+          images: imageUploadAvatar
         });
         this.props.avatarChanger({
           variables: { picture: this.state.images[0].path },
@@ -130,7 +128,7 @@ class Wall extends Component {
       });
   }
 
-  _renderItem = ({ item }) => <FeedCard {...item} stuff={this.props}/>
+  _renderItem = ({ item }) => <FeedCard {...item} stuff={this.props} />
 
   renderHeader = () => {
     const info = this.props.info;
@@ -186,7 +184,6 @@ class Wall extends Component {
   render() {
     const info = this.props.info;
     const { images, imagesBackground } = this.state;
-    const data = this.props.data;
     var content = (
       <FlatList
         keyExtractor={index => index._id}
@@ -247,7 +244,7 @@ class Wall extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={{ flexDirection: "row", marginLeft: 40, marginTop: -120, height: 120 }}
+                  style={{ flexDirection: "row", marginLeft: 20, marginTop: -120, height: 120 }}
                   onPress={this.clickAvatar.bind(this)}
                 >
                   {images === null ? (
@@ -268,7 +265,7 @@ class Wall extends Component {
                   source={{ uri: info.profile.banner || fakeBanner }}
                   style={{ height: 200, width: "100%" }}
                 />
-                <View style={{ flexDirection: "row", marginLeft: 40, marginTop: -120, height: 120 }}>
+                <View style={{ flexDirection: "row", marginLeft: 20, marginTop: -120, height: 120 }}>
                   <Animated.Image source={{ uri: info.profile.picture || fakeBanner }} style={styles.avatar} />
                 </View>
               </View>

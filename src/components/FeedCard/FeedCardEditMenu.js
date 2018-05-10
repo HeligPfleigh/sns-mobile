@@ -18,8 +18,7 @@ class FeedCardEditMenu extends Component {
         _id: postId
       }
     });
-
-    if (await this.props.stuff.stuff.stuff.data) {
+    if (this.props.stuff.stuff.stuff.data) {
       await this.props.stuff.stuff.stuff.data.refetch();
     } else {
       await this.props.stuff.stuff.stuff.getFeeds.refetch();
