@@ -11,7 +11,7 @@ import Layout from "../../components/Layout";
 import { connect } from "react-redux";
 import NOTIFICATION_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/notificationAdded";
 import ME_QUERY from "../../graphql/queries/me";
-
+import UpdateReadPost from "../../graphql/mutations/updateRead";
 
 const Cases = type => {
   var text = "";
@@ -324,13 +324,7 @@ const NotificationQuery = gql`
   }
 `;
 
-const UpdateReadPost = gql`
-  mutation updateRead($_id: String!) {
-    updateRead(_id: $_id) {
-      _id
-    }
-  }
-`;
+
 
 const NotificationWithData = compose(
   connect(

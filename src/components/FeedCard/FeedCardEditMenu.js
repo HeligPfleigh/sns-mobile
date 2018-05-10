@@ -9,54 +9,49 @@ import { colors } from "../../constants";
 import DELETE_POST from "../../graphql/mutations/deletePost";
 const ICON_SIZE = 20;
 
-@compose(
-  connect(
-    null,
-    dispatch => ({ dispatch })
-  ),
-  graphql(DELETE_POST, { name: "deletePost" })
-)
+@compose(connect(null, dispatch => ({ dispatch })), graphql(DELETE_POST, { name: "deletePost" }))
 class FeedCardEditMenu extends Component {
   _handleDeletePost = async () => {
     const { postId } = this.props;
     await this.props.deletePost({
       variables: {
-        _id: postId,
-      },
-      refetch: ["feeds"]
+        _id: postId
+      }
     });
-    this.props.dispatch(NavigationActions.navigate({
-      routeName: "Home",
-    }));
+    if (this.props.stuff.stuff.stuff.data) {
+      await this.props.stuff.stuff.stuff.data.refetch();
+    } else {
+      await this.props.stuff.stuff.stuff.getFeeds.refetch();
+    }
   }
 
   _handleEditPost = () => {
     const { message, postId } = this.props;
-    this.props.dispatch(NavigationActions.navigate({
-      routeName: "EditPostScreen",
-      params: {
-        postId,
-        message
-      }
-    }));
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "EditPostScreen",
+        params: {
+          postId,
+          message
+        }
+      })
+    );
   }
 
   render() {
     return (
       <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity onPress={this._handleEditPost} style={{alignSelf:"center",backgroundColor:"transparent",paddingLeft:15, paddingRight: 5}}>
-          <MaterialIcons
-            name="edit"
-            size={ICON_SIZE}
-            color={colors.PRIMARY}
-          />
+        <TouchableOpacity
+          onPress={this._handleEditPost}
+          style={{ alignSelf: "center", backgroundColor: "transparent", paddingLeft: 15, paddingRight: 5 }}
+        >
+          <MaterialIcons name="edit" size={ICON_SIZE} color={colors.PRIMARY} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={this._handleDeletePost} style={{alignSelf:"center",backgroundColor:"transparent",paddingRight:15}}>
-          <MaterialIcons
-            name="delete"
-            size={ICON_SIZE}
-            color="#ff6666"
-          />
+        <TouchableOpacity
+          onPress={this._handleDeletePost}
+          style={{ alignSelf: "center", backgroundColor: "transparent", paddingRight: 15 }}
+        >
+          <MaterialIcons name="delete" size={ICON_SIZE} color="#ff6666" />
         </TouchableOpacity>
       </View>
     );

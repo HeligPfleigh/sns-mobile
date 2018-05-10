@@ -82,10 +82,10 @@ class FeedCard extends Component {
     else {
       displayText = messagePlainText.length > 100 ? `${messagePlainText.substring(0, 100)}...` : messagePlainText;
     }
-
     return (
       <Card style={styles.container}>
         <FeedCardHeader
+          stuff={this.props}
           {...author}
           createdAt={createdAt}
           postId={_id}

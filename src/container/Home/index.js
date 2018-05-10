@@ -97,7 +97,9 @@ class HomeScreen extends Component {
     });
   }
 
-  _renderItem = ({ item }) => <FeedCard {...item} onToggleSharingModal={this._onToggleSharingModal} />
+  _renderItem = ({ item }) => {
+    return <FeedCard {...item} onToggleSharingModal={this._onToggleSharingModal} stuff={this.props}/>;
+  }
 
   _renderFeedHeader = () => {
     const { getMe } = this.props;
@@ -156,12 +158,15 @@ class HomeScreen extends Component {
           </View>
         ) : null}
         <View style={styles.root}>{content}</View>
-        {getMe.me ? <Modal
-          isVisible={sharingModalVisible}
-          style={{alignItems: "center"}}
-          onBackdropPress={() => this._onToggleSharingModal(false)}>
-          <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={sharingPostID}/>
-        </Modal> : null}
+        {getMe.me ? (
+          <Modal
+            isVisible={sharingModalVisible}
+            style={{ alignItems: "center" }}
+            onBackdropPress={() => this._onToggleSharingModal(false)}
+          >
+            <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={sharingPostID} />
+          </Modal>
+        ) : null}
       </Layout>
     );
   }
