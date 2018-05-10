@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Alert } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -11,18 +11,31 @@ const ICON_SIZE = 20;
 
 @compose(connect(null, dispatch => ({ dispatch })), graphql(DELETE_POST, { name: "deletePost" }))
 class FeedCardEditMenu extends Component {
-  _handleDeletePost = async () => {
-    const { postId } = this.props;
-    await this.props.deletePost({
-      variables: {
-        _id: postId
-      }
-    });
-    if (this.props.stuff.stuff.stuff.data) {
-      await this.props.stuff.stuff.stuff.data.refetch();
-    } else {
-      await this.props.stuff.stuff.stuff.getFeeds.refetch();
-    }
+  _handleDeletePost = () => {
+    Alert.alert(
+      "Bài viết sẽ bị xoá",
+      "bạn chắc chán ?",
+      [
+        {
+          text: "Xoá",
+          onPress: async () => {
+            const { postId } = this.props;
+            await this.props.deletePost({
+              variables: {
+                _id: postId
+              }
+            });
+            if (this.props.stuff.stuff.stuff.data) {
+              await this.props.stuff.stuff.stuff.data.refetch();
+            } else {
+              await this.props.stuff.stuff.stuff.getFeeds.refetch();
+            }
+          }
+        },
+        { text: "Huỷ" }
+      ],
+      { cancelable: false }
+    );
   }
 
   _handleEditPost = () => {
