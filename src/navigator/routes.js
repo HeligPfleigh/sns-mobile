@@ -35,6 +35,7 @@ import EventDetailScreen from "../container/EventDetailContainer";
 // Screens from drawer menu
 import ProfileScreen from "../container/ProfileScreen";
 import ChangePasswordScreen from "../container/ChangePasswordScreen";
+import BlankScreen from "../container/BlankScreen";
 
 /************* START CONFIG APP ROUTES *******************/
 /*********** Tabs Batch Screens *********************/

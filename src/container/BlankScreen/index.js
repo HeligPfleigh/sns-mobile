@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import {  Content, Text, Button } from "native-base";
+import {
+  Text,
+  Container,
+  Header,
+  Content
+} from "native-base";
+import { Dimensions } from "react-native";
 
 import Layout from "../../components/Layout";
 import styles from "./styles";
@@ -8,16 +14,14 @@ class BlankPageContainer extends Component {
 
   render() {
 
-    const param = this.props.navigation.state.params;
-
     return (
       <Layout navigation={this.props.navigation}>
-        <Content padder>
-          <Text>{param !== undefined ? param.name : "Create Something Awesome . . ."}</Text>
-          <Button block style={styles.btnLogin} onPress={() => this.props.navigation.navigate("DrawerOpen")}>
-            <Text>Đăng nhập</Text>
-          </Button>
-        </Content>
+        <Container>
+          <Header />
+          <Content>
+            <Text> ... </Text>
+          </Content>
+        </Container>
       </Layout>
     );
   }
