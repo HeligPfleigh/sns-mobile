@@ -3,6 +3,8 @@ import { Text, StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import { Card, Button, Icon } from "native-base";
 import { connect } from "react-redux";
 import moment from "moment";
+import "moment/locale/vi.js";
+import { NavigationActions } from "react-navigation";
 
 import { colors } from "../../constants";
 
@@ -53,13 +55,22 @@ const styles = StyleSheet.create({
   dispatch => ({ dispatch })
 )
 class EventCard extends Component {
+  _pressOnEventDetail = () => {
+    const { _id } = this.props;
+    this.props.dispatch(NavigationActions.navigate({
+      routeName: "EventDetailScreen",
+      params: {
+        eventID: _id,
+      }
+    }));
+  }
 
   render(){
     const { photos, name, start, end, interests, isInterest, location } = this.props;
     moment.locale("vi");
     return (
       <Card>
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={this._pressOnEventDetail}>
 
           {/* image banner */}
           <View style={styles.imageBannerContainer}>
@@ -76,8 +87,8 @@ class EventCard extends Component {
             </View>
             <View style={styles.rightSideContentContainer}>
               <Text style={styles.headerTextContent}>{name}</Text>
-              <Text style={styles.textContent}>{`Bắt đầu: ${moment(start).format("MMMM Do YYYY, h:mm:ss a")}`}</Text>
-              <Text style={styles.textContent}>{`Kết thúc: ${moment(end).format("MMMM Do YYYY, h:mm:ss a")}`}</Text>
+              <Text style={styles.textContent}>{`Bắt đầu: ${moment(start).format("Do MMMM YYYY, h:mm:ss a")}`}</Text>
+              <Text style={styles.textContent}>{`Kết thúc: ${moment(end).format("Do MMMM YYYY, h:mm:ss a")}`}</Text>
               <Text style={styles.textContent}>{`Địa điểm: ${location}`}</Text>
               <Text style={styles.textContent}>{`${interests.length} người quan tâm`}</Text>
             </View>

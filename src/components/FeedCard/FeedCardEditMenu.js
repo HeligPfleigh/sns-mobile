@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Alert } from "react-native";
 import { Icon } from "native-base";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";

@@ -69,7 +69,7 @@ class Wall extends Component {
   })
 
   clickBackground() {
-    const imageUpload = ImagePicker.openPicker({
+    ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
@@ -99,7 +99,7 @@ class Wall extends Component {
   }
 
   clickAvatar() {
-    const imageUploadAvatar = ImagePicker.openPicker({
+    ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
@@ -132,7 +132,6 @@ class Wall extends Component {
 
   renderHeader = () => {
     const info = this.props.info;
-    const { images, imagesBackground } = this.state;
     const data = this.props.data;
 
     return (
