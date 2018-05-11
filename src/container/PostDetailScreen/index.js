@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ActivityIndicator, Keyboard } from "react-native";
-import { Header, Left, Button, Body, Title, Right, Text } from "native-base";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Header, Left, Button, Body, Title, Right, Text, Icon } from "native-base";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import { compose, graphql } from "react-apollo";
@@ -111,7 +110,7 @@ class PostDetailContainer extends Component {
         <Header>
           <Left>
             <Button transparent onPress={this._handlePressBack}>
-              <MaterialIcons name="arrow-back" size={20} color={colors.PRIMARY} />
+              <Icon type="MaterialIcons" name="arrow-back" style={{ fontSize: 20, color: colors.PRIMARY }} />
             </Button>
           </Left>
           <Body>

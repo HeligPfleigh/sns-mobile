@@ -1,22 +1,37 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { View } from "native-base";
+import { View, Card, Icon } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
-import { ActivityIndicator, FlatList } from "react-native";
+import { ActivityIndicator, FlatList, ScrollView, Text } from "react-native";
 import Modal from "react-native-modal";
 
 import * as utils from "../../utils/common";
 import { SPINNER_CHANGE } from "../../constants";
-import Layout from "../../components/Layout";
 import FeedCard from "../../components/FeedCard/FeedCard";
 import FeedsHeader from "../../components/FeedsHeader";
+import EventCard from "../../components/EventCard/EventCard";
+import ListEventsFooter from "../../components/EventCard/ListEventsFooter";
 import SharedModal from "../../components/Post/SharedModal";
 import GET_FEEDS_QUERY from "../../graphql/queries/feeds";
 import ME_QUERY from "../../graphql/queries/me";
+import GET_LIST_EVENTS from "../../graphql/queries/listEvent";
 import POST_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/postAdded";
 import styles from "./styles";
+import { colors } from "../../constants";
 export const SAVE_USER_INFO = "SAVE_USER_INFO";
+
+class TextBanner extends Component {
+  render(){
+    const { text, icon } = this.props;
+    return (
+      <Card style={{height: 40, flexDirection: "row", alignItems: "center"}}>
+        <Icon type="MaterialIcons" style={{marginLeft: 10, color: colors.PRIMARY, fontSize: 20}} name={icon}/>
+        <Text style={{marginLeft: 10, fontSize: 20, color: colors.PRIMARY}}>{text}</Text>
+      </Card>
+    );
+  }
+}
 
 @compose(
   connect(({ common }) => ({
@@ -49,6 +64,12 @@ export const SAVE_USER_INFO = "SAVE_USER_INFO";
         });
       return { getFeeds, loadMoreRows };
     }
+  }),
+  graphql(GET_LIST_EVENTS, {
+    name: "getListEvents",
+    options: () => ({
+      variables: { limit: 5 },
+    })
   }),
   graphql(ME_QUERY, { name: "getMe" })
 )
@@ -101,6 +122,8 @@ class HomeScreen extends Component {
     return <FeedCard {...item} onToggleSharingModal={this._onToggleSharingModal} stuff={this.props}/>;
   }
 
+  _renderEvent = ({ item }) => <EventCard {...item}/>
+
   _renderFeedHeader = () => {
     const { getMe } = this.props;
     return <FeedsHeader info={getMe.me} />;
@@ -129,13 +152,13 @@ class HomeScreen extends Component {
     })
 
   render() {
-    const { getMe, getFeeds } = this.props;
+    const { getMe, getFeeds, getListEvents } = this.props;
     const { sharingModalVisible, refreshing, sharingPostID } = this.state;
-    let content;
+    let feedsContent, listEventsContent;
     if (getFeeds.loading || getMe.loading) {
-      content = <ActivityIndicator size="large" />;
+      feedsContent = <ActivityIndicator size="large" />;
     } else {
-      content = (
+      feedsContent = (
         <FlatList
           horizontal
           contentContainerStyle={{ alignSelf: "stretch" }}
@@ -146,28 +169,45 @@ class HomeScreen extends Component {
           ListFooterComponent={() => (!refreshing ? null : <ActivityIndicator size="large" />)}
           keyExtractor={item => item._id}
           renderItem={this._renderItem}
+          showsHorizontalScrollIndicator={false}
+        />
+      );
+    }
+
+    if (getListEvents.loading) {
+      listEventsContent = <ActivityIndicator size="large" />;
+    }
+    else {
+      const fiveFirstEvents = getListEvents.listEvent.edges.slice(0, 5);
+      listEventsContent = (
+        <FlatList
+          horizontal
+          contentContainerStyle={{ alignSelf: "stretch" }}
+          data={fiveFirstEvents}
+          keyExtractor={item => item._id}
+          renderItem={this._renderEvent}
+          showsHorizontalScrollIndicator={false}
+          ListFooterComponent={() => <ListEventsFooter />}
         />
       );
     }
 
     return (
-      <Layout navigation={this.props.navigation}>
+      <ScrollView navigation={this.props.navigation} style={{marginTop: 20}}>
         {getMe.me ? (
-          <View style={{ height: 70, marginTop: 50 }}>
-            <FeedsHeader info={getMe.me} />
-          </View>
+          <FeedsHeader info={getMe.me} />
         ) : null}
-        <View style={styles.root}>{content}</View>
-        {getMe.me ? (
-          <Modal
-            isVisible={sharingModalVisible}
-            style={{ alignItems: "center" }}
-            onBackdropPress={() => this._onToggleSharingModal(false)}
-          >
-            <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={sharingPostID} />
-          </Modal>
-        ) : null}
-      </Layout>
+        <TextBanner text="Tin mới" icon="rss-feed"/>
+        <View style={styles.root}>{feedsContent}</View>
+        <TextBanner text="Sự kiện" icon="event"/>
+        <View style={styles.root}>{listEventsContent}</View>
+        {getMe.me ? <Modal
+          isVisible={sharingModalVisible}
+          style={{alignItems: "center"}}
+          onBackdropPress={() => this._onToggleSharingModal(false)}>
+          <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={sharingPostID}/>
+        </Modal> : null}
+      </ScrollView>
     );
   }
 }

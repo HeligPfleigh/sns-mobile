@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, TextInput, TouchableOpacity, Keyboard, Platform } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Icon } from "native-base";
 import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
 
@@ -94,7 +94,7 @@ class AddCommentSection extends Component{
         </View>
         <TouchableOpacity onPress={this._handlePressAddComment}
           style={[styles.postButtonContainer, { display: this.state.text.length > 0 ? "flex" : "none" }]}>
-          <MaterialIcons name="send" size={20} color={colors.PRIMARY}/>
+          <Icon type="MaterialIcons" name="send" style={{ fontSize: 20, color: colors.PRIMARY }}/>
         </TouchableOpacity>
       </View>
     );

@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignSelf: "stretch",
-    maxHeight: 50,
+    minHeight: 50,
     width: "100%"
   },
   avatarContainer: {

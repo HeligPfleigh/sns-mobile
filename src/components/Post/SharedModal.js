@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, TouchableOpacity, TextInput, Text } from "react-native";
 import { connect } from "react-redux";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Icon } from "native-base";
 import ModalDropdown from "react-native-modal-dropdown";
 import { graphql, compose } from "react-apollo";
 
@@ -134,7 +134,7 @@ class SharedModal extends Component {
               onSelect={(index, value)=>this.setState({privacyIndex: index})}/>
           </View>
           <TouchableOpacity style={styles.backButton} onPress={() => onToggleSharingModal(false)}>
-            <MaterialIcons name="close" size={30} color={colors.LIGHT_GRAY} />
+            <Icon type="MaterialIcons" name="close" style={{ fontSize: 30, color: colors.LIGHT_GRAY }} />
           </TouchableOpacity>
         </View>
         <View style={styles.wrapper}>

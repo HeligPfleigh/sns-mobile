@@ -3,7 +3,7 @@ import { ActivityIndicator, TouchableOpacity, FlatList, View, Dimensions } from 
 import { graphql, compose } from "react-apollo";
 import { gql } from "apollo-boost";
 import update from "immutability-helper";
-import distanceInWordToNow from "date-fns/distance_in_words_to_now";
+import moment from "moment";
 import { NavigationActions } from "react-navigation";
 import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Thumbnail } from "native-base";
 import styles from "./styles";
@@ -275,7 +275,7 @@ class Notification extends Component {
                       </Text>
                       <Text style={{ paddingLeft: 10 }} note>
                         {" "}
-                        {distanceInWordToNow(item.item.createdAt)} ago ...{" "}
+                        {moment(item.item.createdAt).fromNow()} ...{" "}
                       </Text>
                     </View>
                   </TouchableOpacity>

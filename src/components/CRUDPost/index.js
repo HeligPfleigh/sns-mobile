@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput, TouchableOpacity, Text, Keyboard, Image, ScrollView } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Icon } from "native-base";
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 import ImagePicker from "react-native-image-crop-picker";
@@ -108,7 +108,7 @@ class CRUDPost extends Component{
                 onSelect={(index, value)=>this.setState({privacyIndex: index})}/>
             </View>
             <TouchableOpacity style={styles.backButton} onPress={this._handleClose}>
-              <MaterialIcons name="close" size={30} color={colors.LIGHT_GRAY} />
+              <Icon type="MaterialIcons" name="close" style={{ fontSize: 30, color: colors.LIGHT_GRAY }} />
             </TouchableOpacity>
           </View>
 
@@ -131,7 +131,7 @@ class CRUDPost extends Component{
               <TouchableOpacity
                 style={styles.mediaButton}
                 onPress={this.handlePressOpenGalery}>
-                <MaterialIcons name="attachment" size={30} color={colors.LIGHT_GRAY} />
+                <Icon type="MaterialIcons" name="attachment" style={{ fontSize: 30, color:colors.LIGHT_GRAY }} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.mediaButton, {width: 30, height: 30}]}

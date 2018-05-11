@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Dimensions, Animated, Easing, TouchableOpacity, StyleSheet } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Icon } from "native-base";
 
 const { width, height } = Dimensions.get("window");
 
@@ -39,7 +39,7 @@ class PhotoViewer extends Component{
       <Animated.View style={[styles.main, {opacity}]}>
         <Animated.Image source={{uri: image}} style={[styles.image, {top, opacity}]}/>
         <TouchableOpacity style={styles.closeBtn} onPress={this.onPressBtn}>
-          <MaterialIcons name="close" size={30} color="white" />
+          <Icon type="MaterialIcons" name="close" style={{ fontSize: 30, color: "white" }} />
         </TouchableOpacity>
       </Animated.View>
     );

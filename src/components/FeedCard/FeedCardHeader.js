@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { CardItem, Body, Left, Text, Right, Icon } from "native-base";
 import { StyleSheet } from "react-native";
-import distanceInWordToNow from "date-fns/distance_in_words_to_now";
+import moment from "moment";
 import { connect } from "react-redux";
 import HeaderAvatar from "../HeaderAvatar";
 import FeedCardEditMenu from "./FeedCardEditMenu";
@@ -54,7 +54,7 @@ class FeedCardHeader extends Component {
                 {shareToFriendOrBuilding}
               </Text>
             </Text>
-            <Text note>{distanceInWordToNow(createdAt)} ago</Text>
+            <Text note>{ moment(createdAt).fromNow() }</Text>
           </Body>
         </Left>
         {userInfo.username === username ? (
