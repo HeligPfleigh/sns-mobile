@@ -70,7 +70,7 @@ class FeedCardHeader extends Component {
               animationType="spring"
               overlayStyle={{ backgroundColor: "transparent" }} // set the overlay invisible
               tooltipContainerStyle={{ borderRadius: 0 }}
-              labelContainerStyle={{ backgroundColor: "white", width: 120, alignItems: "center" }}
+              labelContainerStyle={{ backgroundColor: "transparent", width: 120, alignItems: "center" }}
             />
           </Right>
         ) : null}
