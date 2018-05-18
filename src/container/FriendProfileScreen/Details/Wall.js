@@ -77,9 +77,9 @@ class Wall extends Component {
       mediaType: "photo"
     })
 
-      .then(imageUpload => {
+      .then(res => {
         this.setState({
-          imagesBackground: imageUpload
+          imagesBackground: res
         });
         this.props.bannerChanger({
           variables: { banner: this.state.imagesBackground[0].path },
@@ -107,9 +107,9 @@ class Wall extends Component {
       mediaType: "photo"
     })
 
-      .then(imageUploadAvatar => {
+      .then(res => {
         this.setState({
-          images: imageUploadAvatar
+          images: res
         });
         this.props.avatarChanger({
           variables: { picture: this.state.images[0].path },

@@ -131,6 +131,7 @@ class Notification extends Component {
         refetchQueries : [{
           query: ME_QUERY
         }]
+
       })
 
       .then(res => {
@@ -194,7 +195,7 @@ class Notification extends Component {
     const { getNotification } = this.props;
 
     if (getNotification.loading) {
-      return <ActivityIndicator size="small" color="#00ff00" />;
+      return <ActivityIndicator size="large" color="black" style={{marginTop: 200}}/>;
     }
 
     if (getNotification.error) {

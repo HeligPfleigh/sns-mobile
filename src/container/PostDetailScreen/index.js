@@ -88,7 +88,7 @@ class PostDetailContainer extends Component {
   render() {
     let content;
     if ( this.props.data.loading ){
-      content = <ActivityIndicator size="large"/>;
+      content = <ActivityIndicator size="large" style={{marginTop:200}}/>;
     }
     else {
       const { post } = this.props.data;
