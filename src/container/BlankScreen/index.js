@@ -5,10 +5,8 @@ import {
   Header,
   Content
 } from "native-base";
-import { Dimensions } from "react-native";
 
 import Layout from "../../components/Layout";
-import styles from "./styles";
 
 class BlankPageContainer extends Component {
 
