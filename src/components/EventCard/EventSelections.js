@@ -5,8 +5,9 @@ import { POST_PRIVACY } from "../../constants";
 import ImagePicker from "react-native-image-crop-picker";
 import GET_BUILDINGS from "../../graphql/queries/buildings";
 import ME_QUERY from "../../graphql/queries/me";
+import LIST_EVENT from "../../graphql/queries/listEvent";
 import CREATE_NEW_EVENT from "../../graphql/mutations/createNewEvent";
-
+import update from "immutability-helper";
 import { graphql, compose, withApollo } from "react-apollo";
 
 class EventSelections extends Component {
@@ -57,7 +58,7 @@ class EventSelections extends Component {
     });
   }
 
-  delete = async (index, username) => {
+  add = async (index, username) => {
     let filteredFriends = await this.state.friends.filter((e, i) => {
       return i !== index;
     });
@@ -207,7 +208,7 @@ class EventSelections extends Component {
                         </Text>
                       </Body>
                       <View>
-                        <Button transparent danger onPress={this.delete.bind(this, index, item._id)}>
+                        <Button transparent danger onPress={this.add.bind(this, index, item._id)}>
                           <Icon active name="ios-add" />
                         </Button>
                       </View>
@@ -237,7 +238,8 @@ const EventSelectionsWithData = compose(
     props: ({ mutate }) => ({
       createNewEvent: input =>
         mutate({
-          variables: { input }
+          variables: { input },
+
         })
     })
   }),
