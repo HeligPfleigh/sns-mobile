@@ -20,6 +20,8 @@ import { colors } from "../../constants";
     name: "getListEvents",
     options: () => ({
       variables: { limit: 5 },
+      pollInterval : 500
+      // awesome stuff refetch query without thinkking thru
     }),
     props: ({ getListEvents }) => {
       const { fetchMore, listEvent } = getListEvents;
