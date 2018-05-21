@@ -41,6 +41,11 @@ class ListEventsHeader extends Component {
   }
 
   render() {
+
+  const close = () => {
+    this.setModalVisible(!this.state.modalVisible);
+  };
+
     return (
       <Card>
         <Modal
@@ -75,7 +80,7 @@ class ListEventsHeader extends Component {
                 </Body>
                 <Right />
               </Header>
-              <EventSelections privacyIndex={this.state.privacyIndex} />
+              <EventSelections privacyIndex={this.state.privacyIndex} close={close} />
             </View>
           </View>
         </Modal>

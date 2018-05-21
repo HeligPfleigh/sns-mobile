@@ -1,24 +1,6 @@
 import React, { Component } from "react";
-import {
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  DatePickerIOS,
-  ScrollView
-} from "react-native";
-import {
-  Button,
-  Icon,
-  View,
-  Body,
-  Input,
-  Picker,
-  Item,
-  ListItem
-} from "native-base";
-import { connect } from "react-redux";
-import { NavigationActions } from "react-navigation";
+import { Text, StyleSheet, TouchableOpacity, Image, DatePickerIOS, ScrollView } from "react-native";
+import { Button, Icon, View, Body, Input, Picker, Item, ListItem } from "native-base";
 import { POST_PRIVACY } from "../../constants";
 import ImagePicker from "react-native-image-crop-picker";
 import GET_BUILDINGS from "../../graphql/queries/buildings";
@@ -26,8 +8,6 @@ import ME_QUERY from "../../graphql/queries/me";
 import CREATE_NEW_EVENT from "../../graphql/mutations/createNewEvent";
 
 import { graphql, compose, withApollo } from "react-apollo";
-
-
 
 class EventSelections extends Component {
   constructor(props) {
@@ -61,11 +41,7 @@ class EventSelections extends Component {
         invites: this.state.invitedFriends
       })
       .then(res => {
-        return this.props.dispatch(
-          NavigationActions.navigate({
-            routeName: "ListEventsScreen"
-          })
-        );
+        this.props.close();
       })
       .catch(err => {
         throw err;
@@ -145,7 +121,6 @@ class EventSelections extends Component {
     } else {
       buildingsInfo = <Text>Đang tải thông tin từ server</Text>;
     }
-
     return (
       <View style={{ margin: 10 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -258,9 +233,6 @@ class EventSelections extends Component {
 
 const EventSelectionsWithData = compose(
   withApollo,
-  connect(dispatch => ({
-    dispatch
-  })),
   graphql(CREATE_NEW_EVENT, {
     props: ({ mutate }) => ({
       createNewEvent: input =>
