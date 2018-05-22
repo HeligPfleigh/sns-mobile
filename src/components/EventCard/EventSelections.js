@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, TouchableOpacity, Image, DatePickerIOS, ScrollView } from "react-native";
 import { Button, Icon, View, Body, Input, Picker, Item, ListItem } from "native-base";
-import { POST_PRIVACY } from "../../constants";
+import { POST_PRIVACY, MEDIA_SERVER } from "../../constants";
 import ImagePicker from "react-native-image-crop-picker";
 import GET_BUILDINGS from "../../graphql/queries/buildings";
 import ME_QUERY from "../../graphql/queries/me";
 import LIST_EVENT from "../../graphql/queries/listEvent";
 import CREATE_NEW_EVENT from "../../graphql/mutations/createNewEvent";
-import update from "immutability-helper";
 import { graphql, compose, withApollo } from "react-apollo";
+import axios from "axios";
+import { Keyboard, Alert } from "react-native";
 
 class EventSelections extends Component {
   constructor(props) {
@@ -26,19 +27,54 @@ class EventSelections extends Component {
     };
   }
 
-  submit() {
-    this.props
+  submit = async () => {
+    // let photo = [];
+    // if (this.state.image) {
+    //   const body = new FormData();
+    //   const url = `${MEDIA_SERVER}/api/upload`;
+
+    //   this.state.image.forEach(image => {
+    //     let filename = image.path.replace(/^.*[\\\/]/, "");
+    //     let file = {
+    //       uri: image.path,
+    //       name: filename,
+    //       type: image.mime
+    //     };
+    //     body.append("files", file);
+    //   });
+
+    //   try {
+    //     const response = await axios.post(url, body);
+    //     // store all information get from media server
+    //     photo = response.data.map(item => JSON.stringify(item));
+    //     console.log(response);
+    //   } catch (err) {
+    //     console.log(err);
+
+    //     Alert.alert(
+    //       "Lỗi",
+    //       "Không thể tải tệp lên máy chủ!",
+    //       [
+    //         {
+    //           text: "Quay về"
+    //         }
+    //       ],
+    //       { cancelable: false }
+    //     );
+
+    //     return;
+    //   }
+    // }
+
+    await this.props
       .createNewEvent({
         privacy: POST_PRIVACY[this.props.privacyIndex],
-        photos: [
-          '{"namenode":"snode-01","_id":"5ae98fc68b81ee005934cc75","mimetype":"image/jpeg","originalname":"DE4E1BCE-FEE3-4F74-8D8C-09636EF73244.jpg","path":"/840/11e/c56/1525256134595_5ae98fc68b81ee005934cc75_o.jpg","size":1896240,"createdAt":"2018-05-02T10:15:34.595Z","URL":"https://scontent.mttjsc.com/v/snode-01//840/11e/c56/1525256134595_5ae98fc68b81ee005934cc75_o.jpg"}'
-        ],
+        photos: [],
         name: this.state.event,
         location: this.state.location,
         start: this.state.chosenDateStart,
         end: this.state.chosenDateEnd,
-        message:
-          '{"entityMap":{},"blocks":[{"key":"2c0b8","text":"mo ta su kien 01","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]}',
+        message: this.state.info,
         invites: this.state.invitedFriends
       })
       .then(res => {
@@ -47,6 +83,8 @@ class EventSelections extends Component {
       .catch(err => {
         throw err;
       });
+
+    Keyboard.dismiss();
   }
 
   doQuery = async ({ client }) => {
@@ -220,7 +258,7 @@ class EventSelections extends Component {
           <Button
             info
             style={{ marginTop: 50, justifyContent: "center", marginLeft: 5 }}
-            onPress={this.submit.bind(this)}
+            onPress={this.submit.bind(this, uploadImage)}
           >
             <Text style={{ color: "white" }}> Hoàn tất </Text>
           </Button>
@@ -238,8 +276,7 @@ const EventSelectionsWithData = compose(
     props: ({ mutate }) => ({
       createNewEvent: input =>
         mutate({
-          variables: { input },
-
+          variables: { input }
         })
     })
   }),

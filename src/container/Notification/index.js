@@ -173,12 +173,6 @@ class Notification extends Component {
       .catch(error => {
         throw error;
       });
-    // if (!isRead) {
-    //   this.props.dispatch({
-    //     type: "COUNTINGDOWN",
-    //     payload: { params : this.props.counting.params - 1}
-    //   });
-    // }
   }
 
   end() {
