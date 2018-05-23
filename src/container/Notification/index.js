@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { ActivityIndicator, TouchableOpacity, FlatList, View, Dimensions } from "react-native";
 import { graphql, compose } from "react-apollo";
-import { gql } from "apollo-boost";
 import update from "immutability-helper";
 import moment from "moment";
 import { NavigationActions } from "react-navigation";
@@ -10,6 +9,7 @@ import styles from "./styles";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
 import NOTIFICATION_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/notificationAdded";
+import NotificationQuery from "../../graphql/queries/notifications";
 import ME_QUERY from "../../graphql/queries/me";
 import UpdateReadPost from "../../graphql/mutations/updateRead";
 
@@ -105,13 +105,18 @@ class Notification extends Component {
         let newEdges;
         const pageInfo = prev.notifications.pageInfo;
 
-        const duplicateIdx = prev.notifications.edges.findIndex(item => item._id === subscriptionData.data.notificationAdded._id);
+        const duplicateIdx = prev.notifications.edges.findIndex(
+          item => item._id === subscriptionData.data.notificationAdded._id
+        );
 
-        if (duplicateIdx === -1){
+        if (duplicateIdx === -1) {
           newEdges = [subscriptionData.data.notificationAdded, ...prev.notifications.edges];
-        }
-        else {
-          newEdges = [subscriptionData.data.notificationAdded,...prev.notifications.edges.slice(0, duplicateIdx),  ...prev.notifications.edges.slice(duplicateIdx + 1)];
+        } else {
+          newEdges = [
+            subscriptionData.data.notificationAdded,
+            ...prev.notifications.edges.slice(0, duplicateIdx),
+            ...prev.notifications.edges.slice(duplicateIdx + 1)
+          ];
         }
 
         return update(prev, {
@@ -124,47 +129,52 @@ class Notification extends Component {
     });
   }
 
-  press(id, stuffID, friend, isRead) {
+  press(notificationID, postOrEventID, notificationType, isRead) {
     this.props
       .updateseen({
-        variables: { _id: id },
-        refetchQueries : [{
-          query: ME_QUERY
-        }]
-
+        variables: { _id: notificationID },
+        refetchQueries: [
+          {
+            query: ME_QUERY
+          }
+        ]
       })
 
       .then(res => {
         this.props.getNotification.refetch();
       })
       .then(res => {
-        if (stuffID !== null) {
+        if (postOrEventID !== null) {
           return this.props.dispatch(
             NavigationActions.navigate({
               routeName: "PostDetail",
               params: {
-                postID: stuffID,
+                postID: postOrEventID,
                 limit: 10
               }
             })
           );
         }
-        if (friend === "ACCEPTED_FRIEND" && "FRIEND_REQUEST") {
+
+        if (notificationType === "ACCEPTED_FRIEND" && "FRIEND_REQUEST") {
           return this.props.dispatch(
             NavigationActions.navigate({
               routeName: "FriendBox",
               params: {
-                postID: stuffID,
+                postID: postOrEventID,
                 limit: 10
               }
             })
           );
         }
+
+
+
         return this.props.dispatch(
           NavigationActions.navigate({
             routeName: "BlankScreen",
             params: {
-              postID: stuffID,
+              postID: postOrEventID,
               limit: 10
             }
           })
@@ -189,13 +199,12 @@ class Notification extends Component {
     const { getNotification } = this.props;
 
     if (getNotification.loading) {
-      return <ActivityIndicator size="large" color="black" style={{marginTop: 200}}/>;
+      return <ActivityIndicator size="large" color="black" style={{ marginTop: 200 }} />;
     }
 
     if (getNotification.error) {
       return <Text>An unexpected error occurred</Text>;
     }
-
     return (
       <Layout navigation={this.props.navigation}>
         <Container>
@@ -226,16 +235,19 @@ class Notification extends Component {
                 getNotification.notifications.pageInfo.hasNextPage === true ? <ActivityIndicator /> : <View />
               }
               renderItem={(item, index) => {
-                const stuff = item.item.subject;
-                const friend = item.item.type;
+                const postOrEvent = item.item.subject;
+                const notificationType = item.item.type;
+                const notificationID = item.item._id;
+                const isRead = item.item.isRead;
+
                 return (
                   <TouchableOpacity
                     onPress={this.press.bind(
                       this,
-                      item.item._id,
-                      stuff == null ? null : stuff._id,
-                      friend,
-                      item.item.isRead
+                      notificationID,
+                      postOrEvent == null ? null : postOrEvent._id,
+                      notificationType,
+                      isRead
                     )}
                     style={
                       item.item.isRead === false
@@ -284,46 +296,9 @@ class Notification extends Component {
   }
 }
 
-const NotificationQuery = gql`
-  query notifications($limit: Int, $cursor: String) {
-    notifications(limit: $limit, cursor: $cursor) {
-      pageInfo {
-        endCursor
-        hasNextPage
-        total
-        limit
-      }
-      edges {
-        _id
-        isRead
-        createdAt
-        updatedAt
-        type
-        subject {
-          messagePlainText
-          totalLikes
-          _id
-        }
-        actors {
-          _id
-          username
-          profile {
-            picture
-          }
-          email {
-            address
-          }
-        }
-      }
-    }
-  }
-`;
-
-
-
 const NotificationWithData = compose(
   connect(
-    ({ counting, userInfo }) => ({ counting, userInfo }),
+    ({ userInfo }) => ({ userInfo }),
     dispatch => ({
       dispatch
     })

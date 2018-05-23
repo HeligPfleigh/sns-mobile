@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, TouchableOpacity, Image, DatePickerIOS, ScrollView } from "react-native";
+import { Text, TouchableOpacity, Image, DatePickerIOS, ScrollView } from "react-native";
 import { Button, Icon, View, Body, Input, Picker, Item, ListItem } from "native-base";
 import { POST_PRIVACY, MEDIA_SERVER } from "../../constants";
 import ImagePicker from "react-native-image-crop-picker";
 import GET_BUILDINGS from "../../graphql/queries/buildings";
 import ME_QUERY from "../../graphql/queries/me";
-import LIST_EVENT from "../../graphql/queries/listEvent";
 import CREATE_NEW_EVENT from "../../graphql/mutations/createNewEvent";
 import { graphql, compose, withApollo } from "react-apollo";
 import axios from "axios";
-import { Keyboard, Alert } from "react-native";
+import { Keyboard } from "react-native";
 
 class EventSelections extends Component {
   constructor(props) {
@@ -49,18 +48,6 @@ class EventSelections extends Component {
         photo = response.data.map(item => JSON.stringify(item));
       } catch (err) {
         throw err;
-        Alert.alert(
-          "Lỗi",
-          "Không thể tải tệp lên máy chủ!",
-          [
-            {
-              text: "Quay về"
-            }
-          ],
-          { cancelable: false }
-        );
-
-        return;
       }
     }
 
@@ -73,7 +60,8 @@ class EventSelections extends Component {
         start: this.state.chosenDateStart,
         end: this.state.chosenDateEnd,
         message: this.state.info,
-        invites: this.state.invitedFriends
+        invites: this.state.invitedFriends,
+        isMobile: true
       })
       .then(res => {
         this.props.close();

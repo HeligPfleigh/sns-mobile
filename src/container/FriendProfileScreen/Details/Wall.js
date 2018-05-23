@@ -72,7 +72,7 @@ class Wall extends Component {
   })
 
   clickBackground = () => {
-    const result = ImagePicker.openPicker({
+    ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
@@ -104,17 +104,6 @@ class Wall extends Component {
             photo = await response.data.map(item => item.URL);
           } catch (err) {
             throw err;
-            Alert.alert(
-              "Lỗi",
-              "Không thể tải tệp lên máy chủ!",
-              [
-                {
-                  text: "Quay về"
-                }
-              ],
-              { cancelable: false }
-            );
-            return;
           }
         }
 
@@ -169,17 +158,6 @@ class Wall extends Component {
             photoAvatar = await response.data.map(item => item.URL);
           } catch (err) {
             throw err;
-            Alert.alert(
-              "Lỗi",
-              "Không thể tải tệp lên máy chủ!",
-              [
-                {
-                  text: "Quay về"
-                }
-              ],
-              { cancelable: false }
-            );
-            return;
           }
         }
 

@@ -9,7 +9,7 @@ import interestEvent from "../../graphql/mutations/interestEvent";
 import { colors } from "../../constants";
 import { graphql, compose } from "react-apollo";
 import EVENT_QUERY from "../../graphql/queries/event";
-import FeedCardEditMenu from "../FeedCard/FeedCardEditMenu";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -62,7 +62,6 @@ class EventCard extends Component {
     );
   }
   goEvent() {
-    console.log(this.props._id);
     this.props
       .goEvent({
         variables: { eventId: this.props._id },
