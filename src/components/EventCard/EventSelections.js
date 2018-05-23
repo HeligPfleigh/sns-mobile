@@ -28,48 +28,46 @@ class EventSelections extends Component {
   }
 
   submit = async () => {
-    // let photo = [];
-    // if (this.state.image) {
-    //   const body = new FormData();
-    //   const url = `${MEDIA_SERVER}/api/upload`;
+    let photo = [];
+    if (this.state.image) {
+      const body = new FormData();
+      const url = `${MEDIA_SERVER}/api/upload`;
 
-    //   this.state.image.forEach(image => {
-    //     let filename = image.path.replace(/^.*[\\\/]/, "");
-    //     let file = {
-    //       uri: image.path,
-    //       name: filename,
-    //       type: image.mime
-    //     };
-    //     body.append("files", file);
-    //   });
+      this.state.image.forEach(image => {
+        let filename = image.path.replace(/^.*[\\\/]/, "");
+        let file = {
+          uri: image.path,
+          name: filename,
+          type: image.mime
+        };
+        body.append("files", file);
+      });
 
-    //   try {
-    //     const response = await axios.post(url, body);
-    //     // store all information get from media server
-    //     photo = response.data.map(item => JSON.stringify(item));
-    //     console.log(response);
-    //   } catch (err) {
-    //     console.log(err);
+      try {
+        const response = await axios.post(url, body);
+        // store all information get from media server
+        photo = response.data.map(item => JSON.stringify(item));
+      } catch (err) {
+        throw err;
+        Alert.alert(
+          "Lỗi",
+          "Không thể tải tệp lên máy chủ!",
+          [
+            {
+              text: "Quay về"
+            }
+          ],
+          { cancelable: false }
+        );
 
-    //     Alert.alert(
-    //       "Lỗi",
-    //       "Không thể tải tệp lên máy chủ!",
-    //       [
-    //         {
-    //           text: "Quay về"
-    //         }
-    //       ],
-    //       { cancelable: false }
-    //     );
-
-    //     return;
-    //   }
-    // }
+        return;
+      }
+    }
 
     await this.props
       .createNewEvent({
         privacy: POST_PRIVACY[this.props.privacyIndex],
-        photos: [],
+        photos: photo,
         name: this.state.event,
         location: this.state.location,
         start: this.state.chosenDateStart,
@@ -160,6 +158,7 @@ class EventSelections extends Component {
     } else {
       buildingsInfo = <Text>Đang tải thông tin từ server</Text>;
     }
+
     return (
       <View style={{ margin: 10 }}>
         <ScrollView showsVerticalScrollIndicator={false}>

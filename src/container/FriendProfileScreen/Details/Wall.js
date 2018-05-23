@@ -15,6 +15,9 @@ import { fakeAvatar } from "../../../constants";
 import ME_QUERY from "../../../graphql/queries/me";
 import Options from "./Options";
 import GET_FEEDS_QUERY from "../../../graphql/queries/feeds";
+import axios from "axios";
+import { Alert } from "react-native";
+import { MEDIA_SERVER } from "../../../constants";
 
 const IMAGE_HEIGHT = 250;
 const HEADER_HEIGHT = Platform.OS === "ios" ? 64 : 50;
@@ -68,8 +71,8 @@ class Wall extends Component {
     outputRange: [1, 0]
   })
 
-  clickBackground() {
-    ImagePicker.openPicker({
+  clickBackground = () => {
+    const result = ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
@@ -77,12 +80,46 @@ class Wall extends Component {
       mediaType: "photo"
     })
 
-      .then(res => {
+      .then(async res => {
         this.setState({
           imagesBackground: res
         });
+
+        let photo = [];
+        if (this.state.imagesBackground) {
+          const body = new FormData();
+          const url = `${MEDIA_SERVER}/api/upload`;
+          this.state.imagesBackground.forEach(image => {
+            let filename = image.path.replace(/^.*[\\\/]/, "");
+            let file = {
+              uri: image.path,
+              name: filename,
+              type: image.mime
+            };
+            body.append("files", file);
+          });
+          try {
+            const response = await axios.post(url, body);
+            // store all information get from media server
+            photo = await response.data.map(item => item.URL);
+          } catch (err) {
+            throw err;
+            Alert.alert(
+              "Lỗi",
+              "Không thể tải tệp lên máy chủ!",
+              [
+                {
+                  text: "Quay về"
+                }
+              ],
+              { cancelable: false }
+            );
+            return;
+          }
+        }
+
         this.props.bannerChanger({
-          variables: { banner: this.state.imagesBackground[0].path },
+          variables: { banner: photo },
           refetchQueries: [
             {
               query: ME_QUERY
@@ -90,6 +127,7 @@ class Wall extends Component {
           ]
         });
       })
+
       .catch(err => {
         this.setState({
           images: null
@@ -107,12 +145,46 @@ class Wall extends Component {
       mediaType: "photo"
     })
 
-      .then(res => {
+      .then(async res => {
         this.setState({
           images: res
         });
+
+        let photoAvatar = [];
+        if (this.state.images) {
+          const body = new FormData();
+          const url = `${MEDIA_SERVER}/api/upload`;
+          this.state.images.forEach(image => {
+            let filename = image.path.replace(/^.*[\\\/]/, "");
+            let file = {
+              uri: image.path,
+              name: filename,
+              type: image.mime
+            };
+            body.append("files", file);
+          });
+          try {
+            const response = await axios.post(url, body);
+            // store all information get from media server
+            photoAvatar = await response.data.map(item => item.URL);
+          } catch (err) {
+            throw err;
+            Alert.alert(
+              "Lỗi",
+              "Không thể tải tệp lên máy chủ!",
+              [
+                {
+                  text: "Quay về"
+                }
+              ],
+              { cancelable: false }
+            );
+            return;
+          }
+        }
+
         this.props.avatarChanger({
-          variables: { picture: this.state.images[0].path },
+          variables: { picture: photoAvatar },
           refetchQueries: [
             {
               query: ME_QUERY
@@ -193,6 +265,11 @@ class Wall extends Component {
         ListFooterComponent={() => <View style={{ height: 200 }} />}
       />
     );
+
+    // console.log(JSON.parse(info.profile.banner));
+    // console.log(JSON.parse(this.props.userInfo.profile.picture).URL);
+    // console.log(info.profile.picture);
+
     return (
       <View>
         <Animated.View style={{ position: "absolute", width: "100%", backgroundColor: this.headerBg, zIndex: 1 }}>
