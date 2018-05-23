@@ -10,7 +10,6 @@ query notifications($limit: Int, $cursor: String) {
       limit
     }
     edges {
-      user
       seen
       _id
       isRead
@@ -20,23 +19,25 @@ query notifications($limit: Int, $cursor: String) {
       subject {
         messagePlainText
         totalLikes
-        totalComments
+        _id
+        type
+        privacy
+        event {
+          _id
+          author{
+            _id
+            username
+          }
+        }
       }
       actors {
         _id
         username
-        phone
-        email{
-          address
-        }
         profile {
           picture
         }
-        chatId
-        posts {
-          _id
-          meesage
-          messagePlainText
+        email {
+          address
         }
       }
     }
