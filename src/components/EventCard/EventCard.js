@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, TouchableOpacity, View, Image } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, View, Image, Dimensions } from "react-native";
 import { Card, Button, Icon } from "native-base";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -9,16 +9,19 @@ import interestEvent from "../../graphql/mutations/interestEvent";
 import { colors } from "../../constants";
 import { graphql, compose } from "react-apollo";
 import EVENT_QUERY from "../../graphql/queries/event";
+const deviceWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
     alignSelf: "stretch",
-    minHeight: 300
+    minHeight: 300,
+    width: deviceWidth - 20
   },
   imageBannerContainer: {
-    flex: 7
+    flex: 7,
+    padding:10
   },
   imageBanner: {
     width: "100%",

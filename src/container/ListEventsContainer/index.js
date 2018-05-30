@@ -86,6 +86,7 @@ class ListEventsContainer extends Component {
           ListFooterComponent={() => (!refreshing ? null : <ActivityIndicator size="large" />)}
           showsHorizontalScrollIndicator={false}
         />
+
       );
     }
     return (
