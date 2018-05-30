@@ -12,15 +12,12 @@ import ListEventsHeader from "../../components/EventCard/ListEventsHeader";
 import { colors } from "../../constants";
 
 @compose(
-  connect(
-    null,
-    dispatch => ({ dispatch })
-  ),
+  connect(null, dispatch => ({ dispatch })),
   graphql(GET_LIST_EVENTS, {
     name: "getListEvents",
     options: () => ({
       variables: { limit: 5 },
-      pollInterval : 500
+      pollInterval: 500
       // awesome stuff refetch query without thinkking thru
     }),
     props: ({ getListEvents }) => {
@@ -43,16 +40,16 @@ import { colors } from "../../constants";
         });
       return { getListEvents, loadMoreRows };
     }
-  }),
+  })
 )
 class ListEventsContainer extends Component {
   state = {
-    refreshing: false,
+    refreshing: false
   }
 
-  _handlePressBack = () => this.props.dispatch(NavigationActions.back());
+  _handlePressBack = () => this.props.dispatch(NavigationActions.back())
 
-  _renderEvent = ({ item }) => <EventCard {...item}/>
+  _renderEvent = ({ item }) => <EventCard {...item} />
 
   _handleEnd = () => {
     if (this.props.getListEvents.listEvent.pageInfo.hasNextPage && !this.state.refreshing) {
@@ -71,22 +68,22 @@ class ListEventsContainer extends Component {
 
     if (getListEvents.loading) {
       listEventsContent = <ActivityIndicator size="large" />;
-    }
-    else {
+    } else {
       listEventsContent = (
-        <FlatList
-          contentContainerStyle={{ alignSelf: "stretch" }}
-          data={getListEvents.listEvent.edges}
-          keyExtractor={item => item._id}
-          renderItem={this._renderEvent}
-          onEndReached={this._handleEnd}
-          onEndReachedThreshold={0.1}
-          refreshing={refreshing}
-          ListHeaderComponent={() => <ListEventsHeader />}
-          ListFooterComponent={() => (!refreshing ? null : <ActivityIndicator size="large" />)}
-          showsHorizontalScrollIndicator={false}
-        />
-
+        <View>
+          <FlatList
+            contentContainerStyle={{ alignSelf: "stretch" }}
+            data={getListEvents.listEvent.edges}
+            keyExtractor={item => item._id}
+            renderItem={this._renderEvent}
+            onEndReached={this._handleEnd}
+            onEndReachedThreshold={0.1}
+            refreshing={refreshing}
+            ListHeaderComponent={() => <ListEventsHeader />}
+            ListFooterComponent={() => (!refreshing ? null : <ActivityIndicator size="large" />)}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
       );
     }
     return (

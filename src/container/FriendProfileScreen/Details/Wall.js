@@ -18,6 +18,7 @@ import GET_FEEDS_QUERY from "../../../graphql/queries/feeds";
 import axios from "axios";
 import { Alert } from "react-native";
 import { MEDIA_SERVER } from "../../../constants";
+import Setting from "./Setting";
 
 const IMAGE_HEIGHT = 250;
 const HEADER_HEIGHT = Platform.OS === "ios" ? 64 : 50;
@@ -223,7 +224,9 @@ class Wall extends Component {
                   <Text style={{ fontWeight: "400", paddingLeft: 5, color: THEME_COLOR }}>Khác</Text>
                 </TabHeading>
               }
-            />
+            >
+              <Setting info={info}/>
+            </Tab>
           </Tabs>
         </View>
       </View>
@@ -244,9 +247,7 @@ class Wall extends Component {
       />
     );
 
-    // console.log(JSON.parse(info.profile.banner));
-    // console.log(JSON.parse(this.props.userInfo.profile.picture).URL);
-    // console.log(info.profile.picture);
+
 
     return (
       <View>
