@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { View, Card, Icon } from "native-base";
+import { View, Card , Icon } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
 import { ActivityIndicator, FlatList, ScrollView, Text } from "react-native";
 import Modal from "react-native-modal";
@@ -20,14 +20,15 @@ import POST_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/postAdded";
 import styles from "./styles";
 import { colors } from "../../constants";
 export const SAVE_USER_INFO = "SAVE_USER_INFO";
+// import Pagination, { Dot , Icon } from "react-native-pagination";
 
 class TextBanner extends Component {
-  render(){
+  render() {
     const { text, icon } = this.props;
     return (
-      <Card style={{height: 40, flexDirection: "row", alignItems: "center"}}>
-        <Icon type="MaterialIcons" style={{marginLeft: 10, color: colors.PRIMARY, fontSize: 20}} name={icon}/>
-        <Text style={{marginLeft: 10, fontSize: 20, color: colors.PRIMARY}}>{text}</Text>
+      <Card style={{ height: 40, flexDirection: "row", alignItems: "center" }}>
+        <Icon type="MaterialIcons" style={{ marginLeft: 10, color: colors.PRIMARY, fontSize: 20 }} name={icon} />
+        <Text style={{ marginLeft: 10, fontSize: 20, color: colors.PRIMARY }}>{text}</Text>
       </Card>
     );
   }
@@ -68,7 +69,7 @@ class TextBanner extends Component {
   graphql(GET_LIST_EVENTS, {
     name: "getListEvents",
     options: () => ({
-      variables: { limit: 5 },
+      variables: { limit: 5 }
     })
   }),
   graphql(ME_QUERY, { name: "getMe" })
@@ -119,10 +120,10 @@ class HomeScreen extends Component {
   }
 
   _renderItem = ({ item }) => {
-    return <FeedCard {...item} onToggleSharingModal={this._onToggleSharingModal} stuff={this.props}/>;
+    return <FeedCard {...item} onToggleSharingModal={this._onToggleSharingModal} stuff={this.props} />;
   }
 
-  _renderEvent = ({ item }) => <EventCard {...item}/>
+  _renderEvent = ({ item }) => <EventCard {...item} />
 
   _renderFeedHeader = () => {
     const { getMe } = this.props;
@@ -159,6 +160,7 @@ class HomeScreen extends Component {
       feedsContent = <ActivityIndicator size="large" />;
     } else {
       feedsContent = (
+        <View>
         <FlatList
           horizontal
           contentContainerStyle={{ alignSelf: "stretch" }}
@@ -171,13 +173,21 @@ class HomeScreen extends Component {
           renderItem={this._renderItem}
           showsHorizontalScrollIndicator={false}
         />
+        {/* <Pagination
+            horizontal
+            // dotThemeLight //<--use with backgroundColor:"grey"
+            listRef={this.refs}//to allow React Native Pagination to scroll to item when clicked  (so add "ref={r=>this.refs=r}" to your list)
+            paginationVisibleItems={this.state.viewableItems}//needs to track what the user sees
+            paginationItems={this.props.getFeeds.edges}//pass the same list as data
+            paginationItemPadSize={3} //num of items to pad above and below your visable items
+          /> */}
+        </View>
       );
     }
 
     if (getListEvents.loading) {
       listEventsContent = <ActivityIndicator size="large" />;
-    }
-    else {
+    } else {
       const fiveFirstEvents = getListEvents.listEvent.edges.slice(0, 5);
       listEventsContent = (
         <FlatList
@@ -193,20 +203,21 @@ class HomeScreen extends Component {
     }
 
     return (
-      <ScrollView navigation={this.props.navigation} style={{marginTop: 20}}>
-        {getMe.me ? (
-          <FeedsHeader info={getMe.me} />
-        ) : null}
-        <TextBanner text="Tin mới" icon="rss-feed"/>
+      <ScrollView navigation={this.props.navigation} style={{ marginTop: 20 }}>
+        {getMe.me ? <FeedsHeader info={getMe.me} /> : null}
+        <TextBanner text="Tin mới" icon="rss-feed" />
         <View style={styles.root}>{feedsContent}</View>
-        <TextBanner text="Sự kiện" icon="event"/>
+        <TextBanner text="Sự kiện" icon="event" />
         <View style={styles.root}>{listEventsContent}</View>
-        {getMe.me ? <Modal
-          isVisible={sharingModalVisible}
-          style={{alignItems: "center"}}
-          onBackdropPress={() => this._onToggleSharingModal(false)}>
-          <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={sharingPostID}/>
-        </Modal> : null}
+        {getMe.me ? (
+          <Modal
+            isVisible={sharingModalVisible}
+            style={{ alignItems: "center" }}
+            onBackdropPress={() => this._onToggleSharingModal(false)}
+          >
+            <SharedModal onToggleSharingModal={this._onToggleSharingModal} sharingPostID={sharingPostID} />
+          </Modal>
+        ) : null}
       </ScrollView>
     );
   }
