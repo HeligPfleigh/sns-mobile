@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import { Text, TouchableOpacity, Image, DatePickerIOS, ScrollView } from "react-native";
-import { Button, Icon, View, Body, Input, Picker, Item, ListItem } from "native-base";
+import { Button, Icon, View, Input, Item } from "native-base";
 import { MEDIA_SERVER } from "../../../constants";
 import ImagePicker from "react-native-image-crop-picker";
-// import GET_BUILDINGS from "../../graphql/queries/buildings";
-// import ME_QUERY from "../../graphql/queries/me";
+import ME_QUERY from "../../../graphql/queries/me";
 import UPDATE_PROFILE from "../../../graphql/mutations/updateProfile";
-import { graphql, compose, withApollo } from "react-apollo";
+import { graphql } from "react-apollo";
 import axios from "axios";
 import { Keyboard } from "react-native";
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from "react-native-simple-radio-button";
+import RadioForm from "react-native-simple-radio-button";
 
 const radio_props = [{ label: "nam", value: "nam" }, { label: "nữ", value: "nữ" }];
 
@@ -51,7 +50,6 @@ class SettingOptions extends Component {
     if (this.state.image) {
       const body = new FormData();
       const url = `${MEDIA_SERVER}/api/upload`;
-
       this.state.image.forEach(image => {
         let filename = image.path.replace(/^.*[\\\/]/, "");
         let file = {
@@ -61,25 +59,30 @@ class SettingOptions extends Component {
         };
         body.append("files", file);
       });
-
       try {
         const response = await axios.post(url, body);
         // store all information get from media server
-        photo = response.data.map(item => JSON.stringify(item));
+        photo = await response.data.map(item => item.URL);
       } catch (err) {
         throw err;
       }
     }
 
-    await this.props.updateProfile({
+    await this.props
+      .updateProfile({
         picture: photo,
         gender: this.state.gender,
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         address: this.state.address,
         dob: this.state.dob
-
-    });
+      })
+      .then(res => {
+        this.props.close();
+      })
+      .catch(err => {
+        throw err;
+      });
 
     Keyboard.dismiss();
   }
@@ -90,7 +93,6 @@ class SettingOptions extends Component {
           <Image key={idx} source={{ uri: item.path }} style={{ width: "100%", height: 200, marginVertical: 10 }} />
         ))
       : null;
-    console.log(this.props);
     return (
       <ScrollView style={{ margin: 20 }}>
         <Item inlineLabel>
@@ -160,29 +162,16 @@ class SettingOptions extends Component {
   }
 }
 
-// const EventSelectionsWithData = compose(
-//   withApollo,
-//   graphql(CREATE_NEW_EVENT, {
-//     props: ({ mutate }) => ({
-//       createNewEvent: input =>
-//         mutate({
-//           variables: { input }
-//         })
-//     })
-//   }),
-//   graphql(GET_BUILDINGS, {
-//     name: "getBuildings",
-//     options: () => ({
-//       variables: { query: "" }
-//     })
-//   })
-// )(EventSelections);
-
 const SettingOptionsWithData = graphql(UPDATE_PROFILE, {
   props: ({ mutate }) => ({
     updateProfile: profile =>
       mutate({
-        variables: { profile }
+        variables: { profile },
+        refetchQueries: [
+          {
+            query: ME_QUERY
+          }
+        ]
       })
   })
 })(SettingOptions);

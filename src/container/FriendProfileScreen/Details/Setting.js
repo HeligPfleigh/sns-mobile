@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Text, Body, Card, CardItem, Icon, Button } from "native-base";
-import { View, Alert, Modal } from "react-native";
+import { Text, Icon, Button } from "native-base";
+import { View, Modal } from "react-native";
 import { connect } from "react-redux";
 import SettingOptions from "./SettingOptions";
 
@@ -23,8 +23,7 @@ class Setting extends Component {
     };
     const { info } = this.props;
     const { userInfo } = this.props;
-    console.log(this.props);
-    if (info.username == userInfo.username) {
+    if (info.username === userInfo.username) {
       return (
         <View style={{ margin: 10 }}>
           <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
@@ -39,7 +38,7 @@ class Setting extends Component {
                   <Icon name="ios-backspace-outline" />
                 </Button>
 
-                <SettingOptions />
+                <SettingOptions close={close}/>
               </View>
             </View>
           </Modal>
