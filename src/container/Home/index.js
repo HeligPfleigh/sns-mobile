@@ -179,11 +179,10 @@ class HomeScreen extends Component {
           />
           <Pagination
             horizontal
-            // dotThemeLight //<--use with backgroundColor:"grey"
             listRef={this.refs} //to allow React Native Pagination to scroll to item when clicked  (so add "ref={r=>this.refs=r}" to your list)
             paginationVisibleItems={this.state.viewableItems} //needs to track what the user sees
             paginationItems={getFeeds.edges} //pass the same list as data
-            paginationItemPadSize={0} //num of items to pad above and below your visable items
+            paginationItemPadSize={-1} //num of items to pad above and below your visable items
             dotIconColorActive="rgba(85,186,255, 1)"
 
           />
