@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, Content, Card, CardItem, Icon } from "native-base";
+import { Text, Card, CardItem, Icon } from "native-base";
 
 class Intro extends Component {
   render() {

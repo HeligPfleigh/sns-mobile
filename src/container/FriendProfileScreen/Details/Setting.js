@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, Icon, Button, Card, CardItem } from "native-base";
+import { Text, Icon, Button, Card, CardItem, Title, Body, Left, Right, Container, Header } from "native-base";
 import { View, Modal } from "react-native";
 import { connect } from "react-redux";
 import SettingOptions from "./SettingOptions";
@@ -34,10 +34,10 @@ class Setting extends Component {
     if (info.username === userInfo.username) {
       return (
         <Card style={{ margin: 10 }}>
-          <CardItem style={{flexDirection:"column"}}>
+          <CardItem style={{ flexDirection: "column" }}>
             <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
-              <View style={{ marginTop: 22 }}>
-                <View>
+              <Header style={{ marginTop: 22 }}>
+                <Left>
                   <Button
                     transparent
                     info
@@ -47,10 +47,16 @@ class Setting extends Component {
                   >
                     <Icon name="ios-backspace-outline" />
                   </Button>
+                </Left>
+                <Body>
+                  <Title> Cập nhật </Title>
+                </Body>
+                <Right />
+              </Header>
 
-                  <SettingOptions close={close} />
-                </View>
-              </View>
+              <Container>
+                <SettingOptions close={close} />
+              </Container>
             </Modal>
             <Button iconLeft light onPress={this.edit.bind(this)}>
               <Icon name="ios-construct-outline" />

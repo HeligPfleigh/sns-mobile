@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Text, Body, Card, CardItem, Icon } from "native-base";
-import { View } from "react-native";
+import { Text, Card, CardItem, Icon } from "native-base";
 
 class Friends extends Component {
   render() {

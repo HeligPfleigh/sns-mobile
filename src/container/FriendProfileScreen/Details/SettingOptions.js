@@ -94,7 +94,7 @@ class SettingOptions extends Component {
         ))
       : null;
     return (
-      <ScrollView style={{ margin: 20 }}>
+      <ScrollView style={{ margin: 20 }} showsHorizontalScrollIndicator={false}>
         <Item inlineLabel>
           <Input
             value={this.state.lastName}
