@@ -36,6 +36,8 @@ import EventDetailScreen from "../container/EventDetailContainer";
 import ProfileScreen from "../container/ProfileScreen";
 import ChangePasswordScreen from "../container/ChangePasswordScreen";
 import BlankScreen from "../container/BlankScreen";
+import Chat from "../container/Chat";
+import Screen from "../container/Chat/screen";
 
 /************* START CONFIG APP ROUTES *******************/
 /*********** Tabs Batch Screens *********************/
@@ -98,6 +100,11 @@ const StackAppRouteConfig = StackNavigator(
     FriendProfileScreen: { screen: FriendProfileScreen },
     ListEventsScreen: { screen: ListEventsScreen },
     EventDetailScreen: { screen: EventDetailScreen },
+    ChangePasswordScreen: { screen: ChangePasswordScreen },
+    BlankScreen: { screen : BlankScreen},
+    Chat: { screen : Chat},
+    Screen: { screen : Screen}
+
   },
   {
     headerMode: "none"

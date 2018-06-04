@@ -17,7 +17,7 @@ class Intro extends Component {
               <Text>
                 <Icon name="ios-calendar-outline" style={{ fontSize: 13, lineHeight: 35, paddingRight: 15 }} />
                 <Text>Sinh nhật: </Text>
-                {this.props.info.profile.dob === null ? "chưa cung cấp" : this.props.info.profile.dob}{" "}
+                {this.props.info.profile.dob === null ? "chưa cung cấp" : this.props.info.profile.dob.toString().split("T")[0]}
               </Text>
               <Text>
                 <Icon name="ios-podium-outline" style={{ fontSize: 13, lineHeight: 35, paddingRight: 15 }} />

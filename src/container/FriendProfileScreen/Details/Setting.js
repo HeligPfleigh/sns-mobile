@@ -3,6 +3,7 @@ import { Text, Icon, Button } from "native-base";
 import { View, Modal } from "react-native";
 import { connect } from "react-redux";
 import SettingOptions from "./SettingOptions";
+import { NavigationActions } from "react-navigation";
 
 class Setting extends Component {
   constructor(props) {
@@ -16,6 +17,13 @@ class Setting extends Component {
   }
   edit() {
     this.setModalVisible(true);
+  }
+  passwordChange(){
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "ChangePasswordScreen"
+      })
+    );
   }
   render() {
     const close = () => {
@@ -31,6 +39,7 @@ class Setting extends Component {
               <View>
                 <Button
                   transparent
+                  info
                   onPress={() => {
                     this.setModalVisible(!this.state.modalVisible);
                   }}
@@ -45,6 +54,10 @@ class Setting extends Component {
           <Button iconLeft light onPress={this.edit.bind(this)}>
             <Icon name="ios-construct-outline" />
             <Text>Cập nhật thông tin</Text>
+          </Button>
+          <Button iconLeft light onPress={this.passwordChange.bind(this)}>
+            <Icon name="ios-build-outline" />
+            <Text> Đổi mật khẩu </Text>
           </Button>
         </View>
       );

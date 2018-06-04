@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import update from "immutability-helper";
-import { View, Card , Icon } from "native-base";
+import { View, Card, Icon } from "native-base";
 import { graphql, compose, withApollo } from "react-apollo";
 import { ActivityIndicator, FlatList, ScrollView, Text } from "react-native";
 import Modal from "react-native-modal";
@@ -20,7 +20,7 @@ import POST_ADDED_SUBSCRIPTION from "../../graphql/subscriptions/postAdded";
 import styles from "./styles";
 import { colors } from "../../constants";
 export const SAVE_USER_INFO = "SAVE_USER_INFO";
-// import Pagination, { Dot , Icon } from "react-native-pagination";
+import Pagination  from "react-native-pagination";
 
 class TextBanner extends Component {
   render() {
@@ -152,6 +152,7 @@ class HomeScreen extends Component {
       sharingPostID: id
     })
 
+  onViewableItemsChanged = ({ viewableItems, changed }) => this.setState({ viewableItems })
   render() {
     const { getMe, getFeeds, getListEvents } = this.props;
     const { sharingModalVisible, refreshing, sharingPostID } = this.state;
@@ -161,26 +162,31 @@ class HomeScreen extends Component {
     } else {
       feedsContent = (
         <View>
-        <FlatList
-          horizontal
-          contentContainerStyle={{ alignSelf: "stretch" }}
-          data={getFeeds.feeds.edges}
-          onEndReached={this._handleEnd}
-          onEndReachedThreshold={0.1}
-          refreshing={refreshing}
-          ListFooterComponent={() => (!refreshing ? null : <ActivityIndicator size="large" />)}
-          keyExtractor={item => item._id}
-          renderItem={this._renderItem}
-          showsHorizontalScrollIndicator={false}
-        />
-        {/* <Pagination
+          <FlatList
+            ref={r => (this.refs = r)}
+            horizontal
+            contentContainerStyle={{ alignSelf: "stretch" }}
+            data={getFeeds.feeds.edges}
+            onEndReached={this._handleEnd}
+            onEndReachedThreshold={0.1}
+            refreshing={refreshing}
+            ListFooterComponent={() => (!refreshing ? null : <ActivityIndicator size="large" />)}
+            keyExtractor={item => item._id}
+            renderItem={this._renderItem}
+            showsHorizontalScrollIndicator={false}
+            onViewableItemsChanged={this.onViewableItemsChanged} //need this
+            style={{marginBottom:43}}
+          />
+          <Pagination
             horizontal
             // dotThemeLight //<--use with backgroundColor:"grey"
-            listRef={this.refs}//to allow React Native Pagination to scroll to item when clicked  (so add "ref={r=>this.refs=r}" to your list)
-            paginationVisibleItems={this.state.viewableItems}//needs to track what the user sees
-            paginationItems={this.props.getFeeds.edges}//pass the same list as data
-            paginationItemPadSize={3} //num of items to pad above and below your visable items
-          /> */}
+            listRef={this.refs} //to allow React Native Pagination to scroll to item when clicked  (so add "ref={r=>this.refs=r}" to your list)
+            paginationVisibleItems={this.state.viewableItems} //needs to track what the user sees
+            paginationItems={getFeeds.edges} //pass the same list as data
+            paginationItemPadSize={0} //num of items to pad above and below your visable items
+            dotIconColorActive="rgba(85,186,255, 1)"
+
+          />
         </View>
       );
     }
