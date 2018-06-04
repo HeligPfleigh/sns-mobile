@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Content, Text, Form, Button, View, Toast } from "native-base";
+import { Content, Text, Form, Button, View, Toast, Header, Left, Right, Body, Icon, Title } from "native-base";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { compose, graphql } from "react-apollo";
 import { connect } from "react-redux";
@@ -71,9 +71,10 @@ class ChangePassword extends Component {
         type: "success"
       });
       this.props.dispatch(utils.createAction(CHANGE_PASSWORD_SUCCESS));
-      setTimeout( () => this.props.logOut(this.props.navigation), 300);
+      setTimeout(() => this.props.logOut(this.props.navigation), 300);
     } catch (error) {
-      const errorMessage = error && error.graphQLErrors && error.graphQLErrors[0].message || "Đổi password không thành công";
+      const errorMessage =
+        (error && error.graphQLErrors && error.graphQLErrors[0].message) || "Đổi password không thành công";
       Toast.show({
         text: errorMessage,
         duration: 2500,
@@ -89,9 +90,19 @@ class ChangePassword extends Component {
   render() {
     const { handleSubmit, valid, submitting, pristine } = this.props;
     return (
-      <Layout navigation={this.props.navigation}>
-        <Content padder style={{ backgroundColor: "#ccc" }}>
-          <Text style={{ textAlign: "center" }}>{"Đổi Mật Khẩu"}</Text>
+      <Layout navigation={this.props.navigation} >
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="ios-arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title> Đổi mật khẩu </Title>
+          </Body>
+          <Right />
+        </Header>
+        <Content padder style={{ backgroundColor: "rgba(85,186,255, 1)" }}>
           {this.formRender()}
           <View padder style={styles.btnLoginWrapper}>
             <Button
