@@ -48,6 +48,11 @@ const routes = [
     drawerIcon: <OtherIcon name="check" size={20} color="lightgrey" />
   },
   {
+    route: "Chat",
+    caption: "Chat",
+    drawerIcon: <OtherIcon name="typing" size={20} color="lightgrey" />
+  },
+  {
     route: "Logout",
     caption: "Đăng xuất",
     drawerIcon: <OtherIcon name="login" size={20} color="lightgrey" />

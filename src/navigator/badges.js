@@ -7,7 +7,6 @@ import { graphql, compose, withApollo } from "react-apollo";
 import NOTIFICATION_ADDED_SUBSCRIPTION from "../graphql/subscriptions/notificationAdded";
 import update from "immutability-helper";
 
-import { counting } from "./action";
 import ME_QUERY from "../graphql/queries/me";
 
 class NotificationNumber extends Component {
